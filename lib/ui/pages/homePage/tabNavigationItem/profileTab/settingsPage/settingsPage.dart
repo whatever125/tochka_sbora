@@ -3,6 +3,8 @@ import 'package:tochka_sbora/ui/themes/colors.dart';
 import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/profileTab/settingsPage/profileDataPage.dart';
 import 'package:tochka_sbora/ui/pages/welcomePage.dart';
 
+import 'infoPage.dart';
+
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
@@ -125,7 +127,7 @@ class SettingsPage extends StatelessWidget {
                           width: 15,
                         ),
                         Text(
-                          'О программе',
+                          'О приложении',
                           style: Theme.of(context)
                               .textTheme
                               .bodyText2!
@@ -138,7 +140,7 @@ class SettingsPage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => ProfileDataPage()),
+                          builder: (context) => InfoPage()),
                     ),
                   },
                 ),
