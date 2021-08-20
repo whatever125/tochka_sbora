@@ -15,7 +15,10 @@ class _SignInPageState extends State<SignInPage> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: FlutterLogo(),
+        title: Image.asset(
+          'graphics/name.png',
+          height: 32,
+        ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(

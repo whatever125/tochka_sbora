@@ -20,7 +20,10 @@ class _WelcomePageState extends State<WelcomePage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              FlutterLogo(),
+              Image.asset(
+                'graphics/name.png',
+                height: 32,
+              ),
               Spacer(),
               RichText(
                 textAlign: TextAlign.center,
@@ -31,7 +34,7 @@ class _WelcomePageState extends State<WelcomePage> {
                   ),
                   children: <TextSpan>[
                     TextSpan(
-                      text: 'Сдай свой мусор!', //TODO
+                      text: 'Сдай свой мусор!',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
@@ -60,7 +63,20 @@ class _WelcomePageState extends State<WelcomePage> {
                   },
                 ),
               ),
-              Spacer()
+              Spacer(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'graphics/kalina.png',
+                    height: 100,
+                  ),
+                  Image.asset(
+                    'graphics/volkov.png',
+                    height: 100,
+                  ),
+                ],
+              )
             ],
           ),
         ),
