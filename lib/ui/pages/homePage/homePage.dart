@@ -13,11 +13,16 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          TabNavigationItem.items[_currentIndex].label,
+        title: Row(
+          children: [
+            Image.asset(
+              'graphics/name.png',
+              fit: BoxFit.cover,
+              height: 32,
+            ),
+          ],
         ),
-        centerTitle: true,
-        leading: FlutterLogo(), //TODO лого
+        automaticallyImplyLeading: false,
       ),
       body: IndexedStack(
         index: _currentIndex,

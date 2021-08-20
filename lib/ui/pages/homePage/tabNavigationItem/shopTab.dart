@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import "dart:math";
 
+import 'package:tochka_sbora/ui/themes/colors.dart';
+
 class ShopTab extends StatefulWidget {
   @override
   ShopTabState createState() => ShopTabState();
@@ -32,6 +34,7 @@ class ShopTabState extends State<ShopTab> {
           return RefreshIndicator(
             child: _listView(snapshot),
             onRefresh: _pullRefresh,
+            color: LightColor.accent,
           );
         },
       ),
@@ -90,7 +93,7 @@ class ShopTabState extends State<ShopTab> {
         },
       );
     } else {
-      return Center(child: CircularProgressIndicator());
+      return Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(LightColor.accent)));
     }
   }
 

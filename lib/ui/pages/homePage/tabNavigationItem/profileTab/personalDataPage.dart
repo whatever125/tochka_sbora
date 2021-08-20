@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
+import 'package:tochka_sbora/ui/themes/colors.dart';
+import 'package:tochka_sbora/ui/themes/theme.dart';
 
 class PersonalDataPage extends StatefulWidget {
   @override
@@ -31,7 +31,7 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: Text('Личные данные'),
+        title: Text('Личные данные', style: TextStyle(color: LightColor.text)),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -110,40 +110,6 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                 height: 15,
               ),
               Text(
-                '*Дата рождения',
-                style: TextStyle(
-                  color: Theme.of(context).hintColor,
-                ),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              TextFormField(
-                controller: _dobctrl,
-                onTap: () async {
-                  FocusScope.of(context).requestFocus(new FocusNode());
-                  await _selectDate(context);
-                  _dobctrl.text = _dateOfBirth == null
-                      ? ''
-                      : DateFormat('dd.MM.yyyy').format(_dateOfBirth);
-                },
-                readOnly: true,
-                autovalidateMode: AutovalidateMode.disabled,
-                validator: (val) {
-                  return val!.isEmpty
-                      ? 'Пожалуйста, укажите дату рождения'
-                      : null;
-                },
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  isDense: true,
-                ),
-                // DateFormat('dd-MM-yyyy').format(_dateOfBirth),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Text(
                 '*Телефон',
                 style: TextStyle(
                   color: Theme.of(context).hintColor,
@@ -170,26 +136,6 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
               ),
               SizedBox(
                 height: 15,
-              ),
-              Text(
-                '*Email',
-                style: TextStyle(
-                  color: Theme.of(context).hintColor,
-                ),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              TextFormField(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (val) => EmailValidator.validate(val!)
-                    ? null
-                    : "Пожалуйста, укажите корректный email",
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  isDense: true,
-                ),
               ),
               SizedBox(
                 height: 30,

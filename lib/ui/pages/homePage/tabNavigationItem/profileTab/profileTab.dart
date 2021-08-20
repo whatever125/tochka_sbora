@@ -4,6 +4,8 @@ import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/profileTab/pers
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:tochka_sbora/ui/themes/theme.dart';
+
 class ProfileTab extends StatefulWidget {
   @override
   _ProfileTabState createState() => _ProfileTabState();
@@ -33,12 +35,14 @@ class _ProfileTabState extends State<ProfileTab> {
           return RefreshIndicator(
             child: _profileView(snapshot),
             onRefresh: _pullRefresh,
+            color: LightColor.accent,
           );
         },
       ),
     );
   }
 
+//TODO QR
   Widget _profileView(AsyncSnapshot snapshot) {
     if (snapshot.hasData) {
       return ListView(
@@ -97,70 +101,195 @@ class _ProfileTabState extends State<ProfileTab> {
                 SizedBox(
                   height: 15,
                 ),
-                TextButton(
-                  child: Container(
-                    height: 40,
-                    child: Row(
+                Column(
+                  children: [
+                    Row(
                       children: [
-                        Icon(Icons.person_pin),
-                        SizedBox(
-                          width: 15,
+                        Text(
+                          'Монеты: ',
+                          style: TextStyle(
+                            color: LightColor.text,
+                            fontSize: 25,
+                          ),
                         ),
                         Text(
-                          'Личные данные',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText2!
-                              .copyWith(fontSize: 18),
+                          '50',
+                          style: TextStyle(
+                            color: LightColor.accent,
+                            fontSize: 25,
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                  onPressed: () => {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PersonalDataPage(),
-                      ),
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Column(
+                          children: [
+                            Image.asset(
+                              'graphics/cardboard.png',
+                              fit: BoxFit.cover,
+                              height: 75,
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              'Картон',
+                              style: TextStyle(
+                                color: LightColor.secondary,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Image.asset(
+                              'graphics/paper.png',
+                              fit: BoxFit.cover,
+                              height: 75,
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              'Макулатура',
+                              style: TextStyle(
+                                color: LightColor.secondary,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Image.asset(
+                              'graphics/glass.png',
+                              fit: BoxFit.cover,
+                              height: 75,
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              'Стекло',
+                              style: TextStyle(
+                                color: LightColor.secondary,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Image.asset(
+                              'graphics/lid.png',
+                              fit: BoxFit.cover,
+                              height: 75,
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              'Крышки',
+                              style: TextStyle(
+                                color: LightColor.secondary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                  },
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Column(
+                          children: [
+                            Image.asset(
+                              'graphics/alluminium.png',
+                              fit: BoxFit.cover,
+                              height: 75,
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              'Алюминий',
+                              style: TextStyle(
+                                color: LightColor.secondary,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Image.asset(
+                              'graphics/PET.png',
+                              fit: BoxFit.cover,
+                              height: 75,
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              'Бутылки ПЭТ',
+                              style: TextStyle(
+                                color: LightColor.secondary,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Image.asset(
+                              'graphics/2.png',
+                              fit: BoxFit.cover,
+                              height: 75,
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              'ПНД',
+                              style: TextStyle(
+                                color: LightColor.secondary,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Image.asset(
+                              'graphics/5.png',
+                              fit: BoxFit.cover,
+                              height: 75,
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              'ПП',
+                              style: TextStyle(
+                                color: LightColor.secondary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Divider(),
+                SizedBox(
+                  height: 15,
                 ),
                 TextButton(
                   child: Container(
                     height: 40,
                     child: Row(
                       children: [
-                        Icon(Icons.dashboard),
+                        Icon(
+                          Icons.settings,
+                          color: AppTheme.lightTheme.accentColor,
+                        ),
                         SizedBox(
                           width: 15,
                         ),
                         Text(
-                          'Портфолио',
+                          'Настройки',
                           style: Theme.of(context)
                               .textTheme
                               .bodyText2!
-                              .copyWith(fontSize: 18),
-                        ),
-                      ],
-                    ),
-                  ),
-                  onPressed: () => {},
-                ),
-                TextButton(
-                  child: Container(
-                    height: 40,
-                    child: Row(
-                      children: [
-                        Icon(Icons.text_snippet),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text(
-                          'Резюме',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText2!
-                              .copyWith(fontSize: 18),
+                              .copyWith(fontSize: 18, color: LightColor.text),
                         ),
                       ],
                     ),
@@ -173,7 +302,7 @@ class _ProfileTabState extends State<ProfileTab> {
         ],
       );
     } else {
-      return Center(child: CircularProgressIndicator());
+      return Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(LightColor.accent)));
     }
   }
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tochka_sbora/ui/pages/splashPage.dart';
 import 'package:tochka_sbora/ui/themes/theme.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
