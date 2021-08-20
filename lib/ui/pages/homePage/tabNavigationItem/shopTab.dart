@@ -1,7 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import "dart:math";
 import 'package:tochka_sbora/ui/themes/colors.dart';
 
 class ShopTab extends StatefulWidget {
@@ -47,27 +47,33 @@ class ShopTabState extends State<ShopTab> {
           leading: Image.network('https://static.tildacdn.com/tild3166-6266-4165-a131-323063343530/__.jpg'),
           title: Text(
             'Подарочный набор "С бородой" от Валерия Кокина',
+            style: TextStyle(color: LightColor.text),
           ),
           subtitle: Text(
             '800 бонусов',
+            style: TextStyle(color: LightColor.secondary),
           ),
         ),
         ListTile(
           leading: Image.network('https://static.tildacdn.com/tild6639-3236-4637-b966-336131323964/__.jpg'),
           title: Text(
             'Пастила Ассорти с ягодами, бананом и яблоком в коробке от Натальи Саблиной 55 г',
+            style: TextStyle(color: LightColor.text),
           ),
           subtitle: Text(
             '299 бонусов',
+            style: TextStyle(color: LightColor.secondary),
           ),
         ),
         ListTile(
           leading: Image.network('https://static.tildacdn.com/tild3432-3334-4166-a261-303232376235/80004.jpg'),
           title: Text(
             'Подарочный набор "Сердце" от Дениса Давыдова',
+            style: TextStyle(color: LightColor.text),
           ),
           subtitle: Text(
             '949 бонусов',
+            style: TextStyle(color: LightColor.secondary),
           ),
         ),
       ];

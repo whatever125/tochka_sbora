@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tochka_sbora/ui/themes/colors.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class QRPage extends StatefulWidget {
   const QRPage({Key? key}) : super(key: key);
@@ -11,6 +13,14 @@ class QRPage extends StatefulWidget {
 }
 
 class _QRPageState extends State<QRPage> {
+  late Future<List<dynamic>> user;
+
+  @override
+  void initState() {
+    super.initState();
+    user = _fetchProfile();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +30,28 @@ class _QRPageState extends State<QRPage> {
           style: TextStyle(color: LightColor.text),
         ),
       ),
-      body: Container(
+      body: _buildQR(),
+    );
+  }
+
+  Widget _buildQR() {
+    return Container(
+      child: FutureBuilder<List<dynamic>>(
+        future: user,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          return RefreshIndicator(
+            child: _profileView(snapshot),
+            onRefresh: _pullRefresh,
+            color: LightColor.accent,
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _profileView(AsyncSnapshot snapshot) {
+    if (snapshot.hasData) {
+      return Container(
         padding: EdgeInsets.symmetric(
           horizontal: 30,
           vertical: 20,
@@ -29,8 +60,7 @@ class _QRPageState extends State<QRPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             QrImage(
-              data:
-                  "e165grefw8dsgrb2ef56g8rw1v8e9b651e8b51f98wr74b65189e4b1rbv1",
+              data: "${snapshot.data[0]['qr_token']}",
               version: QrVersions.auto,
               size: MediaQuery.of(context).size.width,
             ),
@@ -43,7 +73,24 @@ class _QRPageState extends State<QRPage> {
             ),
           ],
         ),
-      ),
-    );
+      );
+    } else {
+      return Center(
+          child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(LightColor.accent)));
+    }
+  }
+
+  Future<void> _pullRefresh() async {
+    List<dynamic> freshData = await _fetchProfile();
+    setState(() {
+      user = Future.value(freshData);
+    });
+  }
+
+  Future<List<dynamic>> _fetchProfile() async {
+    final apiUrl = "https://60911f0c50c2550017677a1b.mockapi.io/users";
+    var result = await http.get(Uri.parse(apiUrl));
+    return json.decode(result.body);
   }
 }

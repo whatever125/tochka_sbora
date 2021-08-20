@@ -127,7 +127,7 @@ class _ProfileTabState extends State<ProfileTab> {
                           ),
                         ),
                         Text(
-                          '50',
+                          '${snapshot.data[0]['coins']}',
                           style: TextStyle(
                             color: LightColor.accent,
                             fontSize: 20,
@@ -155,7 +155,7 @@ class _ProfileTabState extends State<ProfileTab> {
                             ),
                             SizedBox(height: 10),
                             Text(
-                              '50 г',
+                              '${snapshot.data[0]['cardboard'] * 50} г',
                               style: TextStyle(
                                 color: LightColor.accent,
                                 fontSize: 20,
@@ -179,7 +179,7 @@ class _ProfileTabState extends State<ProfileTab> {
                             ),
                             SizedBox(height: 10),
                             Text(
-                              '50 г',
+                              '${snapshot.data[0]['wastepaper'] * 50} г',
                               style: TextStyle(
                                 color: LightColor.accent,
                                 fontSize: 20,
@@ -203,7 +203,7 @@ class _ProfileTabState extends State<ProfileTab> {
                             ),
                             SizedBox(height: 10),
                             Text(
-                              '50 г',
+                              '${snapshot.data[0]['glass'] * 50} г',
                               style: TextStyle(
                                 color: LightColor.accent,
                                 fontSize: 20,
@@ -227,7 +227,7 @@ class _ProfileTabState extends State<ProfileTab> {
                             ),
                             SizedBox(height: 10),
                             Text(
-                              '50 г',
+                              '${snapshot.data[0]['plastic_lid'] * 50} г',
                               style: TextStyle(
                                 color: LightColor.accent,
                                 fontSize: 20,
@@ -259,7 +259,7 @@ class _ProfileTabState extends State<ProfileTab> {
                             ),
                             SizedBox(height: 10),
                             Text(
-                              '50 г',
+                              '${snapshot.data[0]['aluminium_can'] * 50} г',
                               style: TextStyle(
                                 color: LightColor.accent,
                                 fontSize: 20,
@@ -283,7 +283,7 @@ class _ProfileTabState extends State<ProfileTab> {
                             ),
                             SizedBox(height: 10),
                             Text(
-                              '50 г',
+                              '${snapshot.data[0]['plastic_bottle'] * 50} г',
                               style: TextStyle(
                                 color: LightColor.accent,
                                 fontSize: 20,
@@ -307,7 +307,7 @@ class _ProfileTabState extends State<ProfileTab> {
                             ),
                             SizedBox(height: 10),
                             Text(
-                              '50 г',
+                              '${snapshot.data[0]['plastic_mk2'] * 50} г',
                               style: TextStyle(
                                 color: LightColor.accent,
                                 fontSize: 20,
@@ -331,7 +331,7 @@ class _ProfileTabState extends State<ProfileTab> {
                             ),
                             SizedBox(height: 10),
                             Text(
-                              '50 г',
+                              '${snapshot.data[0]['plastic_mk5'] * 50} г',
                               style: TextStyle(
                                 color: LightColor.accent,
                                 fontSize: 20,
