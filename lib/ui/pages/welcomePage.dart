@@ -15,7 +15,7 @@ class _WelcomePageState extends State<WelcomePage> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -31,7 +31,7 @@ class _WelcomePageState extends State<WelcomePage> {
                   ),
                   children: <TextSpan>[
                     TextSpan(
-                      text: 'Сдай свой мусор!', //TODO
+                      text: 'Начни помогать планете!', //TODO
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
@@ -42,14 +42,14 @@ class _WelcomePageState extends State<WelcomePage> {
               SizedBox(height: 20),
               Container(
                 height: 50,
-                width: 250,
+                width: 150,
                 decoration: BoxDecoration(
                   color: AppTheme.lightTheme.accentColor,
                   borderRadius: BorderRadius.circular(25),
                 ),
                 child: TextButton(
                   child: Text(
-                    'Войти',
+                    'Начать',
                     style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
                   onPressed: () => {

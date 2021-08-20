@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tochka_sbora/ui/pages/homePage/homePage.dart';
+import 'package:tochka_sbora/ui/pages/SMSPage.dart';
 import 'package:tochka_sbora/ui/themes/colors.dart';
 import 'package:tochka_sbora/ui/themes/theme.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
@@ -72,20 +73,20 @@ class _SignInPageState extends State<SignInPage> {
               Padding(
                 child: Container(
                   height: 50,
-                  width: 125,
+                  width: 175,
                   decoration: BoxDecoration(
                       color: AppTheme.lightTheme.accentColor,
                       borderRadius: BorderRadius.circular(25)),
                   child: TextButton(
                     child: Text(
-                      'Войти',
+                      'Продолжить',
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
                     onPressed: () => {
-                      Navigator.pushAndRemoveUntil(
+                      Navigator.pop(context,),
+                      Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => HomePage()),
-                        (route) => route.isFirst,
+                        MaterialPageRoute(builder: (context) => SMSPage()),
                       ),
                     },
                   ),

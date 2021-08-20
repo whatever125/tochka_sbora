@@ -1,176 +1,151 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:tochka_sbora/ui/themes/colors.dart';
+import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/profileTab/settingsPage/profileDataPage.dart';
+import 'package:tochka_sbora/ui/pages/welcomePage.dart';
 
-class SettingsPage extends StatefulWidget {
-  @override
-  _SettingsPageState createState() => _SettingsPageState();
-}
-
-class _SettingsPageState extends State<SettingsPage> {
-  late DateTime _dateOfBirth;
-  TextEditingController _dobctrl = TextEditingController();
-
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: _dateOfBirth == null ? DateTime.now() : _dateOfBirth,
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-      locale: const Locale('ru', 'RU'),
-    );
-    if (picked != null && picked != _dateOfBirth)
-      setState(() {
-        _dateOfBirth = picked;
-      });
-  }
+class SettingsPage extends StatelessWidget {
+  const SettingsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: Text('Личные данные', style: TextStyle(color: LightColor.text)),
+        title: Text(
+          'Настройки',
+          style: TextStyle(color: LightColor.text),
+        ),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.all(15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '*Фамилия',
-                style: TextStyle(
-                  color: Theme.of(context).hintColor,
-                ),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              TextFormField(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (val) {
-                  return val!.isEmpty ? 'Пожалуйста, укажите фамилию' : null;
-                },
-                keyboardType: TextInputType.name,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  isDense: true,
-                ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Text(
-                '*Имя',
-                style: TextStyle(
-                  color: Theme.of(context).hintColor,
-                ),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              TextFormField(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (val) {
-                  return val!.isEmpty ? 'Пожалуйста, укажите имя' : null;
-                },
-                keyboardType: TextInputType.name,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  isDense: true,
-                ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Text(
-                'Отчество',
-                style: TextStyle(
-                  color: Theme.of(context).hintColor,
-                ),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              TextFormField(
-                autovalidateMode: AutovalidateMode.disabled,
-                validator: (val) {
-                  return val!.isEmpty ? 'Пожалуйста, укажите отчество' : null;
-                },
-                keyboardType: TextInputType.name,
-                textCapitalization: TextCapitalization.words,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  isDense: true,
-                ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Text(
-                '*Телефон',
-                style: TextStyle(
-                  color: Theme.of(context).hintColor,
-                ),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              TextFormField(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (val) {
-                  return true
-                      ? null
-                      : 'Пожалуйста, введите корректный номер телефона';
-                },
-                inputFormatters: [
-                  PhoneInputFormatter(),
-                ],
-                keyboardType: TextInputType.phone,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  isDense: true,
-                ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 50,
-                    width: 150,
-                    child: TextButton(
-                      child: Text(
-                        'Сохранить',
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                      ),
-                      onPressed: () => {
-                        Navigator.of(context).pop(),
-                      },
-                      style: ButtonStyle(
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25),
-                          ),
+      body: ListView(
+        children: [
+          Container(
+            padding: EdgeInsets.all(15),
+            child: Column(
+              children: [
+                TextButton(
+                  child: Container(
+                    height: 40,
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.account_circle,
+                          color: LightColor.accent,
                         ),
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                          Theme.of(context).accentColor,
+                        SizedBox(
+                          width: 15,
                         ),
-                      ),
+                        Text(
+                          'Личные данные',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2!
+                              .copyWith(fontSize: 18, color: LightColor.text),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-            ],
+                  onPressed: () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ProfileDataPage()),
+                    ),
+                  },
+                ),
+                TextButton(
+                  child: Container(
+                    height: 40,
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.miscellaneous_services,
+                          color: LightColor.accent,
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Text(
+                          'Режим администратора',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2!
+                              .copyWith(fontSize: 18, color: LightColor.text),
+                        ),
+                      ],
+                    ),
+                  ),
+                  onPressed: () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ProfileDataPage()),
+                    ),
+                  },
+                ),
+                TextButton(
+                  child: Container(
+                    height: 40,
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.logout,
+                          color: LightColor.accent,
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Text(
+                          'Выйти',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2!
+                              .copyWith(fontSize: 18, color: LightColor.text),
+                        ),
+                      ],
+                    ),
+                  ),
+                  onPressed: () => {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => WelcomePage()),
+                            (Route<dynamic> route) => false
+                    ),
+                  },
+                ),
+                TextButton(
+                  child: Container(
+                    height: 40,
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.info,
+                          color: LightColor.accent,
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Text(
+                          'О программе',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2!
+                              .copyWith(fontSize: 18, color: LightColor.text),
+                        ),
+                      ],
+                    ),
+                  ),
+                  onPressed: () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ProfileDataPage()),
+                    ),
+                  },
+                ),
+              ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tochka_sbora/ui/themes/colors.dart';
-import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/profileTab/settingsPage.dart';
+import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/profileTab/settingsPage/settingsPage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -106,7 +106,7 @@ class _ProfileTabState extends State<ProfileTab> {
                     Row(
                       children: [
                         Text(
-                          'Монеты: ',
+                          'Бонусы: ',
                           style: TextStyle(
                             color: LightColor.text,
                             fontSize: 20,
@@ -359,10 +359,9 @@ class _ProfileTabState extends State<ProfileTab> {
                     ),
                   ),
                   onPressed: () => {
-                    Navigator.pushAndRemoveUntil(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => SettingsPage()),
-                          (route) => route.isFirst,
                     ),
                   },
                 ),
