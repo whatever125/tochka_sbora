@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:tochka_sbora/ui/themes/colors.dart';
 import 'package:tochka_sbora/ui/pages/signinPage.dart';
 import 'package:tochka_sbora/ui/themes/theme.dart';
@@ -14,12 +15,11 @@ class _WelcomePageState extends State<WelcomePage> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 30),
+          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              SizedBox(height: 20),
               FlutterLogo(),
               Spacer(),
               RichText(
@@ -39,9 +39,7 @@ class _WelcomePageState extends State<WelcomePage> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 20,
-              ),
+              SizedBox(height: 20),
               Container(
                 height: 50,
                 width: 250,
@@ -62,7 +60,7 @@ class _WelcomePageState extends State<WelcomePage> {
                   },
                 ),
               ),
-              SizedBox(height: 20),
+              Spacer()
             ],
           ),
         ),
