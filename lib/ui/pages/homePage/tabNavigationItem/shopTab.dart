@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import "dart:math";
-
 import 'package:tochka_sbora/ui/themes/colors.dart';
 
 class ShopTab extends StatefulWidget {
@@ -43,53 +42,43 @@ class ShopTabState extends State<ShopTab> {
 
   Widget _listView(AsyncSnapshot snapshot) {
     if (snapshot.hasData) {
-      final _random = new Random();
       final list = [
         ListTile(
-          leading: Icon(
-            Icons.people,
-            color: Theme.of(context).accentColor,
-          ),
+          leading: Image.network('https://static.tildacdn.com/tild3166-6266-4165-a131-323063343530/__.jpg'),
           title: Text(
-            'Приглашение на собеседование',
+            'Подарочный набор "С бородой" от Валерия Кокина',
           ),
           subtitle: Text(
-            'На должность экономист от КУ "Региональный центр для лиц без определенного места жительства" Минтруда Кузбасса 21.06.2021 10:30',
+            '800 бонусов',
           ),
         ),
         ListTile(
-          leading: Icon(
-            Icons.cancel,
-            color: Theme.of(context).accentColor,
-          ),
+          leading: Image.network('https://static.tildacdn.com/tild6639-3236-4637-b966-336131323964/__.jpg'),
           title: Text(
-            'Статус обращения',
+            'Пастила Ассорти с ягодами, бананом и яблоком в коробке от Натальи Саблиной 55 г',
           ),
           subtitle: Text(
-            'Ваше электронное обращение для психологической поддержки от 17.04.2021 отклонено ведомством',
+            '299 бонусов',
           ),
         ),
         ListTile(
-          leading: Icon(
-            Icons.check_circle,
-            color: Theme.of(context).accentColor,
-          ),
+          leading: Image.network('https://static.tildacdn.com/tild3432-3334-4166-a261-303232376235/80004.jpg'),
           title: Text(
-            'Статус обращения',
+            'Подарочный набор "Сердце" от Дениса Давыдова',
           ),
           subtitle: Text(
-            'Ваше электронное обращение для поиска работы от 17.04.2021 рассмотрено. Результат: выполнено',
+            '949 бонусов',
           ),
         ),
       ];
       return ListView.builder(
         shrinkWrap: false,
         padding: EdgeInsets.all(15.0),
-        itemCount: snapshot.data.length,
+        itemCount: list.length * 2,
         itemBuilder: (context, index) {
           if (index.isOdd) return Divider();
           final i = index ~/ 2;
-          return list[_random.nextInt(list.length)];
+          return list[i];
         },
       );
     } else {

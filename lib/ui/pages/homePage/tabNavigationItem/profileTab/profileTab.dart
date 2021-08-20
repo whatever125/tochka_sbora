@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tochka_sbora/ui/themes/colors.dart';
 import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/profileTab/settingsPage/settingsPage.dart';
+import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/profileTab/QRPage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -91,6 +92,19 @@ class _ProfileTabState extends State<ProfileTab> {
                           ),
                         ),
                       ),
+                      TextButton(
+                        onPressed: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => QRPage()),
+                          ),
+                        },
+                        child: Icon(
+                          Icons.qr_code,
+                          color: LightColor.accent,
+                          size: 40,
+                        ),
+                      )
                     ],
                   ),
                 ),
