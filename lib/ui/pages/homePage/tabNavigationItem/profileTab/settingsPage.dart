@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:tochka_sbora/ui/themes/colors.dart';
-import 'package:tochka_sbora/ui/themes/theme.dart';
 
-class PersonalDataPage extends StatefulWidget {
+class SettingsPage extends StatefulWidget {
   @override
-  _PersonalDataPageState createState() => _PersonalDataPageState();
+  _SettingsPageState createState() => _SettingsPageState();
 }
 
-class _PersonalDataPageState extends State<PersonalDataPage> {
+class _SettingsPageState extends State<SettingsPage> {
   late DateTime _dateOfBirth;
   TextEditingController _dobctrl = TextEditingController();
 

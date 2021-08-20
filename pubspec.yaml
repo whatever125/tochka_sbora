@@ -39,6 +39,12 @@ dependencies:
   flutter_map: any
   latlong: ^0.6.1
   google_maps_flutter: ^2.0.1
+  flutter_launcher_icons: ^0.9.1
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "graphics/web_hi_res_512.png"
 
 dev_dependencies:
   flutter_test:

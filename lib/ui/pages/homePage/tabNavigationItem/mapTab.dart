@@ -19,10 +19,10 @@ class _MapTabState extends State<MapTab> {
   //TODO загрузка маркеров с сервера
   List<Marker> _markers = <Marker>[
     Marker(
-      markerId: MarkerId('Кузнецкий 33'),
+      markerId: MarkerId('Кузнецкий, 33'),
       position: LatLng(55.355787, 86.064506),
       infoWindow: InfoWindow(
-        title: 'Кузнецкий 33',
+        title: 'Кузнецкий, 33',
         snippet: 'Круглосуточно',
       ),
     ),

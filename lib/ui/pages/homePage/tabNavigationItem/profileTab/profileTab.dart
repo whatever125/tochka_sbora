@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tochka_sbora/ui/themes/colors.dart';
-import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/profileTab/personalDataPage.dart';
+import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/profileTab/settingsPage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -109,14 +109,14 @@ class _ProfileTabState extends State<ProfileTab> {
                           'Монеты: ',
                           style: TextStyle(
                             color: LightColor.text,
-                            fontSize: 25,
+                            fontSize: 20,
                           ),
                         ),
                         Text(
                           '50',
                           style: TextStyle(
                             color: LightColor.accent,
-                            fontSize: 25,
+                            fontSize: 20,
                           ),
                         ),
                       ],
@@ -128,7 +128,7 @@ class _ProfileTabState extends State<ProfileTab> {
                         Column(
                           children: [
                             Image.asset(
-                              'graphics/cardboard.png',
+                              'graphics/cardboard_1.png',
                               fit: BoxFit.cover,
                               height: 75,
                             ),
@@ -139,12 +139,20 @@ class _ProfileTabState extends State<ProfileTab> {
                                 color: LightColor.secondary,
                               ),
                             ),
+                            SizedBox(height: 10),
+                            Text(
+                              '50 г',
+                              style: TextStyle(
+                                color: LightColor.accent,
+                                fontSize: 20,
+                              ),
+                            ),
                           ],
                         ),
                         Column(
                           children: [
                             Image.asset(
-                              'graphics/paper.png',
+                              'graphics/paper_1.png',
                               fit: BoxFit.cover,
                               height: 75,
                             ),
@@ -155,12 +163,20 @@ class _ProfileTabState extends State<ProfileTab> {
                                 color: LightColor.secondary,
                               ),
                             ),
+                            SizedBox(height: 10),
+                            Text(
+                              '50 г',
+                              style: TextStyle(
+                                color: LightColor.accent,
+                                fontSize: 20,
+                              ),
+                            ),
                           ],
                         ),
                         Column(
                           children: [
                             Image.asset(
-                              'graphics/glass.png',
+                              'graphics/glass_1.png',
                               fit: BoxFit.cover,
                               height: 75,
                             ),
@@ -171,12 +187,20 @@ class _ProfileTabState extends State<ProfileTab> {
                                 color: LightColor.secondary,
                               ),
                             ),
+                            SizedBox(height: 10),
+                            Text(
+                              '50 г',
+                              style: TextStyle(
+                                color: LightColor.accent,
+                                fontSize: 20,
+                              ),
+                            ),
                           ],
                         ),
                         Column(
                           children: [
                             Image.asset(
-                              'graphics/lid.png',
+                              'graphics/lid_1.png',
                               fit: BoxFit.cover,
                               height: 75,
                             ),
@@ -185,6 +209,14 @@ class _ProfileTabState extends State<ProfileTab> {
                               'Крышки',
                               style: TextStyle(
                                 color: LightColor.secondary,
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              '50 г',
+                              style: TextStyle(
+                                color: LightColor.accent,
+                                fontSize: 20,
                               ),
                             ),
                           ],
@@ -200,7 +232,7 @@ class _ProfileTabState extends State<ProfileTab> {
                         Column(
                           children: [
                             Image.asset(
-                              'graphics/alluminium.png',
+                              'graphics/alluminium_1.png',
                               fit: BoxFit.cover,
                               height: 75,
                             ),
@@ -211,12 +243,20 @@ class _ProfileTabState extends State<ProfileTab> {
                                 color: LightColor.secondary,
                               ),
                             ),
+                            SizedBox(height: 10),
+                            Text(
+                              '50 г',
+                              style: TextStyle(
+                                color: LightColor.accent,
+                                fontSize: 20,
+                              ),
+                            ),
                           ],
                         ),
                         Column(
                           children: [
                             Image.asset(
-                              'graphics/PET.png',
+                              'graphics/PET_1.png',
                               fit: BoxFit.cover,
                               height: 75,
                             ),
@@ -227,12 +267,20 @@ class _ProfileTabState extends State<ProfileTab> {
                                 color: LightColor.secondary,
                               ),
                             ),
+                            SizedBox(height: 10),
+                            Text(
+                              '50 г',
+                              style: TextStyle(
+                                color: LightColor.accent,
+                                fontSize: 20,
+                              ),
+                            ),
                           ],
                         ),
                         Column(
                           children: [
                             Image.asset(
-                              'graphics/2.png',
+                              'graphics/2_1.png',
                               fit: BoxFit.cover,
                               height: 75,
                             ),
@@ -243,12 +291,20 @@ class _ProfileTabState extends State<ProfileTab> {
                                 color: LightColor.secondary,
                               ),
                             ),
+                            SizedBox(height: 10),
+                            Text(
+                              '50 г',
+                              style: TextStyle(
+                                color: LightColor.accent,
+                                fontSize: 20,
+                              ),
+                            ),
                           ],
                         ),
                         Column(
                           children: [
                             Image.asset(
-                              'graphics/5.png',
+                              'graphics/5_1.png',
                               fit: BoxFit.cover,
                               height: 75,
                             ),
@@ -257,6 +313,14 @@ class _ProfileTabState extends State<ProfileTab> {
                               'ПП',
                               style: TextStyle(
                                 color: LightColor.secondary,
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              '50 г',
+                              style: TextStyle(
+                                color: LightColor.accent,
+                                fontSize: 20,
                               ),
                             ),
                           ],
@@ -294,7 +358,13 @@ class _ProfileTabState extends State<ProfileTab> {
                       ],
                     ),
                   ),
-                  onPressed: () => {},
+                  onPressed: () => {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => SettingsPage()),
+                          (route) => route.isFirst,
+                    ),
+                  },
                 ),
               ],
             ),
@@ -302,7 +372,9 @@ class _ProfileTabState extends State<ProfileTab> {
         ],
       );
     } else {
-      return Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(LightColor.accent)));
+      return Center(
+          child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(LightColor.accent)));
     }
   }
 
