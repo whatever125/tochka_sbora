@@ -8,6 +8,11 @@ import 'infoPage.dart';
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
+  bool isAdmin() {
+    return true;
+    //TODO сделать запрос на проверку наличия статуса администратора
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,6 +58,7 @@ class SettingsPage extends StatelessWidget {
                     ),
                   },
                 ),
+                if(isAdmin())
                 TextButton(
                   child: Container(
                     height: 40,
