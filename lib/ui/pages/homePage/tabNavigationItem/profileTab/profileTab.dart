@@ -52,19 +52,6 @@ class _ProfileTabState extends State<ProfileTab> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Container(
-                        height: 80,
-                        width: 80,
-                        child: CircleAvatar(
-                          radius: 40,
-                          backgroundImage: NetworkImage(
-                            "https://thispersondoesnotexist.com/image",
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
                       Expanded(
                         child: Container(
                           height: 80,
@@ -90,7 +77,7 @@ class _ProfileTabState extends State<ProfileTab> {
                                 ),
                               ),
                               Text(
-                                snapshot.data[0]['email'],
+                                snapshot.data[0]['phone'],
                                 style: TextStyle(
                                   fontSize: 15,
                                   color: LightColor.secondary,
