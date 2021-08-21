@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tochka_sbora/ui/pages/homePage/homePage.dart';
+import 'package:tochka_sbora/ui/pages/PDPage.dart';
 import 'package:tochka_sbora/ui/themes/colors.dart';
 import 'package:tochka_sbora/ui/themes/theme.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class SMSPage extends StatefulWidget {
   @override
@@ -11,10 +13,7 @@ class SMSPage extends StatefulWidget {
 }
 
 class _SMSPageState extends State<SMSPage> {
-  _logInSP() async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    _prefs.setBool('logged_in', true);
-  }
+  TextEditingController SMSController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -92,13 +91,11 @@ class _SMSPageState extends State<SMSPage> {
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
                     onPressed: () => {
-                      _logInSP(),
-                      Navigator.pop(context,),
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(builder: (context) => HomePage()),
-                              (Route<dynamic> route) => false
-                      ),
+                    Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomePage()),
+                    (Route<dynamic> route) => false
+                    ),
                     },
                   ),
                 ),

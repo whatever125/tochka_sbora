@@ -73,7 +73,7 @@ class _ProfileTabState extends State<ProfileTab> {
                                   children: <TextSpan>[
                                     TextSpan(
                                       text:
-                                          "${snapshot.data[0]['lastName']} ${snapshot.data[0]['firstName']} ${snapshot.data[0]['middleName']}",
+                                          "Иванов Иван Иванович",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -82,7 +82,7 @@ class _ProfileTabState extends State<ProfileTab> {
                                 ),
                               ),
                               Text(
-                                snapshot.data[0]['phone'],
+                                '+7 (912) 345-67-89',
                                 style: TextStyle(
                                   fontSize: 15,
                                   color: LightColor.secondary,

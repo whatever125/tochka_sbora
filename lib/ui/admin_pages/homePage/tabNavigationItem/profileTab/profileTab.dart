@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tochka_sbora/ui/themes/colors.dart';
 import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/profileTab/settingsPage/settingsPage.dart';
-import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/profileTab/QRPage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -14,6 +13,15 @@ class ProfileTab extends StatefulWidget {
 
 class _ProfileTabState extends State<ProfileTab> {
   late Future<List<dynamic>> user;
+
+  var cardboardCount = 0;
+  var paperCount = 0;
+  var glassCount = 0;
+  var lidsCount = 0;
+  var aluminCount = 0;
+  var PETCount = 0;
+  var PNDCount = 0;
+  var PPCount = 0;
 
   @override
   void initState() {
@@ -73,7 +81,7 @@ class _ProfileTabState extends State<ProfileTab> {
                                   children: <TextSpan>[
                                     TextSpan(
                                       text:
-                                          "${snapshot.data[0]['lastName']} ${snapshot.data[0]['firstName']} ${snapshot.data[0]['middleName']}",
+                                      "Иванов Иван Иванович",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -82,7 +90,7 @@ class _ProfileTabState extends State<ProfileTab> {
                                 ),
                               ),
                               Text(
-                                snapshot.data[0]['phone'],
+                                '+7 (912) 345-67-89',
                                 style: TextStyle(
                                   fontSize: 15,
                                   color: LightColor.secondary,
@@ -92,19 +100,6 @@ class _ProfileTabState extends State<ProfileTab> {
                           ),
                         ),
                       ),
-                      TextButton(
-                        onPressed: () => {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => QRPage()),
-                          ),
-                        },
-                        child: Icon(
-                          Icons.qr_code,
-                          color: LightColor.accent,
-                          size: 40,
-                        ),
-                      )
                     ],
                   ),
                 ),
@@ -155,10 +150,39 @@ class _ProfileTabState extends State<ProfileTab> {
                             ),
                             SizedBox(height: 10),
                             Text(
-                              '${snapshot.data[0]['cardboard'] * 50} г',
+                              '+${cardboardCount * 50} г',
                               style: TextStyle(
+                                color: LightColor.secondary,
+                                fontSize: 15,
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () => {
+                                setState(() {
+                                  cardboardCount += 1;
+                                })
+                              },
+                              child: Icon(
+                                Icons.keyboard_arrow_up,
                                 color: LightColor.accent,
+                              ),
+                            ),
+                            Text(
+                              '${(snapshot.data[0]['cardboard'] + cardboardCount) * 50} г',
+                              style: TextStyle(
+                                color: LightColor.text,
                                 fontSize: 20,
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () => {
+                                setState(() {
+                                  if (cardboardCount > 0) cardboardCount -= 1;
+                                })
+                              },
+                              child: Icon(
+                                Icons.keyboard_arrow_down,
+                                color: LightColor.accent,
                               ),
                             ),
                           ],
@@ -179,10 +203,39 @@ class _ProfileTabState extends State<ProfileTab> {
                             ),
                             SizedBox(height: 10),
                             Text(
-                              '${snapshot.data[0]['wastepaper'] * 50} г',
+                              '+${paperCount * 50} г',
                               style: TextStyle(
+                                color: LightColor.secondary,
+                                fontSize: 15,
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () => {
+                                setState(() {
+                                  paperCount += 1;
+                                })
+                              },
+                              child: Icon(
+                                Icons.keyboard_arrow_up,
                                 color: LightColor.accent,
+                              ),
+                            ),
+                            Text(
+                              '${(snapshot.data[0]['wastepaper'] + paperCount) * 50} г',
+                              style: TextStyle(
+                                color: LightColor.text,
                                 fontSize: 20,
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () => {
+                                setState(() {
+                                  if (paperCount > 0) paperCount -= 1;
+                                })
+                              },
+                              child: Icon(
+                                Icons.keyboard_arrow_down,
+                                color: LightColor.accent,
                               ),
                             ),
                           ],
@@ -203,10 +256,39 @@ class _ProfileTabState extends State<ProfileTab> {
                             ),
                             SizedBox(height: 10),
                             Text(
-                              '${snapshot.data[0]['glass'] * 50} г',
+                              '+${glassCount * 50} г',
                               style: TextStyle(
+                                color: LightColor.secondary,
+                                fontSize: 15,
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () => {
+                                setState(() {
+                                  glassCount += 1;
+                                })
+                              },
+                              child: Icon(
+                                Icons.keyboard_arrow_up,
                                 color: LightColor.accent,
+                              ),
+                            ),
+                            Text(
+                              '${(snapshot.data[0]['glass'] + glassCount) * 50} г',
+                              style: TextStyle(
+                                color: LightColor.text,
                                 fontSize: 20,
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () => {
+                                setState(() {
+                                  if (glassCount > 0) glassCount -= 1;
+                                })
+                              },
+                              child: Icon(
+                                Icons.keyboard_arrow_down,
+                                color: LightColor.accent,
                               ),
                             ),
                           ],
@@ -227,10 +309,39 @@ class _ProfileTabState extends State<ProfileTab> {
                             ),
                             SizedBox(height: 10),
                             Text(
-                              '${snapshot.data[0]['plastic_lid'] * 50} г',
+                              '+${lidsCount * 50} г',
                               style: TextStyle(
+                                color: LightColor.secondary,
+                                fontSize: 15,
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () => {
+                                setState(() {
+                                  lidsCount += 1;
+                                })
+                              },
+                              child: Icon(
+                                Icons.keyboard_arrow_up,
                                 color: LightColor.accent,
+                              ),
+                            ),
+                            Text(
+                              '${(snapshot.data[0]['plastic_lid'] + lidsCount) * 50} г',
+                              style: TextStyle(
+                                color: LightColor.text,
                                 fontSize: 20,
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () => {
+                                setState(() {
+                                  if (lidsCount > 0) lidsCount -= 1;
+                                })
+                              },
+                              child: Icon(
+                                Icons.keyboard_arrow_down,
+                                color: LightColor.accent,
                               ),
                             ),
                           ],
@@ -259,10 +370,39 @@ class _ProfileTabState extends State<ProfileTab> {
                             ),
                             SizedBox(height: 10),
                             Text(
-                              '${snapshot.data[0]['aluminium_can'] * 50} г',
+                              '+${aluminCount * 50} г',
                               style: TextStyle(
+                                color: LightColor.secondary,
+                                fontSize: 15,
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () => {
+                                setState(() {
+                                  aluminCount += 1;
+                                })
+                              },
+                              child: Icon(
+                                Icons.keyboard_arrow_up,
                                 color: LightColor.accent,
+                              ),
+                            ),
+                            Text(
+                              '${(snapshot.data[0]['aluminium_can'] + aluminCount) * 50} г',
+                              style: TextStyle(
+                                color: LightColor.text,
                                 fontSize: 20,
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () => {
+                                setState(() {
+                                  if (aluminCount > 0) aluminCount -= 1;
+                                })
+                              },
+                              child: Icon(
+                                Icons.keyboard_arrow_down,
+                                color: LightColor.accent,
                               ),
                             ),
                           ],
@@ -283,10 +423,39 @@ class _ProfileTabState extends State<ProfileTab> {
                             ),
                             SizedBox(height: 10),
                             Text(
-                              '${snapshot.data[0]['plastic_bottle'] * 50} г',
+                              '+${PETCount * 50} г',
                               style: TextStyle(
+                                color: LightColor.secondary,
+                                fontSize: 15,
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () => {
+                                setState(() {
+                                  PETCount += 1;
+                                })
+                              },
+                              child: Icon(
+                                Icons.keyboard_arrow_up,
                                 color: LightColor.accent,
+                              ),
+                            ),
+                            Text(
+                              '${(snapshot.data[0]['plastic_bottle'] + PETCount) * 50} г',
+                              style: TextStyle(
+                                color: LightColor.text,
                                 fontSize: 20,
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () => {
+                                setState(() {
+                                  if (PETCount > 0) PETCount -= 1;
+                                })
+                              },
+                              child: Icon(
+                                Icons.keyboard_arrow_down,
+                                color: LightColor.accent,
                               ),
                             ),
                           ],
@@ -307,10 +476,39 @@ class _ProfileTabState extends State<ProfileTab> {
                             ),
                             SizedBox(height: 10),
                             Text(
-                              '${snapshot.data[0]['plastic_mk2'] * 50} г',
+                              '+${PNDCount * 50} г',
                               style: TextStyle(
+                                color: LightColor.secondary,
+                                fontSize: 15,
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () => {
+                                setState(() {
+                                  PNDCount += 1;
+                                })
+                              },
+                              child: Icon(
+                                Icons.keyboard_arrow_up,
                                 color: LightColor.accent,
+                              ),
+                            ),
+                            Text(
+                              '${(snapshot.data[0]['plastic_mk2'] + PNDCount) * 50} г',
+                              style: TextStyle(
+                                color: LightColor.text,
                                 fontSize: 20,
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () => {
+                                setState(() {
+                                  if (PNDCount > 0) PNDCount -= 1;
+                                })
+                              },
+                              child: Icon(
+                                Icons.keyboard_arrow_down,
+                                color: LightColor.accent,
                               ),
                             ),
                           ],
@@ -331,10 +529,39 @@ class _ProfileTabState extends State<ProfileTab> {
                             ),
                             SizedBox(height: 10),
                             Text(
-                              '${snapshot.data[0]['plastic_mk5'] * 50} г',
+                              '+${PPCount * 50} г',
                               style: TextStyle(
+                                color: LightColor.secondary,
+                                fontSize: 15,
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () => {
+                                setState(() {
+                                  PPCount += 1;
+                                })
+                              },
+                              child: Icon(
+                                Icons.keyboard_arrow_up,
                                 color: LightColor.accent,
+                              ),
+                            ),
+                            Text(
+                              '${(snapshot.data[0]['plastic_mk5'] + PPCount) * 50} г',
+                              style: TextStyle(
+                                color: LightColor.text,
                                 fontSize: 20,
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () => {
+                                setState(() {
+                                  if (PPCount > 0) PPCount -= 1;
+                                })
+                              },
+                              child: Icon(
+                                Icons.keyboard_arrow_down,
+                                color: LightColor.accent,
                               ),
                             ),
                           ],
@@ -342,6 +569,24 @@ class _ProfileTabState extends State<ProfileTab> {
                       ],
                     ),
                   ],
+                ),
+                SizedBox(height: 10),
+                Container(
+                  height: 50,
+                  width: 150,
+                  decoration: BoxDecoration(
+                    color: LightColor.accent,
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  child: TextButton(
+                    child: Text(
+                      'Принять',
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                    onPressed: () => {
+                      Navigator.pop(context),
+                    },
+                  ),
                 ),
                 SizedBox(
                   height: 15,

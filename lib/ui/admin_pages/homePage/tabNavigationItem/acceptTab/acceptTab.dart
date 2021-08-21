@@ -11,6 +11,7 @@ class AcceptTab extends StatefulWidget {
 
 class _AcceptTabState extends State<AcceptTab> {
   late Future<List<dynamic>> user;
+
   var cardboardCount = 0;
   var paperCount = 0;
   var glassCount = 0;

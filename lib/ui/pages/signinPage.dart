@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:tochka_sbora/ui/pages/homePage/homePage.dart';
 import 'package:tochka_sbora/ui/pages/SMSPage.dart';
 import 'package:tochka_sbora/ui/themes/colors.dart';
 import 'package:tochka_sbora/ui/themes/theme.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class SignInPage extends StatefulWidget {
   @override
@@ -11,6 +12,8 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  TextEditingController phoneController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,11 +56,12 @@ class _SignInPageState extends State<SignInPage> {
               ),
               Padding(
                 child: TextFormField(
+                  controller: phoneController,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (val) {
-                    return true
-                        ? null
-                        : 'Пожалуйста, введите корректный номер телефона';
+                    return val!.isEmpty
+                        ? 'Пожалуйста, введите номер телефона'
+                        : null;
                   },
                   inputFormatters: [
                     PhoneInputFormatter(),
@@ -86,7 +90,6 @@ class _SignInPageState extends State<SignInPage> {
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
                     onPressed: () => {
-                      Navigator.pop(context,),
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => SMSPage()),

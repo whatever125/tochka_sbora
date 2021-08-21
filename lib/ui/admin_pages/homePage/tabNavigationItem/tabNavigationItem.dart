@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tochka_sbora/ui/admin_pages/homePage/tabNavigationItem/acceptTab/QRScannerPage.dart';
 import 'package:tochka_sbora/ui/admin_pages/homePage/tabNavigationItem/profileTab/profileTab.dart';
-import 'package:tochka_sbora/ui/admin_pages/homePage/tabNavigationItem/addPointsTab.dart';
 
 class TabNavigationItem {
   final Widget page;
@@ -22,12 +21,6 @@ class TabNavigationItem {
       label: "Принять",
       activeIcon: Icon(Icons.input),
       icon: Icon(Icons.input_outlined),
-    ),
-    TabNavigationItem(
-      page: AddPointsTab(),
-      label: "Начислить",
-      activeIcon: Icon(Icons.star),
-      icon: Icon(Icons.star_border),
     ),
     TabNavigationItem(
       page: ProfileTab(),

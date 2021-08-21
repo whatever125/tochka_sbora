@@ -79,6 +79,7 @@ class _ScannerState extends State<Scanner> {
 
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
+    controller.pauseCamera();
     controller.scannedDataStream.listen((scanData) async {
       controller.pauseCamera();
       var data = scanData.code;
