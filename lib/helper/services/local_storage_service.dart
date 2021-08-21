@@ -20,8 +20,19 @@ class StorageManager {
     return obj;
   }
 
+  static Future<bool> readBool(String key) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(key) as Future<bool>;
+  }
+
   static Future<bool> deleteData(String key) async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.remove(key);
+  }
+
+  static Future<bool> checkData(String key) async {
+    final prefs = await SharedPreferences.getInstance();
+    bool CheckValue = prefs.containsKey('value');
+    return CheckValue;
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tochka_sbora/ui/pages/welcomePage.dart';
+import 'package:tochka_sbora/ui/pages/homePage/homePage.dart';
+import 'package:tochka_sbora/helper/services/local_storage_service.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -9,7 +11,6 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
-    //TODO Проверка на авторизацию, загрузка домашней страницы либо WelcomePage
     return WelcomePage();
   }
 }

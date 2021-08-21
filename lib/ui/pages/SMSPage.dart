@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:tochka_sbora/ui/pages/homePage/homePage.dart';
 import 'package:tochka_sbora/ui/themes/colors.dart';
 import 'package:tochka_sbora/ui/themes/theme.dart';
-import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SMSPage extends StatefulWidget {
   @override
@@ -11,6 +11,11 @@ class SMSPage extends StatefulWidget {
 }
 
 class _SMSPageState extends State<SMSPage> {
+  _logInSP() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    _prefs.setBool('logged_in', true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,6 +92,7 @@ class _SMSPageState extends State<SMSPage> {
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
                     onPressed: () => {
+                      _logInSP(),
                       Navigator.pop(context,),
                       Navigator.pushAndRemoveUntil(
                           context,

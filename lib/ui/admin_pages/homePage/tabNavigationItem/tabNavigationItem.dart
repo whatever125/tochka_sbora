@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/shopTab/shopTab.dart';
-import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/mapTab.dart';
-import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/profileTab/profileTab.dart';
+import 'package:tochka_sbora/ui/admin_pages/homePage/tabNavigationItem/acceptTab/QRScannerPage.dart';
+import 'package:tochka_sbora/ui/admin_pages/homePage/tabNavigationItem/profileTab/profileTab.dart';
+import 'package:tochka_sbora/ui/admin_pages/homePage/tabNavigationItem/addPointsTab.dart';
 
 class TabNavigationItem {
   final Widget page;
@@ -18,16 +18,16 @@ class TabNavigationItem {
 
   static List<TabNavigationItem> get items => [
     TabNavigationItem(
-      page: ShopTab(),
-      label: "Магазин",
-      activeIcon: Icon(Icons.shopping_cart),
-      icon: Icon(Icons.shopping_cart_outlined),
+      page: Scanner(),
+      label: "Принять",
+      activeIcon: Icon(Icons.input),
+      icon: Icon(Icons.input_outlined),
     ),
     TabNavigationItem(
-      page: MapTab(),
-      label: "Карта",
-      activeIcon: Icon(Icons.pin_drop),
-      icon: Icon(Icons.pin_drop_outlined),
+      page: AddPointsTab(),
+      label: "Начислить",
+      activeIcon: Icon(Icons.star),
+      icon: Icon(Icons.star_border),
     ),
     TabNavigationItem(
       page: ProfileTab(),
