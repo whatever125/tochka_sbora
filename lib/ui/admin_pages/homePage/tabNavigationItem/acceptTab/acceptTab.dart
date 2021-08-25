@@ -138,14 +138,14 @@ class _AcceptTabState extends State<AcceptTab> {
                             Text(
                               'Картон',
                               style: TextStyle(
-                                color: LightColor.secondary,
+                                color: LightColor.textSecondary,
                               ),
                             ),
                             SizedBox(height: 10),
                             Text(
                               '+${cardboardCount * 50} г',
                               style: TextStyle(
-                                color: LightColor.secondary,
+                                color: LightColor.textSecondary,
                                 fontSize: 15,
                               ),
                             ),
@@ -191,14 +191,14 @@ class _AcceptTabState extends State<AcceptTab> {
                             Text(
                               'Макулатура',
                               style: TextStyle(
-                                color: LightColor.secondary,
+                                color: LightColor.textSecondary,
                               ),
                             ),
                             SizedBox(height: 10),
                             Text(
                               '+${paperCount * 50} г',
                               style: TextStyle(
-                                color: LightColor.secondary,
+                                color: LightColor.textSecondary,
                                 fontSize: 15,
                               ),
                             ),
@@ -244,14 +244,14 @@ class _AcceptTabState extends State<AcceptTab> {
                             Text(
                               'Стекло',
                               style: TextStyle(
-                                color: LightColor.secondary,
+                                color: LightColor.textSecondary,
                               ),
                             ),
                             SizedBox(height: 10),
                             Text(
                               '+${glassCount * 50} г',
                               style: TextStyle(
-                                color: LightColor.secondary,
+                                color: LightColor.textSecondary,
                                 fontSize: 15,
                               ),
                             ),
@@ -297,14 +297,14 @@ class _AcceptTabState extends State<AcceptTab> {
                             Text(
                               'Крышки',
                               style: TextStyle(
-                                color: LightColor.secondary,
+                                color: LightColor.textSecondary,
                               ),
                             ),
                             SizedBox(height: 10),
                             Text(
                               '+${lidsCount * 50} г',
                               style: TextStyle(
-                                color: LightColor.secondary,
+                                color: LightColor.textSecondary,
                                 fontSize: 15,
                               ),
                             ),
@@ -358,14 +358,14 @@ class _AcceptTabState extends State<AcceptTab> {
                             Text(
                               'Алюминий',
                               style: TextStyle(
-                                color: LightColor.secondary,
+                                color: LightColor.textSecondary,
                               ),
                             ),
                             SizedBox(height: 10),
                             Text(
                               '+${aluminCount * 50} г',
                               style: TextStyle(
-                                color: LightColor.secondary,
+                                color: LightColor.textSecondary,
                                 fontSize: 15,
                               ),
                             ),
@@ -411,14 +411,14 @@ class _AcceptTabState extends State<AcceptTab> {
                             Text(
                               'Бутылки ПЭТ',
                               style: TextStyle(
-                                color: LightColor.secondary,
+                                color: LightColor.textSecondary,
                               ),
                             ),
                             SizedBox(height: 10),
                             Text(
                               '+${PETCount * 50} г',
                               style: TextStyle(
-                                color: LightColor.secondary,
+                                color: LightColor.textSecondary,
                                 fontSize: 15,
                               ),
                             ),
@@ -464,14 +464,14 @@ class _AcceptTabState extends State<AcceptTab> {
                             Text(
                               'ПНД',
                               style: TextStyle(
-                                color: LightColor.secondary,
+                                color: LightColor.textSecondary,
                               ),
                             ),
                             SizedBox(height: 10),
                             Text(
                               '+${PNDCount * 50} г',
                               style: TextStyle(
-                                color: LightColor.secondary,
+                                color: LightColor.textSecondary,
                                 fontSize: 15,
                               ),
                             ),
@@ -517,14 +517,14 @@ class _AcceptTabState extends State<AcceptTab> {
                             Text(
                               'ПП',
                               style: TextStyle(
-                                color: LightColor.secondary,
+                                color: LightColor.textSecondary,
                               ),
                             ),
                             SizedBox(height: 10),
                             Text(
                               '+${PPCount * 50} г',
                               style: TextStyle(
-                                color: LightColor.secondary,
+                                color: LightColor.textSecondary,
                                 fontSize: 15,
                               ),
                             ),

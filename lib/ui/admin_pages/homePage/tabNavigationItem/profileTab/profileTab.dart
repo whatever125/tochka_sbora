@@ -93,7 +93,7 @@ class _ProfileTabState extends State<ProfileTab> {
                                 '+7 (912) 345-67-89',
                                 style: TextStyle(
                                   fontSize: 15,
-                                  color: LightColor.secondary,
+                                  color: LightColor.textSecondary,
                                 ),
                               ),
                             ],
@@ -145,14 +145,14 @@ class _ProfileTabState extends State<ProfileTab> {
                             Text(
                               'Картон',
                               style: TextStyle(
-                                color: LightColor.secondary,
+                                color: LightColor.textSecondary,
                               ),
                             ),
                             SizedBox(height: 10),
                             Text(
                               '+${cardboardCount * 50} г',
                               style: TextStyle(
-                                color: LightColor.secondary,
+                                color: LightColor.textSecondary,
                                 fontSize: 15,
                               ),
                             ),
@@ -198,14 +198,14 @@ class _ProfileTabState extends State<ProfileTab> {
                             Text(
                               'Макулатура',
                               style: TextStyle(
-                                color: LightColor.secondary,
+                                color: LightColor.textSecondary,
                               ),
                             ),
                             SizedBox(height: 10),
                             Text(
                               '+${paperCount * 50} г',
                               style: TextStyle(
-                                color: LightColor.secondary,
+                                color: LightColor.textSecondary,
                                 fontSize: 15,
                               ),
                             ),
@@ -251,14 +251,14 @@ class _ProfileTabState extends State<ProfileTab> {
                             Text(
                               'Стекло',
                               style: TextStyle(
-                                color: LightColor.secondary,
+                                color: LightColor.textSecondary,
                               ),
                             ),
                             SizedBox(height: 10),
                             Text(
                               '+${glassCount * 50} г',
                               style: TextStyle(
-                                color: LightColor.secondary,
+                                color: LightColor.textSecondary,
                                 fontSize: 15,
                               ),
                             ),
@@ -304,14 +304,14 @@ class _ProfileTabState extends State<ProfileTab> {
                             Text(
                               'Крышки',
                               style: TextStyle(
-                                color: LightColor.secondary,
+                                color: LightColor.textSecondary,
                               ),
                             ),
                             SizedBox(height: 10),
                             Text(
                               '+${lidsCount * 50} г',
                               style: TextStyle(
-                                color: LightColor.secondary,
+                                color: LightColor.textSecondary,
                                 fontSize: 15,
                               ),
                             ),
@@ -365,14 +365,14 @@ class _ProfileTabState extends State<ProfileTab> {
                             Text(
                               'Алюминий',
                               style: TextStyle(
-                                color: LightColor.secondary,
+                                color: LightColor.textSecondary,
                               ),
                             ),
                             SizedBox(height: 10),
                             Text(
                               '+${aluminCount * 50} г',
                               style: TextStyle(
-                                color: LightColor.secondary,
+                                color: LightColor.textSecondary,
                                 fontSize: 15,
                               ),
                             ),
@@ -418,14 +418,14 @@ class _ProfileTabState extends State<ProfileTab> {
                             Text(
                               'Бутылки ПЭТ',
                               style: TextStyle(
-                                color: LightColor.secondary,
+                                color: LightColor.textSecondary,
                               ),
                             ),
                             SizedBox(height: 10),
                             Text(
                               '+${PETCount * 50} г',
                               style: TextStyle(
-                                color: LightColor.secondary,
+                                color: LightColor.textSecondary,
                                 fontSize: 15,
                               ),
                             ),
@@ -471,14 +471,14 @@ class _ProfileTabState extends State<ProfileTab> {
                             Text(
                               'ПНД',
                               style: TextStyle(
-                                color: LightColor.secondary,
+                                color: LightColor.textSecondary,
                               ),
                             ),
                             SizedBox(height: 10),
                             Text(
                               '+${PNDCount * 50} г',
                               style: TextStyle(
-                                color: LightColor.secondary,
+                                color: LightColor.textSecondary,
                                 fontSize: 15,
                               ),
                             ),
@@ -524,14 +524,14 @@ class _ProfileTabState extends State<ProfileTab> {
                             Text(
                               'ПП',
                               style: TextStyle(
-                                color: LightColor.secondary,
+                                color: LightColor.textSecondary,
                               ),
                             ),
                             SizedBox(height: 10),
                             Text(
                               '+${PPCount * 50} г',
                               style: TextStyle(
-                                color: LightColor.secondary,
+                                color: LightColor.textSecondary,
                                 fontSize: 15,
                               ),
                             ),

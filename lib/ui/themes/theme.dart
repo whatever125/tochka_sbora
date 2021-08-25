@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tochka_sbora/ui/themes/colors.dart';
 
 class AppTheme {
@@ -9,20 +10,25 @@ class AppTheme {
     backgroundColor: LightColor.primary,
     scaffoldBackgroundColor: LightColor.primary,
     canvasColor: LightColor.primary,
-    hintColor: LightColor.secondary,
+    hintColor: LightColor.textSecondary,
     highlightColor: LightColor.accent,
     focusColor: LightColor.accent,
+    splashFactory: NoSplash.splashFactory,
+    splashColor: Colors.transparent,
+    hoverColor: Colors.transparent,
     appBarTheme: AppBarTheme(
+      backgroundColor: LightColor.primary,
+      brightness: Brightness.light,
       iconTheme: IconThemeData(
         color: LightColor.accent,
       ),
     ),
     iconTheme: IconThemeData(
-      color: LightColor.secondary,
+      color: LightColor.textSecondary,
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       selectedItemColor: LightColor.accent,
-      unselectedItemColor: LightColor.secondary,
+      unselectedItemColor: LightColor.textSecondary,
     ),
     pageTransitionsTheme: PageTransitionsTheme(
       builders: {

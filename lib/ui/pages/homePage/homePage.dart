@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/tabNavigationItem.dart';
+
+import 'tabNavigationItem/tabNavigationItem.dart';
+import 'tabNavigationItem/shopTab/cartPage.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -22,6 +24,20 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
+        actions: _currentIndex == 0
+            ? [
+                IconButton(
+                  icon: Icon(Icons.card_travel),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => CartPage(),
+                      ),
+                    );
+                  },
+                )
+              ]
+            : [],
         automaticallyImplyLeading: false,
       ),
       body: IndexedStack(
