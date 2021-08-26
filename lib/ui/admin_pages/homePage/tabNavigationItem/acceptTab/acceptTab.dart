@@ -588,8 +588,10 @@ class _AcceptTabState extends State<AcceptTab> {
       );
     } else {
       return Center(
-          child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(LightColor.accent)));
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(LightColor.accent),
+        ),
+      );
     }
   }
 

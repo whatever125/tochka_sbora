@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "928608162991",
+    "project_id": "devtime-cff06",
+    "storage_bucket": "devtime-cff06.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:928608162991:android:5adcc98cd45d69fbbbb05a",
+        "android_client_info": {
+          "package_name": "com.tochka_sbora"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "928608162991-vol2t5v0usnai8clpk4bmv11k5iogr5m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCYPZMfM33oPfDizizXnT6WJ_qM4yAVLo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "928608162991-vol2t5v0usnai8clpk4bmv11k5iogr5m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

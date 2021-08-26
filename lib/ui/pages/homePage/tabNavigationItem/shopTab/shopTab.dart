@@ -149,8 +149,10 @@ class ShopTabState extends State<ShopTab> {
       );
     } else {
       return Center(
-          child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(LightColor.accent)));
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(LightColor.accent),
+        ),
+      );
     }
   }
 

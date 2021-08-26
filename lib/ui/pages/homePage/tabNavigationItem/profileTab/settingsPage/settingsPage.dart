@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
+
+import 'package:tochka_sbora/helper/services/local_storage_service.dart';
 import 'package:tochka_sbora/ui/themes/colors.dart';
-import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/profileTab/settingsPage/profileDataPage.dart';
 import 'package:tochka_sbora/ui/pages/welcomePage.dart';
 import 'package:tochka_sbora/ui/admin_pages/homePage/homePage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'infoPage.dart';
+import 'profileDataPage.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
-  bool isAdmin() {
-    return true;
-    //TODO сделать запрос на проверку наличия статуса администратора
-  }
+  @override
+  _SettingsPageState createState() => _SettingsPageState();
+}
 
-  _logOutSP() async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    _prefs.setBool('logged_in', false);
+class _SettingsPageState extends State<SettingsPage> {
+  bool _isAdmin() {
+    //TODO сделать запрос на проверку наличия статуса администратора
+    return true;
   }
 
   @override
@@ -34,128 +35,57 @@ class SettingsPage extends StatelessWidget {
             padding: EdgeInsets.all(15),
             child: Column(
               children: [
-                TextButton(
-                  child: Container(
-                    height: 40,
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.account_circle,
-                          color: LightColor.accent,
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text(
-                          'Личные данные',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText2!
-                              .copyWith(fontSize: 18, color: LightColor.text),
-                        ),
-                      ],
-                    ),
-                  ),
-                  onPressed: () => {
-                    Navigator.push(
-                      context,
+                _generateTextButton(
+                  icon: Icons.account_circle,
+                  title: 'Личные данные',
+                  onPressed: () {
+                    Navigator.of(context).push(
                       MaterialPageRoute(
-                          builder: (context) => ProfileDataPage()),
-                    ),
+                        builder: (context) => ProfileDataPage(),
+                      ),
+                    );
                   },
                 ),
-                if(isAdmin())
-                TextButton(
-                  child: Container(
-                    height: 40,
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.miscellaneous_services,
-                          color: LightColor.accent,
+                if (_isAdmin())
+                  _generateTextButton(
+                    icon: Icons.miscellaneous_services,
+                    title: 'Режим администратора',
+                    onPressed: () {
+                      Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                          builder: (context) => HomePage(),
                         ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text(
-                          'Режим администратора',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText2!
-                              .copyWith(fontSize: 18, color: LightColor.text),
-                        ),
-                      ],
-                    ),
+                        (Route<dynamic> route) => false,
+                      );
+                    },
                   ),
-                  onPressed: () => {
+                _generateTextButton(
+                  icon: Icons.logout,
+                  title: 'Выйти',
+                  onPressed: () async {
+                    print(
+                        "settings 1 ${await StorageManager.readData('loggedIn')}");
+                    StorageManager.saveData('loggedIn', false);
+                    print(
+                        "settings 1 ${await StorageManager.readData('loggedIn')}");
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => HomePage()),
-                            (Route<dynamic> route) => false
-                    ),
+                        builder: (context) => WelcomePage(),
+                      ),
+                      (Route<dynamic> route) => false,
+                    );
                   },
                 ),
-                TextButton(
-                  child: Container(
-                    height: 40,
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.logout,
-                          color: LightColor.accent,
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text(
-                          'Выйти',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText2!
-                              .copyWith(fontSize: 18, color: LightColor.text),
-                        ),
-                      ],
-                    ),
-                  ),
-                  onPressed: () => {
-                    _logOutSP(),
-                    Navigator.pushAndRemoveUntil(
-                      context,
+                _generateTextButton(
+                  icon: Icons.info,
+                  title: 'О приложении',
+                  onPressed: () {
+                    Navigator.of(context).push(
                       MaterialPageRoute(
-                          builder: (context) => WelcomePage()),
-                            (Route<dynamic> route) => false
-                    ),
-                  },
-                ),
-                TextButton(
-                  child: Container(
-                    height: 40,
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.info,
-                          color: LightColor.accent,
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text(
-                          'О приложении',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText2!
-                              .copyWith(fontSize: 18, color: LightColor.text),
-                        ),
-                      ],
-                    ),
-                  ),
-                  onPressed: () => {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => InfoPage()),
-                    ),
+                        builder: (context) => InfoPage(),
+                      ),
+                    );
                   },
                 ),
               ],
@@ -163,6 +93,33 @@ class SettingsPage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  _generateTextButton({required icon, required title, required onPressed}) {
+    return TextButton(
+      child: Container(
+        height: 40,
+        child: Row(
+          children: [
+            Icon(
+              icon,
+              color: LightColor.accent,
+            ),
+            SizedBox(
+              width: 15,
+            ),
+            Text(
+              title,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText2!
+                  .copyWith(fontSize: 18, color: LightColor.text),
+            ),
+          ],
+        ),
+      ),
+      onPressed: onPressed,
     );
   }
 }

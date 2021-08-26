@@ -76,8 +76,10 @@ class _QRPageState extends State<QRPage> {
       );
     } else {
       return Center(
-          child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(LightColor.accent)));
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(LightColor.accent),
+        ),
+      );
     }
   }
 

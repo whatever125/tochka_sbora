@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:tochka_sbora/helper/services/local_storage_service.dart';
 import 'package:tochka_sbora/ui/pages/SMSPage.dart';
 import 'package:tochka_sbora/ui/themes/colors.dart';
 import 'package:tochka_sbora/ui/themes/theme.dart';
-import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class SignInPage extends StatefulWidget {
   @override
@@ -12,7 +13,8 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  TextEditingController phoneController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final TextEditingController _phoneNumberController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -34,29 +36,31 @@ class _SignInPageState extends State<SignInPage> {
             children: <Widget>[
               Padding(
                 child: Align(
-                    alignment: Alignment.bottomLeft,
-                    child: RichText(
-                      text: TextSpan(
-                        style: TextStyle(
-                          fontSize: 25,
-                          color: LightColor.text,
-                        ),
-                        children: <TextSpan>[
-                          TextSpan(
-                              text: 'Добро пожаловать',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              )),
-                        ],
+                  alignment: Alignment.bottomLeft,
+                  child: RichText(
+                    text: TextSpan(
+                      style: TextStyle(
+                        fontSize: 25,
+                        color: LightColor.text,
                       ),
-                    )),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'Добро пожаловать',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 padding: const EdgeInsets.symmetric(
                   vertical: 25,
                 ),
               ),
               Padding(
                 child: TextFormField(
-                  controller: phoneController,
+                  controller: _phoneNumberController,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (val) {
                     return val!.isEmpty
@@ -82,18 +86,22 @@ class _SignInPageState extends State<SignInPage> {
                   height: 50,
                   width: 175,
                   decoration: BoxDecoration(
-                      color: AppTheme.lightTheme.accentColor,
-                      borderRadius: BorderRadius.circular(25)),
+                    color: AppTheme.lightTheme.accentColor,
+                    borderRadius: BorderRadius.circular(25),
+                  ),
                   child: TextButton(
                     child: Text(
                       'Продолжить',
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
-                    onPressed: () => {
+                    onPressed: () async {
+                      _verifyPhoneNumber();
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => SMSPage()),
-                      ),
+                        MaterialPageRoute(
+                          builder: (context) => SMSPage(),
+                        ),
+                      );
                     },
                   ),
                 ),
@@ -106,5 +114,45 @@ class _SignInPageState extends State<SignInPage> {
         ),
       ),
     );
+  }
+
+  void _verifyPhoneNumber() async {
+    PhoneVerificationCompleted verificationCompleted =
+        (PhoneAuthCredential phoneAuthCredential) async {
+      await _auth.signInWithCredential(phoneAuthCredential);
+      _showSnackbar(
+          'Автоматический вход: ${_auth.currentUser!.uid}');
+    };
+    PhoneVerificationFailed verificationFailed =
+        (FirebaseAuthException authException) {
+      _showSnackbar(
+          'Код ошибки: ${authException.code}. Сообщение: ${authException.message}');
+    };
+    PhoneCodeSent codeSent = (String verificationId, [int? forceResendingToken]) async {
+      _showSnackbar('На ваш номер телефона отправлено СМС с шестизначным кодом');
+    };
+    PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
+        (String verificationId) {
+      StorageManager.saveData('verificationId', verificationId);
+    };
+    try {
+      _auth.setLanguageCode("ru");
+      await _auth.verifyPhoneNumber(
+          phoneNumber: _phoneNumberController.text,
+          timeout: const Duration(seconds: 5),
+          verificationCompleted: verificationCompleted,
+          verificationFailed: verificationFailed,
+          codeSent: codeSent,
+          codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
+    } catch (e) {
+      _showSnackbar("Ошибка: $e");
+    }
+  }
+
+  void _showSnackbar(message) {
+    final snackBar = SnackBar(
+      content: Text(message),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

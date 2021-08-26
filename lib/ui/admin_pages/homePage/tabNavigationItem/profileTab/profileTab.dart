@@ -631,8 +631,10 @@ class _ProfileTabState extends State<ProfileTab> {
       );
     } else {
       return Center(
-          child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(LightColor.accent)));
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(LightColor.accent),
+        ),
+      );
     }
   }
 

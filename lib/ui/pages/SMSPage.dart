@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:tochka_sbora/ui/pages/homePage/homePage.dart';
-import 'package:tochka_sbora/ui/pages/PDPage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sms_autofill/sms_autofill.dart';
+
 import 'package:tochka_sbora/ui/themes/colors.dart';
 import 'package:tochka_sbora/ui/themes/theme.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:tochka_sbora/helper/services/local_storage_service.dart';
+import 'package:tochka_sbora/ui/pages/homePage/homePage.dart';
+import 'package:tochka_sbora/ui/pages/PDPage.dart';
 
 class SMSPage extends StatefulWidget {
   @override
@@ -13,7 +14,19 @@ class SMSPage extends StatefulWidget {
 }
 
 class _SMSPageState extends State<SMSPage> {
-  TextEditingController SMSController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final TextEditingController _smsController = TextEditingController();
+  final SmsAutoFill _autoFill = SmsAutoFill();
+
+  @override
+  void initState() {
+    super.initState();
+    _listenForCode();
+  }
+
+  void _listenForCode() async {
+    await SmsAutoFill().listenForCode;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,43 +48,43 @@ class _SMSPageState extends State<SMSPage> {
             children: <Widget>[
               Padding(
                 child: Align(
-                    alignment: Alignment.bottomLeft,
-                    child: RichText(
-                      text: TextSpan(
-                        style: TextStyle(
-                          fontSize: 25,
-                          color: LightColor.text,
-                        ),
-                        children: <TextSpan>[
-                          TextSpan(
-                              text: 'Введите код из СМС',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              )),
-                        ],
+                  alignment: Alignment.bottomLeft,
+                  child: RichText(
+                    text: TextSpan(
+                      style: TextStyle(
+                        fontSize: 25,
+                        color: LightColor.text,
                       ),
-                    )),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'Введите код из СМС',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 padding: const EdgeInsets.symmetric(
                   vertical: 25,
                 ),
               ),
               Padding(
-                child: TextFormField(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (val) {
-                    return true
-                        ? null
-                        : 'Пожалуйста, введите корректный код';
-                  },
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(4),
-                  ],
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Код',
-                    //TODO цвет ввода
+                child: PinFieldAutoFill(
+                  controller: _smsController,
+                  cursor: Cursor(
+                    color: LightColor.accent,
+                    width: 2,
+                    height: 40,
+                    radius: Radius.circular(1),
+                    enabled: true,
+                  ),
+                  decoration: BoxLooseDecoration(
+                    textStyle: TextStyle(fontSize: 20, color: Colors.black),
+                    strokeColorBuilder: FixedColorBuilder(
+                      LightColor.text,
+                    ),
                   ),
                 ),
                 padding: EdgeInsets.symmetric(
@@ -83,19 +96,28 @@ class _SMSPageState extends State<SMSPage> {
                   height: 50,
                   width: 175,
                   decoration: BoxDecoration(
-                      color: AppTheme.lightTheme.accentColor,
-                      borderRadius: BorderRadius.circular(25)),
+                    color: AppTheme.lightTheme.accentColor,
+                    borderRadius: BorderRadius.circular(25),
+                  ),
                   child: TextButton(
                     child: Text(
                       'Продолжить',
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
-                    onPressed: () => {
-                    Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomePage()),
-                    (Route<dynamic> route) => false
-                    ),
+                    onPressed: () async {
+                      _signInWithPhoneNumber();
+                      print(
+                          "sms 1 ${await StorageManager.readData('loggedIn')}");
+                      StorageManager.saveData('loggedIn', true);
+                      print(
+                          "sms 2 ${await StorageManager.readData('loggedIn')}");
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HomePage(),
+                        ),
+                        (Route<dynamic> route) => false,
+                      );
                     },
                   ),
                 ),
@@ -108,5 +130,25 @@ class _SMSPageState extends State<SMSPage> {
         ),
       ),
     );
+  }
+
+  void _signInWithPhoneNumber() async {
+    try {
+      final AuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: await StorageManager.readData('verificationId'),
+        smsCode: _smsController.text,
+      );
+      final User? user = (await _auth.signInWithCredential(credential)).user;
+      _autoFill.unregisterListener();
+    } catch (e) {
+      _showSnackbar("Ошибка: " + e.toString());
+    }
+  }
+
+  void _showSnackbar(message) {
+    final snackBar = SnackBar(
+      content: Text(message),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
