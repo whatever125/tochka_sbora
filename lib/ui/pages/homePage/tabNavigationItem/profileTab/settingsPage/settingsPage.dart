@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:tochka_sbora/helper/services/local_storage_service.dart';
 import 'package:tochka_sbora/ui/themes/colors.dart';
 import 'package:tochka_sbora/ui/pages/welcomePage.dart';
 import 'package:tochka_sbora/ui/admin_pages/homePage/homePage.dart';
@@ -15,9 +15,15 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   bool _isAdmin() {
     //TODO сделать запрос на проверку наличия статуса администратора
     return true;
+  }
+
+  Future<void> _signOut() async {
+    await _auth.signOut();
   }
 
   @override
@@ -63,11 +69,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   icon: Icons.logout,
                   title: 'Выйти',
                   onPressed: () async {
-                    print(
-                        "settings 1 ${await StorageManager.readData('loggedIn')}");
-                    StorageManager.saveData('loggedIn', false);
-                    print(
-                        "settings 1 ${await StorageManager.readData('loggedIn')}");
+                    await _signOut();
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(

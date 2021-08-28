@@ -17,6 +17,7 @@ class _SMSPageState extends State<SMSPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController _smsController = TextEditingController();
   final SmsAutoFill _autoFill = SmsAutoFill();
+  var _code = '';
 
   @override
   void initState() {
@@ -86,6 +87,9 @@ class _SMSPageState extends State<SMSPage> {
                       LightColor.text,
                     ),
                   ),
+                  onCodeChanged: (code) {
+                    _code = code!;
+                  },
                 ),
                 padding: EdgeInsets.symmetric(
                   vertical: 10,
@@ -106,11 +110,6 @@ class _SMSPageState extends State<SMSPage> {
                     ),
                     onPressed: () async {
                       _signInWithPhoneNumber();
-                      print(
-                          "sms 1 ${await StorageManager.readData('loggedIn')}");
-                      StorageManager.saveData('loggedIn', true);
-                      print(
-                          "sms 2 ${await StorageManager.readData('loggedIn')}");
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
@@ -141,7 +140,7 @@ class _SMSPageState extends State<SMSPage> {
       final User? user = (await _auth.signInWithCredential(credential)).user;
       _autoFill.unregisterListener();
     } catch (e) {
-      _showSnackbar("Ошибка: " + e.toString());
+      print("SMS Ошибка: " + e.toString());
     }
   }
 

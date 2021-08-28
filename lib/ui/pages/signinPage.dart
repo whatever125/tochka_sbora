@@ -120,16 +120,17 @@ class _SignInPageState extends State<SignInPage> {
     PhoneVerificationCompleted verificationCompleted =
         (PhoneAuthCredential phoneAuthCredential) async {
       await _auth.signInWithCredential(phoneAuthCredential);
-      _showSnackbar(
-          'Автоматический вход: ${_auth.currentUser!.uid}');
+      _showSnackbar('Автоматический вход: ${_auth.currentUser!.uid}');
     };
     PhoneVerificationFailed verificationFailed =
         (FirebaseAuthException authException) {
       _showSnackbar(
           'Код ошибки: ${authException.code}. Сообщение: ${authException.message}');
     };
-    PhoneCodeSent codeSent = (String verificationId, [int? forceResendingToken]) async {
-      _showSnackbar('На ваш номер телефона отправлено СМС с шестизначным кодом');
+    PhoneCodeSent codeSent =
+        (String verificationId, [int? forceResendingToken]) async {
+      _showSnackbar(
+          'На ваш номер телефона отправлено СМС с шестизначным кодом');
     };
     PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
         (String verificationId) {
@@ -138,14 +139,15 @@ class _SignInPageState extends State<SignInPage> {
     try {
       _auth.setLanguageCode("ru");
       await _auth.verifyPhoneNumber(
-          phoneNumber: _phoneNumberController.text,
-          timeout: const Duration(seconds: 5),
-          verificationCompleted: verificationCompleted,
-          verificationFailed: verificationFailed,
-          codeSent: codeSent,
-          codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
+        phoneNumber: _phoneNumberController.text,
+        timeout: const Duration(seconds: 5),
+        verificationCompleted: verificationCompleted,
+        verificationFailed: verificationFailed,
+        codeSent: codeSent,
+        codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
+      );
     } catch (e) {
-      _showSnackbar("Ошибка: $e");
+      print("SignIn Ошибка: $e");
     }
   }
 

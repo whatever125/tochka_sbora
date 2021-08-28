@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:tochka_sbora/ui/themes/colors.dart';
-import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/profileTab/settingsPage/settingsPage.dart';
-import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/profileTab/QRPage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:tochka_sbora/ui/themes/theme.dart';
+import 'package:tochka_sbora/ui/themes/colors.dart';
+import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/profileTab/settingsPage/settingsPage.dart';
+import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/profileTab/QRPage.dart';
 
 class ProfileTab extends StatefulWidget {
   @override
@@ -43,7 +42,6 @@ class _ProfileTabState extends State<ProfileTab> {
     );
   }
 
-//TODO QR
   Widget _profileView(AsyncSnapshot snapshot) {
     if (snapshot.hasData) {
       return ListView(
@@ -139,101 +137,25 @@ class _ProfileTabState extends State<ProfileTab> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Column(
-                          children: [
-                            Image.asset(
-                              'graphics/cardboard_1.png',
-                              fit: BoxFit.cover,
-                              height: 75,
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              'Картон',
-                              style: TextStyle(
-                                color: LightColor.textSecondary,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              '${snapshot.data[0]['cardboard'] * 50} г',
-                              style: TextStyle(
-                                color: LightColor.accent,
-                                fontSize: 20,
-                              ),
-                            ),
-                          ],
+                        _generateTile(
+                          name: 'cardboard',
+                          title: 'Картон',
+                          amount: snapshot.data[0]['cardboard'],
                         ),
-                        Column(
-                          children: [
-                            Image.asset(
-                              'graphics/paper_1.png',
-                              fit: BoxFit.cover,
-                              height: 75,
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              'Макулатура',
-                              style: TextStyle(
-                                color: LightColor.textSecondary,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              '${snapshot.data[0]['wastepaper'] * 50} г',
-                              style: TextStyle(
-                                color: LightColor.accent,
-                                fontSize: 20,
-                              ),
-                            ),
-                          ],
+                        _generateTile(
+                          name: 'wastepaper',
+                          title: 'Макулатура',
+                          amount: snapshot.data[0]['wastepaper'],
                         ),
-                        Column(
-                          children: [
-                            Image.asset(
-                              'graphics/glass_1.png',
-                              fit: BoxFit.cover,
-                              height: 75,
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              'Стекло',
-                              style: TextStyle(
-                                color: LightColor.textSecondary,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              '${snapshot.data[0]['glass'] * 50} г',
-                              style: TextStyle(
-                                color: LightColor.accent,
-                                fontSize: 20,
-                              ),
-                            ),
-                          ],
+                        _generateTile(
+                          name: 'glass',
+                          title: 'Стекло',
+                          amount: snapshot.data[0]['glass'],
                         ),
-                        Column(
-                          children: [
-                            Image.asset(
-                              'graphics/lid_1.png',
-                              fit: BoxFit.cover,
-                              height: 75,
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              'Крышки',
-                              style: TextStyle(
-                                color: LightColor.textSecondary,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              '${snapshot.data[0]['plastic_lid'] * 50} г',
-                              style: TextStyle(
-                                color: LightColor.accent,
-                                fontSize: 20,
-                              ),
-                            ),
-                          ],
+                        _generateTile(
+                          name: 'plasticLids',
+                          title: 'Крышки',
+                          amount: snapshot.data[0]['plasticLids'],
                         ),
                       ],
                     ),
@@ -243,101 +165,25 @@ class _ProfileTabState extends State<ProfileTab> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Column(
-                          children: [
-                            Image.asset(
-                              'graphics/alluminium_1.png',
-                              fit: BoxFit.cover,
-                              height: 75,
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              'Алюминий',
-                              style: TextStyle(
-                                color: LightColor.textSecondary,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              '${snapshot.data[0]['aluminium_can'] * 50} г',
-                              style: TextStyle(
-                                color: LightColor.accent,
-                                fontSize: 20,
-                              ),
-                            ),
-                          ],
+                        _generateTile(
+                          name: 'aluminiumCans',
+                          title: 'Алюминий',
+                          amount: snapshot.data[0]['aluminiumCans'],
                         ),
-                        Column(
-                          children: [
-                            Image.asset(
-                              'graphics/PET_1.png',
-                              fit: BoxFit.cover,
-                              height: 75,
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              'Бутылки ПЭТ',
-                              style: TextStyle(
-                                color: LightColor.textSecondary,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              '${snapshot.data[0]['plastic_bottle'] * 50} г',
-                              style: TextStyle(
-                                color: LightColor.accent,
-                                fontSize: 20,
-                              ),
-                            ),
-                          ],
+                        _generateTile(
+                          name: 'plasticBottles',
+                          title: 'Бутылки ПЭТ',
+                          amount: snapshot.data[0]['plasticBottles'],
                         ),
-                        Column(
-                          children: [
-                            Image.asset(
-                              'graphics/2_1.png',
-                              fit: BoxFit.cover,
-                              height: 75,
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              'ПНД',
-                              style: TextStyle(
-                                color: LightColor.textSecondary,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              '${snapshot.data[0]['plastic_mk2'] * 50} г',
-                              style: TextStyle(
-                                color: LightColor.accent,
-                                fontSize: 20,
-                              ),
-                            ),
-                          ],
+                        _generateTile(
+                          name: 'plasticMK2',
+                          title: 'ПНД',
+                          amount: snapshot.data[0]['plasticMK2'],
                         ),
-                        Column(
-                          children: [
-                            Image.asset(
-                              'graphics/5_1.png',
-                              fit: BoxFit.cover,
-                              height: 75,
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              'ПП',
-                              style: TextStyle(
-                                color: LightColor.textSecondary,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              '${snapshot.data[0]['plastic_mk5'] * 50} г',
-                              style: TextStyle(
-                                color: LightColor.accent,
-                                fontSize: 20,
-                              ),
-                            ),
-                          ],
+                        _generateTile(
+                          name: 'plasticMK5',
+                          title: 'ПП',
+                          amount: snapshot.data[0]['plasticMK5'],
                         ),
                       ],
                     ),
@@ -357,7 +203,7 @@ class _ProfileTabState extends State<ProfileTab> {
                       children: [
                         Icon(
                           Icons.settings,
-                          color: AppTheme.lightTheme.accentColor,
+                          color: LightColor.accent,
                         ),
                         SizedBox(
                           width: 15,
@@ -404,5 +250,32 @@ class _ProfileTabState extends State<ProfileTab> {
     final apiUrl = "https://60911f0c50c2550017677a1b.mockapi.io/users";
     var result = await http.get(Uri.parse(apiUrl));
     return json.decode(result.body);
+  }
+
+  _generateTile({required name, required title, required amount}) {
+    return Column(
+      children: [
+        Image.asset(
+          'graphics/$name.png',
+          fit: BoxFit.cover,
+          height: 75,
+        ),
+        SizedBox(height: 10),
+        Text(
+          title,
+          style: TextStyle(
+            color: LightColor.textSecondary,
+          ),
+        ),
+        SizedBox(height: 10),
+        Text(
+          '${amount * 50} г',
+          style: TextStyle(
+            color: LightColor.accent,
+            fontSize: 20,
+          ),
+        ),
+      ],
+    );
   }
 }

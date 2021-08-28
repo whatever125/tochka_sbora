@@ -7,30 +7,29 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:928608162991:android:5adcc98cd45d69fbbbb05a",
+        "mobilesdk_app_id": "1:928608162991:android:17ab9e37cfd11145bbb05a",
         "android_client_info": {
           "package_name": "com.tochka_sbora"
         }
       },
       "oauth_client": [
         {
-          "client_id": "928608162991-vol2t5v0usnai8clpk4bmv11k5iogr5m.apps.googleusercontent.com",
-          "client_type": 3
+          "client_id": "928608162991-iep7fp4budugsdkcd2jonft1vg70dmgq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tochka_sbora",
+            "certificate_hash": "b8fc7bacb153104dbb100907732b9b72d40044ac"
+          }
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBCYPZMfM33oPfDizizXnT6WJ_qM4yAVLo"
+          "current_key": "AIzaSyCgqddzMZliqUOu-aOPF5MRos4uaYhAZ38"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "928608162991-vol2t5v0usnai8clpk4bmv11k5iogr5m.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
