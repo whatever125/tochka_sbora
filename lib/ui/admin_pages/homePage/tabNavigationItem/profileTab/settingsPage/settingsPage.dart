@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tochka_sbora/ui/themes/colors.dart';
 import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/profileTab/settingsPage/profileDataPage.dart';
 import 'package:tochka_sbora/ui/pages/welcomePage.dart';
-import 'package:tochka_sbora/ui/admin_pages/homePage/tabNavigationItem/acceptTab/QRScannerPage.dart';
+import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/acceptTab/QRScannerPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'infoPage.dart';
 

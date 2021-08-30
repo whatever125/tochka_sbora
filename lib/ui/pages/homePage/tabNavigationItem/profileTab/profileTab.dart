@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:tochka_sbora/ui/themes/colors.dart';
 import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/profileTab/settingsPage/settingsPage.dart';
@@ -12,247 +13,235 @@ class ProfileTab extends StatefulWidget {
 }
 
 class _ProfileTabState extends State<ProfileTab> {
-  late Future<List<dynamic>> user;
+  final _database = FirebaseDatabase(
+    app: Firebase.apps.first,
+    databaseURL:
+    'https://devtime-cff06-default-rtdb.europe-west1.firebasedatabase.app',
+  ).reference();
+  final _auth = FirebaseAuth.instance;
+  late var _uid;
 
   @override
   void initState() {
     super.initState();
-    user = _fetchProfile();
+    _uid = _getUID();
+  }
+
+  _getUID() async {
+    final _user = _auth.currentUser;
+    return _user!.uid;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _buildProfile(),
-    );
-  }
-
-  Widget _buildProfile() {
-    return Container(
-      child: FutureBuilder<List<dynamic>>(
-        future: user,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          return RefreshIndicator(
-            child: _profileView(snapshot),
-            onRefresh: _pullRefresh,
-            color: LightColor.accent,
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _profileView(AsyncSnapshot snapshot) {
-    if (snapshot.hasData) {
-      return ListView(
-        children: [
-          Container(
-            padding: EdgeInsets.all(15),
-            child: Column(
-              children: [
-                Container(
-                  height: 80,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+    return FutureBuilder(
+      future: _uid,
+      builder: (context, futureSnapshot) {
+        if (futureSnapshot.hasData) {
+          return StreamBuilder(
+            stream: _database.child('users/${futureSnapshot.data}/').onValue,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                var _user = Map<String, dynamic>.from((snapshot.data as Event).snapshot.value);
+                return Container(
+                  padding: EdgeInsets.all(15),
+                  child: Column(
                     children: [
-                      Expanded(
-                        child: Container(
-                          height: 80,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              RichText(
-                                text: TextSpan(
-                                  style: TextStyle(
-                                    fontSize: 25,
-                                    color: LightColor.text,
-                                  ),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text:
-                                          "Иванов Иван Иванович",
+                      Container(
+                        height: 80,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Container(
+                                height: 80,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    RichText(
+                                      text: TextSpan(
+                                        style: TextStyle(
+                                          fontSize: 25,
+                                          color: LightColor.text,
+                                        ),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                            text:
+                                            "${_user['surname']} ${_user['name']} ${_user['secondName']}",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Text(
+                                      _user['phoneNumber'],
                                       style: TextStyle(
-                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                        color: LightColor.textSecondary,
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
+                            ),
+                            TextButton(
+                              onPressed: () => {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => QRPage()),
+                                ),
+                              },
+                              child: Icon(
+                                Icons.qr_code,
+                                color: LightColor.accent,
+                                size: 40,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Divider(),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Column(
+                        children: [
+                          Row(
+                            children: [
                               Text(
-                                '+7 (912) 345-67-89',
+                                'Бонусы: ',
                                 style: TextStyle(
-                                  fontSize: 15,
-                                  color: LightColor.textSecondary,
+                                  color: LightColor.text,
+                                  fontSize: 20,
+                                ),
+                              ),
+                              Text(
+                                '${_user['coins']}',
+                                style: TextStyle(
+                                  color: LightColor.accent,
+                                  fontSize: 20,
                                 ),
                               ),
                             ],
                           ),
-                        ),
+                          SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              _generateTile(
+                                name: 'cardboard',
+                                title: 'Картон',
+                                amount: _user['cardboard'],
+                              ),
+                              _generateTile(
+                                name: 'wastepaper',
+                                title: 'Макулатура',
+                                amount: _user['wastepaper'],
+                              ),
+                              _generateTile(
+                                name: 'glass',
+                                title: 'Стекло',
+                                amount: _user['glass'],
+                              ),
+                              _generateTile(
+                                name: 'plasticLids',
+                                title: 'Крышки',
+                                amount: _user['plasticLids'],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              _generateTile(
+                                name: 'aluminiumCans',
+                                title: 'Алюминий',
+                                amount: _user['aluminiumCans'],
+                              ),
+                              _generateTile(
+                                name: 'plasticBottles',
+                                title: 'Бутылки ПЭТ',
+                                amount: _user['plasticBottles'],
+                              ),
+                              _generateTile(
+                                name: 'plasticMK2',
+                                title: 'ПНД',
+                                amount: _user['plasticMK2'],
+                              ),
+                              _generateTile(
+                                name: 'plasticMK5',
+                                title: 'ПП',
+                                amount: _user['plasticMK5'],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Divider(),
+                      SizedBox(
+                        height: 15,
                       ),
                       TextButton(
+                        child: Container(
+                          height: 40,
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.settings,
+                                color: LightColor.accent,
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Text(
+                                'Настройки',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2!
+                                    .copyWith(fontSize: 18, color: LightColor.text),
+                              ),
+                            ],
+                          ),
+                        ),
                         onPressed: () => {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => QRPage()),
+                            MaterialPageRoute(builder: (context) => SettingsPage()),
                           ),
                         },
-                        child: Icon(
-                          Icons.qr_code,
-                          color: LightColor.accent,
-                          size: 40,
-                        ),
-                      )
+                      ),
                     ],
                   ),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Divider(),
-                SizedBox(
-                  height: 15,
-                ),
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          'Бонусы: ',
-                          style: TextStyle(
-                            color: LightColor.text,
-                            fontSize: 20,
-                          ),
-                        ),
-                        Text(
-                          '${snapshot.data[0]['coins']}',
-                          style: TextStyle(
-                            color: LightColor.accent,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        _generateTile(
-                          name: 'cardboard',
-                          title: 'Картон',
-                          amount: snapshot.data[0]['cardboard'],
-                        ),
-                        _generateTile(
-                          name: 'wastepaper',
-                          title: 'Макулатура',
-                          amount: snapshot.data[0]['wastepaper'],
-                        ),
-                        _generateTile(
-                          name: 'glass',
-                          title: 'Стекло',
-                          amount: snapshot.data[0]['glass'],
-                        ),
-                        _generateTile(
-                          name: 'plasticLids',
-                          title: 'Крышки',
-                          amount: snapshot.data[0]['plasticLids'],
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        _generateTile(
-                          name: 'aluminiumCans',
-                          title: 'Алюминий',
-                          amount: snapshot.data[0]['aluminiumCans'],
-                        ),
-                        _generateTile(
-                          name: 'plasticBottles',
-                          title: 'Бутылки ПЭТ',
-                          amount: snapshot.data[0]['plasticBottles'],
-                        ),
-                        _generateTile(
-                          name: 'plasticMK2',
-                          title: 'ПНД',
-                          amount: snapshot.data[0]['plasticMK2'],
-                        ),
-                        _generateTile(
-                          name: 'plasticMK5',
-                          title: 'ПП',
-                          amount: snapshot.data[0]['plasticMK5'],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Divider(),
-                SizedBox(
-                  height: 15,
-                ),
-                TextButton(
-                  child: Container(
-                    height: 40,
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.settings,
-                          color: LightColor.accent,
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text(
-                          'Настройки',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText2!
-                              .copyWith(fontSize: 18, color: LightColor.text),
-                        ),
-                      ],
-                    ),
-                  ),
-                  onPressed: () => {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SettingsPage()),
-                    ),
-                  },
-                ),
-              ],
+                );
+              } else {
+                return Scaffold();
+              }
+            },
+          );
+        } else {
+          return Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(LightColor.accent),
             ),
-          ),
-        ],
-      );
-    } else {
-      return Center(
-        child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(LightColor.accent),
-        ),
-      );
-    }
+          );
+        }
+      }
+    );
   }
 
-  Future<void> _pullRefresh() async {
-    List<dynamic> freshData = await _fetchProfile();
-    setState(() {
-      user = Future.value(freshData);
-    });
-  }
-
-  Future<List<dynamic>> _fetchProfile() async {
-    final apiUrl = "https://60911f0c50c2550017677a1b.mockapi.io/users";
-    var result = await http.get(Uri.parse(apiUrl));
-    return json.decode(result.body);
-  }
-
-  _generateTile({required name, required title, required amount}) {
+  Column _generateTile({required name, required title, required amount}) {
     return Column(
       children: [
         Image.asset(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:tochka_sbora/ui/themes/colors.dart';
 import 'package:tochka_sbora/ui/pages/welcomePage.dart';
 import 'package:tochka_sbora/ui/pages/homePage/homePage.dart';
 

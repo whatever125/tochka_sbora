@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:tochka_sbora/ui/themes/colors.dart';
 import 'package:tochka_sbora/ui/pages/welcomePage.dart';
-import 'package:tochka_sbora/ui/admin_pages/homePage/homePage.dart';
 import 'infoPage.dart';
 import 'profileDataPage.dart';
 
@@ -16,11 +15,6 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  bool _isAdmin() {
-    //TODO сделать запрос на проверку наличия статуса администратора
-    return true;
-  }
 
   Future<void> _signOut() async {
     await _auth.signOut();
@@ -52,19 +46,6 @@ class _SettingsPageState extends State<SettingsPage> {
                     );
                   },
                 ),
-                if (_isAdmin())
-                  _generateTextButton(
-                    icon: Icons.miscellaneous_services,
-                    title: 'Режим администратора',
-                    onPressed: () {
-                      Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                          builder: (context) => HomePage(),
-                        ),
-                        (Route<dynamic> route) => false,
-                      );
-                    },
-                  ),
                 _generateTextButton(
                   icon: Icons.logout,
                   title: 'Выйти',

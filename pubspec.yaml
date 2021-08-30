@@ -47,10 +47,10 @@ dependencies:
 
   firebase_core: ^1.6.0
   firebase_auth: ^3.1.0
+  firebase_database: ^7.2.1
 
   flutter_multi_formatter: ^2.0.3
   sms_autofill: ^2.0.1
-  firebase_database: ^7.2.1
 
 flutter_icons:
   android: true

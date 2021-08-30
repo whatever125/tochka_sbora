@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/shopTab/shopTab.dart';
 import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/mapTab.dart';
 import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/profileTab/profileTab.dart';
+import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/acceptTab/QRScannerPage.dart';
 
 class TabNavigationItem {
   final Widget page;
@@ -34,6 +35,12 @@ class TabNavigationItem {
       label: "Профиль",
       activeIcon: Icon(Icons.person),
       icon: Icon(Icons.person_outlined),
+    ),
+    TabNavigationItem(
+      page: Scanner(),
+      label: "Принять",
+      activeIcon: Icon(Icons.input),
+      icon: Icon(Icons.input_outlined),
     ),
   ];
 }

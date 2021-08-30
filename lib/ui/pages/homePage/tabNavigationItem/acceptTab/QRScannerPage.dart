@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+
+import 'package:tochka_sbora/helper/services/local_storage_service.dart';
 import 'package:tochka_sbora/ui/themes/colors.dart';
-import 'package:tochka_sbora/ui/admin_pages/homePage/tabNavigationItem/acceptTab/acceptTab.dart';
+import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/acceptTab/acceptTab.dart';
 
 class Scanner extends StatefulWidget {
   @override
@@ -85,7 +87,7 @@ class _ScannerState extends State<Scanner> {
       var data = scanData.code;
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => AcceptTab()),
+        MaterialPageRoute(builder: (context) => AcceptTab(data)),
       );
     });
   }

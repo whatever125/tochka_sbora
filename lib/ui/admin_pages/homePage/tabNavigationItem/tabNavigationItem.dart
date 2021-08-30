@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tochka_sbora/ui/admin_pages/homePage/tabNavigationItem/acceptTab/QRScannerPage.dart';
+import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/acceptTab/QRScannerPage.dart';
 import 'package:tochka_sbora/ui/admin_pages/homePage/tabNavigationItem/profileTab/profileTab.dart';
 
 class TabNavigationItem {

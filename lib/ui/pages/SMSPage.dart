@@ -1,7 +1,11 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
+import 'package:tochka_sbora/helper/models/userModel.dart';
 import 'package:tochka_sbora/ui/themes/colors.dart';
 import 'package:tochka_sbora/ui/themes/theme.dart';
 import 'package:tochka_sbora/helper/services/local_storage_service.dart';
@@ -14,10 +18,15 @@ class SMSPage extends StatefulWidget {
 }
 
 class _SMSPageState extends State<SMSPage> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final TextEditingController _smsController = TextEditingController();
-  final SmsAutoFill _autoFill = SmsAutoFill();
-  var _code = '';
+  final _database = FirebaseDatabase(
+    app: Firebase.apps.first,
+    databaseURL:
+        'https://devtime-cff06-default-rtdb.europe-west1.firebasedatabase.app',
+  ).reference();
+  final _auth = FirebaseAuth.instance;
+
+  final _smsController = TextEditingController();
+  final _autoFill = SmsAutoFill();
 
   @override
   void initState() {
@@ -87,9 +96,7 @@ class _SMSPageState extends State<SMSPage> {
                       LightColor.text,
                     ),
                   ),
-                  onCodeChanged: (code) {
-                    _code = code!;
-                  },
+                  onCodeChanged: (code) {},
                 ),
                 padding: EdgeInsets.symmetric(
                   vertical: 10,
@@ -109,14 +116,15 @@ class _SMSPageState extends State<SMSPage> {
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
                     onPressed: () async {
-                      _signInWithPhoneNumber();
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => HomePage(),
-                        ),
-                        (Route<dynamic> route) => false,
-                      );
+                      if (await _signInWithPhoneNumber()) {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => HomePage(),
+                          ),
+                              (Route<dynamic> route) => false,
+                        );
+                      }
                     },
                   ),
                 ),
@@ -131,17 +139,32 @@ class _SMSPageState extends State<SMSPage> {
     );
   }
 
-  void _signInWithPhoneNumber() async {
-    try {
+  Future<bool> _signInWithPhoneNumber() async {
+    // try {
       final AuthCredential credential = PhoneAuthProvider.credential(
         verificationId: await StorageManager.readData('verificationId'),
         smsCode: _smsController.text,
       );
-      final User? user = (await _auth.signInWithCredential(credential)).user;
+      await StorageManager.removeData('verificationId');
+      var _uid = (await _auth.signInWithCredential(credential)).user!.uid;
+      print(_uid);
+      StorageManager.saveData('uid', _uid);
+      final _userRef = _database.child('users/$_uid/');
+      _userRef.once().then((snapshot) async {
+        var userData = snapshot.value;
+        if (userData == null) {
+          var phoneNumber = await StorageManager.readData('phoneNumber');
+          await StorageManager.removeData('phoneNumber');
+          var user = UserModel(phoneNumber: phoneNumber);
+          _userRef.update(user.toJson());
+        }
+      });
       _autoFill.unregisterListener();
-    } catch (e) {
-      print("SMS Ошибка: " + e.toString());
-    }
+      return true;
+    // } catch (e) {
+    //   _showSnackbar("SMS Ошибка: " + e.toString());
+    //   return false;
+    // }
   }
 
   void _showSnackbar(message) {

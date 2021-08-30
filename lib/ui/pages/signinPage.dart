@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:convert';
 
+import 'package:tochka_sbora/helper/models/userModel.dart';
 import 'package:tochka_sbora/helper/services/local_storage_service.dart';
 import 'package:tochka_sbora/ui/pages/SMSPage.dart';
 import 'package:tochka_sbora/ui/themes/colors.dart';
@@ -95,13 +97,14 @@ class _SignInPageState extends State<SignInPage> {
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
                     onPressed: () async {
-                      _verifyPhoneNumber();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SMSPage(),
-                        ),
-                      );
+                      if (await _verifyPhoneNumber()) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SMSPage(),
+                          ),
+                        );
+                      }
                     },
                   ),
                 ),
@@ -116,7 +119,7 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  void _verifyPhoneNumber() async {
+  Future<bool> _verifyPhoneNumber() async {
     PhoneVerificationCompleted verificationCompleted =
         (PhoneAuthCredential phoneAuthCredential) async {
       await _auth.signInWithCredential(phoneAuthCredential);
@@ -136,6 +139,7 @@ class _SignInPageState extends State<SignInPage> {
         (String verificationId) {
       StorageManager.saveData('verificationId', verificationId);
     };
+
     try {
       _auth.setLanguageCode("ru");
       await _auth.verifyPhoneNumber(
@@ -146,9 +150,12 @@ class _SignInPageState extends State<SignInPage> {
         codeSent: codeSent,
         codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
       );
+      StorageManager.saveData('phoneNumber', _phoneNumberController.text);
     } catch (e) {
-      print("SignIn Ошибка: $e");
+      _showSnackbar("SignIn Ошибка: $e");
+      return false;
     }
+    return true;
   }
 
   void _showSnackbar(message) {

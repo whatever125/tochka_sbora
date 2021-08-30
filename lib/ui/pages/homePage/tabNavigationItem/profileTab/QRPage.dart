@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:tochka_sbora/ui/themes/colors.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class QRPage extends StatefulWidget {
   const QRPage({Key? key}) : super(key: key);
@@ -13,12 +12,18 @@ class QRPage extends StatefulWidget {
 }
 
 class _QRPageState extends State<QRPage> {
-  late Future<List<dynamic>> user;
+  final _auth = FirebaseAuth.instance;
+  late var _uid;
 
   @override
   void initState() {
     super.initState();
-    user = _fetchProfile();
+    _uid = _getUID();
+  }
+
+  _getUID() async {
+    final _user = _auth.currentUser;
+    return _user!.uid;
   }
 
   @override
@@ -36,63 +41,42 @@ class _QRPageState extends State<QRPage> {
 
   Widget _buildQR() {
     return Container(
-      child: FutureBuilder<List<dynamic>>(
-        future: user,
+      child: FutureBuilder(
+        future: _uid,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          return RefreshIndicator(
-            child: _profileView(snapshot),
-            onRefresh: _pullRefresh,
-            color: LightColor.accent,
-          );
+          if (snapshot.hasData) {
+            return Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: 30,
+                vertical: 20,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  QrImage(
+                    data: "${snapshot.data}",
+                    version: QrVersions.auto,
+                    size: MediaQuery.of(context).size.width,
+                  ),
+                  Text(
+                    'Покажите этот QR код сотруднику "Точки сбора" для идентификации вашей личности',
+                    style: TextStyle(
+                      fontSize: 15,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(LightColor.accent),
+              ),
+            );
+          }
         },
       ),
     );
-  }
-
-  Widget _profileView(AsyncSnapshot snapshot) {
-    if (snapshot.hasData) {
-      return Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: 30,
-          vertical: 20,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            QrImage(
-              data: "${snapshot.data[0]['qr_token']}",
-              version: QrVersions.auto,
-              size: MediaQuery.of(context).size.width,
-            ),
-            Text(
-              'Покажите этот QR код сотруднику "Точки сбора" для идентификации вашей личности',
-              style: TextStyle(
-                fontSize: 15,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      );
-    } else {
-      return Center(
-        child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(LightColor.accent),
-        ),
-      );
-    }
-  }
-
-  Future<void> _pullRefresh() async {
-    List<dynamic> freshData = await _fetchProfile();
-    setState(() {
-      user = Future.value(freshData);
-    });
-  }
-
-  Future<List<dynamic>> _fetchProfile() async {
-    final apiUrl = "https://60911f0c50c2550017677a1b.mockapi.io/users";
-    var result = await http.get(Uri.parse(apiUrl));
-    return json.decode(result.body);
   }
 }
