@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:screen_brightness/screen_brightness.dart';
+import 'package:wakelock/wakelock.dart';
 
 import 'package:tochka_sbora/ui/themes/colors.dart';
 
@@ -18,7 +20,13 @@ class _QRPageState extends State<QRPage> {
   @override
   void initState() {
     super.initState();
+    _setBrightnessAndWake(1);
     _uid = _getUID();
+  }
+
+  Future<void> _setBrightnessAndWake(double brightness) async {
+    Wakelock.enable();
+    await ScreenBrightness.setScreenBrightness(brightness);
   }
 
   _getUID() async {
@@ -46,10 +54,7 @@ class _QRPageState extends State<QRPage> {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             return Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: 30,
-                vertical: 20,
-              ),
+              padding: EdgeInsets.all(30),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -78,5 +83,16 @@ class _QRPageState extends State<QRPage> {
         },
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _resetBrightnessAndWake();
+  }
+
+  Future<void> _resetBrightnessAndWake() async {
+    Wakelock.disable();
+    await ScreenBrightness.resetScreenBrightness();
   }
 }

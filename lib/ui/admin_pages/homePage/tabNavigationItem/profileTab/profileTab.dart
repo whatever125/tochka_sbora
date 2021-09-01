@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tochka_sbora/ui/themes/colors.dart';
-import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/profileTab/settingsPage/settingsPage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:tochka_sbora/ui/themes/colors.dart';
+import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/profileTab/settingsPage/settingsPage.dart';
 import 'package:tochka_sbora/ui/themes/theme.dart';
 
 class ProfileTab extends StatefulWidget {

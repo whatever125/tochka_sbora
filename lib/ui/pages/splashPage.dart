@@ -10,25 +10,12 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-  late dynamic _user;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   late Future<dynamic> loggedIn;
 
   @override
-  void initState() {
-    super.initState();
-    onRefresh(_auth.currentUser);
-  }
-
-  void onRefresh(userCredentials) {
-    setState(() {
-      _user = userCredentials;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    if (_user == null) {
+    if (_auth.currentUser == null) {
       return WelcomePage();
     } else {
       return HomePage();

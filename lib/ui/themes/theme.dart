@@ -4,6 +4,7 @@ import 'package:tochka_sbora/ui/themes/colors.dart';
 
 class AppTheme {
   static final ThemeData lightTheme = ThemeData(
+    platform: TargetPlatform.iOS,
     brightness: Brightness.light,
     primaryColor: LightColor.primary,
     accentColor: LightColor.accent,
@@ -34,6 +35,12 @@ class AppTheme {
       builders: {
         TargetPlatform.android: ZoomPageTransitionsBuilder(),
       },
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: ButtonStyle(
+        foregroundColor: MaterialStateProperty.all<Color>(LightColor.accent),
+        overlayColor: MaterialStateProperty.all<Color>(Color(0x30e11344)),
+      ),
     ),
   );
 }

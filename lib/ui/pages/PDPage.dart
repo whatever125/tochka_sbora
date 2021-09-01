@@ -1,8 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import 'package:tochka_sbora/helper/services/local_storage_service.dart';
+import 'package:tochka_sbora/helper/models/userModel.dart';
 import 'package:tochka_sbora/ui/themes/colors.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:tochka_sbora/ui/pages/homePage/homePage.dart';
+
+final _database = FirebaseDatabase(
+  app: Firebase.apps.first,
+  databaseURL:
+      'https://devtime-cff06-default-rtdb.europe-west1.firebasedatabase.app',
+).reference();
+final _auth = FirebaseAuth.instance;
 
 class PDPage extends StatefulWidget {
   const PDPage({Key? key}) : super(key: key);
@@ -28,154 +40,187 @@ class _PDPageState extends State<PDPage> {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.all(15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                child: Align(
-                    alignment: Alignment.bottomLeft,
-                    child: RichText(
-                      text: TextSpan(
-                        style: TextStyle(
-                          fontSize: 25,
-                          color: LightColor.text,
-                        ),
-                        children: <TextSpan>[
-                          TextSpan(
-                              text: 'Введите код из СМС',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              )),
-                        ],
+        padding: EdgeInsets.all(30),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              child: Align(
+                  alignment: Alignment.bottomLeft,
+                  child: RichText(
+                    text: TextSpan(
+                      style: TextStyle(
+                        fontSize: 25,
+                        color: LightColor.text,
                       ),
-                    )),
-                padding: const EdgeInsets.symmetric(
-                  vertical: 25,
-                ),
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: 'Как вас зовут?',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            )),
+                      ],
+                    ),
+                  )),
+              padding: const EdgeInsets.symmetric(
+                vertical: 25,
               ),
-              Text(
-                '*Фамилия',
-                style: TextStyle(
-                  color: Theme.of(context).hintColor,
-                ),
+            ),
+            Text(
+              '*Фамилия',
+              style: TextStyle(
+                color: Theme.of(context).hintColor,
               ),
-              SizedBox(
-                height: 5,
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            TextFormField(
+              controller: lastNameController,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: (val) {
+                return val!.isEmpty ? 'Пожалуйста, укажите фамилию' : null;
+              },
+              keyboardType: TextInputType.name,
+              textCapitalization: TextCapitalization.words,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                isDense: true,
               ),
-              TextFormField(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (val) {
-                  return val!.isEmpty ? 'Пожалуйста, укажите фамилию' : null;
-                },
-                keyboardType: TextInputType.name,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  isDense: true,
-                ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Text(
+              '*Имя',
+              style: TextStyle(
+                color: Theme.of(context).hintColor,
               ),
-              SizedBox(
-                height: 15,
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            TextFormField(
+              controller: firstNameController,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: (val) {
+                return val!.isEmpty ? 'Пожалуйста, укажите имя' : null;
+              },
+              keyboardType: TextInputType.name,
+              textCapitalization: TextCapitalization.words,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                isDense: true,
               ),
-              Text(
-                '*Имя',
-                style: TextStyle(
-                  color: Theme.of(context).hintColor,
-                ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Text(
+              'Отчество',
+              style: TextStyle(
+                color: Theme.of(context).hintColor,
               ),
-              SizedBox(
-                height: 5,
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            TextFormField(
+              controller: patronymicController,
+              autovalidateMode: AutovalidateMode.disabled,
+              validator: (val) {
+                return val!.isEmpty ? 'Пожалуйста, укажите отчество' : null;
+              },
+              keyboardType: TextInputType.name,
+              textCapitalization: TextCapitalization.words,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                isDense: true,
               ),
-              TextFormField(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (val) {
-                  return val!.isEmpty ? 'Пожалуйста, укажите имя' : null;
-                },
-                keyboardType: TextInputType.name,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  isDense: true,
-                ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Text(
-                'Отчество',
-                style: TextStyle(
-                  color: Theme.of(context).hintColor,
-                ),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              TextFormField(
-                autovalidateMode: AutovalidateMode.disabled,
-                validator: (val) {
-                  return val!.isEmpty ? 'Пожалуйста, укажите отчество' : null;
-                },
-                keyboardType: TextInputType.name,
-                textCapitalization: TextCapitalization.words,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  isDense: true,
-                ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 50,
-                    width: 150,
-                    child: TextButton(
-                      child: Text(
-                        'Войти',
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                      ),
-                      onPressed: () => {
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  height: 50,
+                  width: 250,
+                  child: TextButton(
+                    child: Text(
+                      'Зарегистрироваться',
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                    onPressed: () async {
+                      if (await _fetchUser())
                         Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(builder: (context) => HomePage()),
-                            (Route<dynamic> route) => false),
-                      },
-                      style: ButtonStyle(
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                        ),
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                          Theme.of(context).accentColor,
+                          context,
+                          MaterialPageRoute(builder: (context) => HomePage()),
+                          (Route<dynamic> route) => false,
+                        );
+                    },
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25),
                         ),
                       ),
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                        Theme.of(context).accentColor,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 30),
+            Center(
+              child: Column(
+                children: [
+                  Text('Регистрируясь, вы соглашаетесь с'),
+                  TextButton(
+                    onPressed: _launchURL,
+                    child: Text('Политикой обработки персональных данных'),
+                    style: ButtonStyle(
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(LightColor.accent),
+                      overlayColor:
+                          MaterialStateProperty.all<Color>(LightColor.light),
                     ),
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Future<Map<String, dynamic>> _fetchUser() async {
-    final APP_TOKEN = 'PX6eUmgv4th7GKqhqDr8E5AZt8SFi2Ja';
-    var first_name = firstNameController.text;
-    var last_name = lastNameController.text;
-    var patronymic = patronymicController.text;
-    final apiUrl =
-        "http://tochkasbora.pythonanywhere.com/api/try_authentication?app_token=$APP_TOKEN&first_name=$first_name&first_name=$last_name&first_name=$patronymic&format=json";
-    var result = await http.get(Uri.parse(apiUrl));
-    var res = json.decode(result.body);
-    return res;
+  Future<bool> _fetchUser() async {
+    var _firstName = firstNameController.text;
+    print(_firstName);
+    var _lastName = lastNameController.text;
+    var _patronymic = patronymicController.text;
+    var _phoneNumber = await StorageManager.readData('phoneNumber');
+    var _user = UserModel(
+      phoneNumber: _phoneNumber,
+      name: _firstName,
+      secondName: _patronymic,
+      surname: _lastName,
+    );
+    await StorageManager.removeData('phoneNumber');
+    print(_user.name);
+    final _userRef = _database.child('users/${_auth.currentUser!.uid}/');
+    print(_user.toJson());
+    await _userRef.update(_user.toJson());
+    return true;
   }
+
+  String _url = 'https://kalina-malina.store/politika';
+
+  void _launchURL() async => await canLaunch(_url)
+      ? await launch(_url)
+      : throw 'Could not launch $_url';
 }

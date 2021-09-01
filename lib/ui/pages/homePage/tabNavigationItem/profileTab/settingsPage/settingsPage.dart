@@ -29,23 +29,22 @@ class _SettingsPageState extends State<SettingsPage> {
           style: TextStyle(color: LightColor.text),
         ),
       ),
-      body: ListView(
-        children: [
-          Container(
-            padding: EdgeInsets.all(15),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(15),
             child: Column(
               children: [
-                _generateTextButton(
-                  icon: Icons.account_circle,
-                  title: 'Личные данные',
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => ProfileDataPage(),
-                      ),
-                    );
-                  },
-                ),
+                //TODO
+                // _generateTextButton(
+                //   icon: Icons.account_circle,
+                //   title: 'Личные данные',
+                //   onPressed: () {
+                //     Navigator.of(context).push(
+                //       MaterialPageRoute(
+                //         builder: (context) => ProfileDataPage(),
+                //       ),
+                //     );
+                //   },
+                // ),
                 _generateTextButton(
                   icon: Icons.logout,
                   title: 'Выйти',
@@ -74,8 +73,6 @@ class _SettingsPageState extends State<SettingsPage> {
               ],
             ),
           ),
-        ],
-      ),
     );
   }
 

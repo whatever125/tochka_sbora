@@ -13,6 +13,7 @@ class UserModel {
   int plasticBottles;
   int plasticMK2;
   int plasticMK5;
+  List<Map<String, dynamic>> cart;
 
   UserModel({
     this.phoneNumber = '',
@@ -29,6 +30,7 @@ class UserModel {
     this.plasticBottles = 0,
     this.plasticMK2 = 0,
     this.plasticMK5 = 0,
+    this.cart = const [],
   });
 
   void fromJson(Map<String, dynamic> json) {
@@ -46,6 +48,7 @@ class UserModel {
     this.plasticBottles = json['plasticBottles'];
     this.plasticMK2 = json['plasticMK2'];
     this.plasticMK5 = json['plasticMK5'];
+    this.cart = json['cart'];
   }
 
   Map<String, dynamic> toJson() {
@@ -64,6 +67,7 @@ class UserModel {
       'plasticBottles': this.plasticBottles,
       'plasticMK2': this.plasticMK2,
       'plasticMK5': this.plasticMK5,
+      'cart': this.cart,
     };
   }
 }

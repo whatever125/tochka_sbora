@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
         'https://devtime-cff06-default-rtdb.europe-west1.firebasedatabase.app',
   ).reference();
   final _auth = FirebaseAuth.instance;
-  int _currentIndex = 2;
+  int _currentIndex = 0;
   late Future<bool> _admin;
 
   @override
@@ -33,76 +33,72 @@ class _HomePageState extends State<HomePage> {
     final _uid = _user!.uid;
     final _isAdminRef = _database.child('users/$_uid/isAdmin/');
     return _isAdminRef.once().then((snapshot) {
-      var data = snapshot.value;
-      return data;
+      var _data = snapshot.value;
+      return _data;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: FutureBuilder(
-        future: _admin,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return Scaffold(
-              appBar: AppBar(
-                title: Row(
-                  children: [
-                    Image.asset(
-                      'graphics/name.png',
-                      fit: BoxFit.cover,
-                      height: 32,
-                    ),
-                  ],
-                ),
-                actions: _currentIndex == 0
-                    ? [
-                        IconButton(
-                          icon: Icon(Icons.card_travel),
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => CartPage(),
-                              ),
-                            );
-                          },
-                        )
-                      ]
-                    : [],
-                automaticallyImplyLeading: false,
+    return FutureBuilder(
+      future: _admin,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Image.asset(
+                'graphics/name.png',
+                fit: BoxFit.cover,
+                height: 32,
               ),
-              body: IndexedStack(
-                index: _currentIndex,
-                children: [
-                  for (final tabItem in TabNavigationItem.items
-                      .take(snapshot.data == true ? 4 : 3))
-                    tabItem.page,
-                ],
-              ),
-              bottomNavigationBar: BottomNavigationBar(
-                currentIndex: _currentIndex,
-                onTap: (int index) => setState(() => _currentIndex = index),
-                items: [
-                  for (final tabItem in TabNavigationItem.items
-                      .take(snapshot.data == true ? 4 : 3))
-                    BottomNavigationBarItem(
-                      icon: tabItem.icon,
-                      activeIcon: tabItem.activeIcon,
-                      label: tabItem.label,
-                    ),
-                ],
-              ),
-            );
-          } else {
-            return Center(
+              actions: _currentIndex == 0
+                  ? [
+                      IconButton(
+                        icon: Icon(Icons.card_travel),
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => CartPage(),
+                            ),
+                          );
+                        },
+                      )
+                    ]
+                  : [],
+              automaticallyImplyLeading: false,
+            ),
+            body: IndexedStack(
+              index: _currentIndex,
+              children: [
+                for (final tabItem in TabNavigationItem.items
+                    .take(snapshot.data == true ? 4 : 3))
+                  tabItem.page,
+              ],
+            ),
+            bottomNavigationBar: BottomNavigationBar(
+              currentIndex: _currentIndex,
+              onTap: (int index) => setState(() => _currentIndex = index),
+              items: [
+                for (final tabItem in TabNavigationItem.items
+                    .take(snapshot.data == true ? 4 : 3))
+                  BottomNavigationBarItem(
+                    icon: tabItem.icon,
+                    activeIcon: tabItem.activeIcon,
+                    label: tabItem.label,
+                  ),
+              ],
+            ),
+          );
+        } else {
+          return Scaffold(
+            body: Center(
               child: CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(LightColor.accent),
               ),
-            );
-          }
-        },
-      ),
+            ),
+          );
+        }
+      },
     );
   }
 }

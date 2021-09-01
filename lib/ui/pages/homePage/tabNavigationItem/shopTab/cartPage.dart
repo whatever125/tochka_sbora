@@ -1,67 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:tochka_sbora/ui/themes/colors.dart';
 
-class Product {
-  String image;
-  String title;
-  String price;
-
-  Product({
-    required this.price,
-    required this.image,
-    required this.title,
-  });
-}
-
-List<Product> bag = [
-  Product(
-    title: 'Подарочный набор "С бородой"',
-    price: '800 баллов',
-    image:
-    'https://static.tildacdn.com/tild3166-6266-4165-a131-323063343530/__.jpg',
-  ),
-  Product(
-    title: 'Пастила Ассорти с ягодами, бананом и яблоком',
-    price: '299 баллов',
-    image:
-    'https://static.tildacdn.com/tild6639-3236-4637-b966-336131323964/__.jpg',
-  ),
-  Product(
-    title: 'Подарочный набор "Сердце"',
-    price: '949 баллов',
-    image:
-    'https://static.tildacdn.com/tild3432-3334-4166-a261-303232376235/80004.jpg',
-  ),
-  Product(
-    title: 'Подарочный набор "С цветами"',
-    price: '800 баллов',
-    image:
-    'https://static.tildacdn.com/tild3563-6138-4135-b134-373330303630/__.jpg',
-  ),
-  Product(
-    title: 'Подарочный набор "Шкатулка"',
-    price: '1004 баллов',
-    image:
-    'https://static.tildacdn.com/tild6131-6239-4231-b866-623166613533/_.jpg',
-  ),
-  Product(
-    title: 'Подарочный набор "Скворечник"',
-    price: '761 баллов',
-    image:
-    'https://static.tildacdn.com/tild3636-3236-4563-a530-353163393238/_.jpg',
-  ),
-  Product(
-    title: 'Подарочная карта Калина-Малина номинал 1000 р.',
-    price: '1000 баллов',
-    image:
-    'https://static.tildacdn.com/tild3764-3432-4536-b830-633134313735/_1.jpg',
-  ),
-];
+final _database = FirebaseDatabase(
+  app: Firebase.apps.first,
+  databaseURL:
+      'https://devtime-cff06-default-rtdb.europe-west1.firebasedatabase.app',
+).reference();
+final _auth = FirebaseAuth.instance;
 
 class CartPage extends StatefulWidget {
-  const CartPage({Key? key}) : super(key: key);
-
   @override
   _CartPageState createState() => _CartPageState();
 }
@@ -71,126 +22,224 @@ class _CartPageState extends State<CartPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Корзина', style: TextStyle(color: LightColor.text)),
+        title: Text(
+          'Корзина',
+          style: TextStyle(color: LightColor.text),
+        ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(height: 15),
-            Expanded(
-              child: ListView.builder(
-                itemCount: bag.length,
-                itemBuilder: (ctx, i) {
-                  return Container(
-                    margin: const EdgeInsets.only(bottom: 25),
-                    child: Row(
+      body: StreamBuilder(
+        stream: _database.child('products/').onValue,
+        builder: (context, productsSnapshot) {
+          if (productsSnapshot.hasData) {
+            var _products = List<dynamic>.from(
+                (productsSnapshot.data as Event).snapshot.value);
+            return StreamBuilder(
+              stream: _database
+                  .child('users/${_auth.currentUser!.uid}/cart/')
+                  .onValue,
+              builder: (context, cartSnapshot) {
+                if (cartSnapshot.hasData) {
+                  var _cartData = (cartSnapshot.data as Event).snapshot.value;
+                  var _cart = _cartData == null
+                      ? <String, dynamic>{}
+                      : Map<String, dynamic>.from(_cartData);
+                  num _summ = 0;
+                  for (int i = 0; i < _cart.length; i++) {
+                    int _productIndex = int.parse(_cart.keys.elementAt(i)[8]);
+                    _summ = _summ +
+                        _cart[_cart.keys.elementAt(i)] *
+                            _products[_productIndex]['price'];
+                  }
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15.0),
-                              color: Colors.white,
+                          child: _cartData == null
+                              ? Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                        'graphics/emptyCart.png',
+                                        height: 150,
+                                      ),
+                                      SizedBox(height: 30),
+                                      Text(
+                                        'В корзине нет товаров',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6!
+                                            .copyWith(color: LightColor.text),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : ListView.builder(
+                                  itemCount: _cart.keys.length + 1,
+                                  itemBuilder: (ctx, i) {
+                                    if (i == 0) return SizedBox(height: 15);
+                                    int _productIndex = int.parse(
+                                        _cart.keys.elementAt(i - 1)[8]);
+                                    return Container(
+                                      margin: const EdgeInsets.only(bottom: 25),
+                                      child: Row(
+                                        children: <Widget>[
+                                          Expanded(
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(15.0),
+                                                color: Colors.white,
+                                              ),
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(25),
+                                                child: Container(
+                                                  child: AspectRatio(
+                                                    aspectRatio: 1,
+                                                    child: FadeInImage
+                                                        .assetNetwork(
+                                                      placeholder:
+                                                          'graphics/placeholder.png',
+                                                      image: _products[
+                                                              _productIndex]
+                                                          ['image'],
+                                                      fit: BoxFit.fitWidth,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(width: 15),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                Text(
+                                                  "${_products[_productIndex]['title']}",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .headline6,
+                                                ),
+                                                Text(
+                                                  "${_products[_productIndex]['price']} баллов",
+                                                ),
+                                                SizedBox(height: 15),
+                                                MyCounter(
+                                                    _cart[_cart.keys
+                                                        .elementAt(i - 1)],
+                                                    _productIndex),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                        ),
+                        Divider(),
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    "ИТОГО",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle2!
+                                        .copyWith(
+                                          color: LightColor.textSecondary,
+                                        ),
+                                  ),
+                                  Text(
+                                    "$_summ баллов",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline5!
+                                        .copyWith(
+                                          color: LightColor.text,
+                                        ),
+                                  ),
+                                ],
+                              ),
                             ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(25),
+                            Expanded(
                               child: Container(
-                                child: AspectRatio(
-                                  aspectRatio: 1,
-                                  child: FadeInImage.assetNetwork(
-                                    placeholder: 'graphics/placeholder.png',
-                                    image: bag[i].image,
-                                    fit: BoxFit.fitWidth,
+                                height: 50,
+                                child: ElevatedButton(
+                                  child: Text(
+                                    "КУПИТЬ",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .button!
+                                        .copyWith(color: Colors.white),
+                                  ),
+                                  onPressed: () {},
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            LightColor.accent),
+                                    shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(15.0),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ),
+                            )
+                          ],
                         ),
-                        SizedBox(width: 15),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "${bag[i].title}",
-                                style: Theme.of(context).textTheme.headline6,
-                              ),
-                              Text(
-                                "${bag[i].price}",
-                              ),
-                              SizedBox(height: 15),
-                              MyCounter(),
-                            ],
-                          ),
-                        ),
+                        SizedBox(height: 10),
                       ],
                     ),
                   );
-                },
-              ),
-            ),
-            Divider(),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text("ИТОГО",
-                          style: Theme.of(context).textTheme.subtitle2),
-                      Text("1350 баллов",
-                          style: Theme.of(context).textTheme.headline5),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    height: 50,
-                    child: ElevatedButton(
-                      child: Text(
-                        "КУПИТЬ",
-                        style: Theme.of(context)
-                            .textTheme
-                            .button!
-                            .copyWith(color: Colors.white),
-                      ),
-                      onPressed: () {},
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(LightColor.accent),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                        ),
-                      ),
+                } else {
+                  return Center(
+                    child: CircularProgressIndicator(
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(LightColor.accent),
                     ),
-                  ),
-                )
-              ],
-            ),
-          ],
-        ),
+                  );
+                }
+              },
+            );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(LightColor.accent),
+              ),
+            );
+          }
+        },
       ),
     );
   }
 }
 
 class MyCounter extends StatefulWidget {
-  const MyCounter();
+  int currentAmount;
+  int index;
+
+  MyCounter(this.currentAmount, this.index);
 
   @override
   _MyCounterState createState() => _MyCounterState();
 }
 
 class _MyCounterState extends State<MyCounter> {
-  int _currentAmount = 0;
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return new Row(
       children: <Widget>[
         GestureDetector(
           child: Container(
@@ -204,15 +253,20 @@ class _MyCounterState extends State<MyCounter> {
               color: Colors.white,
             ),
           ),
-          onTap: () {
-            setState(() {
-              _currentAmount -= 1;
-            });
+          onTap: () async {
+            var _cartRef =
+                _database.child('users/${_auth.currentUser!.uid}/cart/');
+            if (widget.currentAmount > 1)
+              await _cartRef.update(
+                  {'product_${widget.index}': widget.currentAmount - 1});
+            else
+              await _cartRef.update({'product_${widget.index}': null});
+            setState(() {});
           },
         ),
         SizedBox(width: 15),
         Text(
-          "$_currentAmount",
+          "${widget.currentAmount}",
           style: Theme.of(context).textTheme.headline6,
         ),
         SizedBox(width: 15),
@@ -228,10 +282,12 @@ class _MyCounterState extends State<MyCounter> {
               color: Colors.white,
             ),
           ),
-          onTap: () {
-            setState(() {
-              _currentAmount += 1;
-            });
+          onTap: () async {
+            var _cartRef =
+                _database.child('users/${_auth.currentUser!.uid}/cart/');
+            await _cartRef
+                .update({'product_${widget.index}': widget.currentAmount + 1});
+            setState(() {});
           },
         ),
       ],

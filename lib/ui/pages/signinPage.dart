@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'dart:convert';
 
-import 'package:tochka_sbora/helper/models/userModel.dart';
 import 'package:tochka_sbora/helper/services/local_storage_service.dart';
 import 'package:tochka_sbora/ui/pages/SMSPage.dart';
 import 'package:tochka_sbora/ui/themes/colors.dart';
@@ -30,90 +28,88 @@ class _SignInPageState extends State<SignInPage> {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 30),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Padding(
-                child: Align(
-                  alignment: Alignment.bottomLeft,
-                  child: RichText(
-                    text: TextSpan(
-                      style: TextStyle(
-                        fontSize: 25,
-                        color: LightColor.text,
-                      ),
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: 'Добро пожаловать',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
+        padding: EdgeInsets.symmetric(horizontal: 30),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Padding(
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                      fontSize: 25,
+                      color: LightColor.text,
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: 'Добро пожаловать',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-                padding: const EdgeInsets.symmetric(
-                  vertical: 25,
+              ),
+              padding: const EdgeInsets.symmetric(
+                vertical: 25,
+              ),
+            ),
+            Padding(
+              child: TextFormField(
+                controller: _phoneNumberController,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (val) {
+                  return val!.isEmpty
+                      ? 'Пожалуйста, введите номер телефона'
+                      : null;
+                },
+                inputFormatters: [
+                  PhoneInputFormatter(),
+                ],
+                keyboardType: TextInputType.phone,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Номер телефона',
+                  //TODO цвет ввода
                 ),
               ),
-              Padding(
-                child: TextFormField(
-                  controller: _phoneNumberController,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (val) {
-                    return val!.isEmpty
-                        ? 'Пожалуйста, введите номер телефона'
-                        : null;
+              padding: EdgeInsets.symmetric(
+                vertical: 10,
+              ),
+            ),
+            Padding(
+              child: Container(
+                height: 50,
+                width: 175,
+                decoration: BoxDecoration(
+                  color: AppTheme.lightTheme.accentColor,
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                child: TextButton(
+                  child: Text(
+                    'Продолжить',
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                  onPressed: () async {
+                    if (await _verifyPhoneNumber()) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SMSPage(),
+                        ),
+                      );
+                    }
                   },
-                  inputFormatters: [
-                    PhoneInputFormatter(),
-                  ],
-                  keyboardType: TextInputType.phone,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Номер телефона',
-                    //TODO цвет ввода
-                  ),
-                ),
-                padding: EdgeInsets.symmetric(
-                  vertical: 10,
                 ),
               ),
-              Padding(
-                child: Container(
-                  height: 50,
-                  width: 175,
-                  decoration: BoxDecoration(
-                    color: AppTheme.lightTheme.accentColor,
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  child: TextButton(
-                    child: Text(
-                      'Продолжить',
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    ),
-                    onPressed: () async {
-                      if (await _verifyPhoneNumber()) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SMSPage(),
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                ),
-                padding: const EdgeInsets.symmetric(
-                  vertical: 20,
-                ),
+              padding: const EdgeInsets.symmetric(
+                vertical: 20,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -144,7 +140,7 @@ class _SignInPageState extends State<SignInPage> {
       _auth.setLanguageCode("ru");
       await _auth.verifyPhoneNumber(
         phoneNumber: _phoneNumberController.text,
-        timeout: const Duration(seconds: 5),
+        timeout: const Duration(seconds: 0),
         verificationCompleted: verificationCompleted,
         verificationFailed: verificationFailed,
         codeSent: codeSent,
