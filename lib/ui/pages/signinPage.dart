@@ -72,8 +72,11 @@ class _SignInPageState extends State<SignInPage> {
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: LightColor.accent, width: 2.0)
+                  ),
                   labelText: 'Номер телефона',
-                  //TODO цвет ввода
+                  labelStyle: TextStyle(color: LightColor.accent)
                 ),
               ),
               padding: EdgeInsets.symmetric(
