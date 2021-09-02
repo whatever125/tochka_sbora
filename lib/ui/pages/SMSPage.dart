@@ -83,7 +83,7 @@ class _SMSPageState extends State<SMSPage> {
                 cursor: Cursor(
                   color: LightColor.accent,
                   width: 2,
-                  height: 40,
+                  height: 30,
                   radius: Radius.circular(1),
                   enabled: true,
                 ),

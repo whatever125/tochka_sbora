@@ -83,7 +83,7 @@ class _SMSCheckPageState extends State<SMSCheckPage> {
                 cursor: Cursor(
                   color: LightColor.accent,
                   width: 2,
-                  height: 40,
+                  height: 30,
                   radius: Radius.circular(1),
                   enabled: true,
                 ),
@@ -116,7 +116,6 @@ class _SMSCheckPageState extends State<SMSCheckPage> {
                     if (await _signInWithPhoneNumber(context)) {
                       var _userRef =
                           _database.child('users/${_auth.currentUser!.uid}/');
-                      // TODO await send email
                       if (await _sendEmail()) {
                         await _userRef.update({'cart': null});
                         Navigator.of(context).pop();

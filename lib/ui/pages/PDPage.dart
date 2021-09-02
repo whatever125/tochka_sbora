@@ -66,15 +66,6 @@ class _PDPageState extends State<PDPage> {
                 vertical: 25,
               ),
             ),
-            Text(
-              '*Фамилия',
-              style: TextStyle(
-                color: Theme.of(context).hintColor,
-              ),
-            ),
-            SizedBox(
-              height: 5,
-            ),
             TextFormField(
               controller: lastNameController,
               autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -86,22 +77,16 @@ class _PDPageState extends State<PDPage> {
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: LightColor.accent, width: 2.0)
+                    borderSide: BorderSide(color: LightColor.text, width: 1.0)
                 ),
+                labelText: '*Фамилия',
+                labelStyle: TextStyle(color: LightColor.text),
                 isDense: true
               ),
+              cursorColor: LightColor.accent,
             ),
             SizedBox(
               height: 15,
-            ),
-            Text(
-              '*Имя',
-              style: TextStyle(
-                color: Theme.of(context).hintColor,
-              ),
-            ),
-            SizedBox(
-              height: 5,
             ),
             TextFormField(
               controller: firstNameController,
@@ -114,22 +99,16 @@ class _PDPageState extends State<PDPage> {
               decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: LightColor.accent, width: 2.0)
+                      borderSide: BorderSide(color: LightColor.text, width: 1.0)
                   ),
+                  labelText: '*Имя',
+                  labelStyle: TextStyle(color: LightColor.text),
                   isDense: true
               ),
+              cursorColor: LightColor.accent,
             ),
             SizedBox(
               height: 15,
-            ),
-            Text(
-              'Отчество',
-              style: TextStyle(
-                color: Theme.of(context).hintColor,
-              ),
-            ),
-            SizedBox(
-              height: 5,
             ),
             TextFormField(
               controller: patronymicController,
@@ -142,10 +121,13 @@ class _PDPageState extends State<PDPage> {
               decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: LightColor.accent, width: 2.0)
+                      borderSide: BorderSide(color: LightColor.text, width: 1.0)
                   ),
+                  labelText: 'Отчество',
+                  labelStyle: TextStyle(color: LightColor.text),
                   isDense: true
               ),
+              cursorColor: LightColor.accent,
             ),
             SizedBox(
               height: 30,
