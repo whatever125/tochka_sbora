@@ -133,7 +133,6 @@ class _SMSPageState extends State<SMSPage> {
       verificationId: await StorageManager.readData('verificationId'),
       smsCode: _smsController.text,
     );
-    await StorageManager.removeData('verificationId');
     var _uid = (await _auth.signInWithCredential(credential)).user!.uid;
     final _userRef = _database.child('users/$_uid/');
     await _userRef.once().then((snapshot) async {

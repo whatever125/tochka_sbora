@@ -200,7 +200,6 @@ class _PDPageState extends State<PDPage> {
 
   Future<bool> _fetchUser() async {
     var _firstName = firstNameController.text;
-    print(_firstName);
     var _lastName = lastNameController.text;
     var _patronymic = patronymicController.text;
     var _phoneNumber = await StorageManager.readData('phoneNumber');
@@ -211,9 +210,7 @@ class _PDPageState extends State<PDPage> {
       surname: _lastName,
     );
     await StorageManager.removeData('phoneNumber');
-    print(_user.name);
     final _userRef = _database.child('users/${_auth.currentUser!.uid}/');
-    print(_user.toJson());
     await _userRef.update(_user.toJson());
     return true;
   }

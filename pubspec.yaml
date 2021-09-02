@@ -56,6 +56,7 @@ dependencies:
   screen_brightness: ^0.0.4
   wakelock: ^0.5.3+3
   connectivity: ^3.0.6
+  mailer: ^5.0.2
 
 flutter_icons:
   android: true

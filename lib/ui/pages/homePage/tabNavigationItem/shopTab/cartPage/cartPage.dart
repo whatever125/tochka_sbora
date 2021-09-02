@@ -4,6 +4,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:tochka_sbora/ui/themes/colors.dart';
+import 'checkOutPage.dart';
 
 final _database = FirebaseDatabase(
   app: Firebase.apps.first,
@@ -90,7 +91,7 @@ class _CartPageState extends State<CartPage> {
                                             child: Container(
                                               decoration: BoxDecoration(
                                                 borderRadius:
-                                                    BorderRadius.circular(15.0),
+                                                    BorderRadius.circular(25.0),
                                                 color: Colors.white,
                                               ),
                                               child: ClipRRect(
@@ -181,7 +182,12 @@ class _CartPageState extends State<CartPage> {
                                         .button!
                                         .copyWith(color: Colors.white),
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                          builder: (context) => CheckOutPage()),
+                                    );
+                                  },
                                   style: ButtonStyle(
                                     backgroundColor:
                                         MaterialStateProperty.all<Color>(

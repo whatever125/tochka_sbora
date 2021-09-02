@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:tochka_sbora/ui/themes/colors.dart';
 import 'tabNavigationItem/tabNavigationItem.dart';
-import 'tabNavigationItem/shopTab/cartPage.dart';
+import 'tabNavigationItem/shopTab/cartPage/cartPage.dart';
 
 class HomePage extends StatefulWidget {
   @override
