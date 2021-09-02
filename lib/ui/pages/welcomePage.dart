@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter/services.dart';
 
 import 'package:tochka_sbora/ui/themes/colors.dart';
 import 'package:tochka_sbora/ui/pages/signinPage.dart';
@@ -13,6 +14,10 @@ class WelcomePage extends StatefulWidget {
 class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Theme.of(context).backgroundColor,
+      statusBarIconBrightness: Brightness.dark
+    ));
     return Scaffold(
       body: SafeArea(
         child: Container(

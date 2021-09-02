@@ -85,7 +85,10 @@ class _PDPageState extends State<PDPage> {
               textCapitalization: TextCapitalization.words,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                isDense: true,
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: LightColor.accent, width: 2.0)
+                ),
+                isDense: true
               ),
             ),
             SizedBox(
@@ -109,8 +112,11 @@ class _PDPageState extends State<PDPage> {
               keyboardType: TextInputType.name,
               textCapitalization: TextCapitalization.words,
               decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                isDense: true,
+                  border: OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: LightColor.accent, width: 2.0)
+                  ),
+                  isDense: true
               ),
             ),
             SizedBox(
@@ -134,8 +140,11 @@ class _PDPageState extends State<PDPage> {
               keyboardType: TextInputType.name,
               textCapitalization: TextCapitalization.words,
               decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                isDense: true,
+                  border: OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: LightColor.accent, width: 2.0)
+                  ),
+                  isDense: true
               ),
             ),
             SizedBox(
