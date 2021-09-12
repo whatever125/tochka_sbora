@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:tochka_sbora/ui/themes/colors.dart';
 import 'package:tochka_sbora/ui/pages/signinPage.dart';
 import 'package:tochka_sbora/ui/themes/theme.dart';
+import 'package:metrica_plugin/metrica_plugin.dart';
 
 class WelcomePage extends StatefulWidget {
   @override
@@ -14,6 +15,7 @@ class WelcomePage extends StatefulWidget {
 class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
+    MetricaPlugin.reportEvent("Пользователь вошёл в приложение", attributes: {"attribute_1": "value_1", "attribute_2": "value_2"});
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Theme.of(context).backgroundColor,
       statusBarIconBrightness: Brightness.dark
@@ -66,6 +68,7 @@ class _WelcomePageState extends State<WelcomePage> {
                       context,
                       MaterialPageRoute(builder: (context) => SignInPage()),
                     ),
+
                   },
                 ),
               ),

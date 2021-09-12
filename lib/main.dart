@@ -5,8 +5,11 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'package:tochka_sbora/ui/pages/splashPage.dart';
 import 'package:tochka_sbora/ui/themes/theme.dart';
+import 'package:metrica_plugin/metrica_plugin.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  MetricaPlugin.activate("60c0b40a-68f0-4963-bd4d-af0fcaf23bfd");
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   WidgetsFlutterBinding.ensureInitialized();
