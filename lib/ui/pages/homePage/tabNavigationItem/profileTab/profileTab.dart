@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:metrica_plugin/metrica_plugin.dart';
 
 import 'package:tochka_sbora/ui/themes/colors.dart';
 import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/profileTab/settingsPage/settingsPage.dart';
@@ -25,6 +26,7 @@ class _ProfileTabState extends State<ProfileTab> {
   void initState() {
     super.initState();
     _uid = _getUID();
+    MetricaPlugin.reportEvent('Пользователь открыл профиль');
   }
 
   _getUID() async {
@@ -89,12 +91,12 @@ class _ProfileTabState extends State<ProfileTab> {
                                 ),
                               ),
                               TextButton(
-                                onPressed: () => {
+                                onPressed: () async {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => QRPage()),
-                                  ),
+                                  );
                                 },
                                 child: Icon(
                                   Icons.qr_code,

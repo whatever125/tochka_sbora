@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:metrica_plugin/metrica_plugin.dart';
 
 import 'package:tochka_sbora/ui/themes/colors.dart';
 import 'tabNavigationItem/tabNavigationItem.dart';
@@ -26,6 +27,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _admin = _isAdmin();
+    MetricaPlugin.reportEvent("HomePage");
   }
 
   Future<bool> _isAdmin() async {
@@ -55,7 +57,8 @@ class _HomePageState extends State<HomePage> {
                   ? [
                       IconButton(
                         icon: Icon(Icons.card_travel),
-                        onPressed: () {
+                        onPressed: () async {
+                          await MetricaPlugin.reportEvent("Пользователь открыл корзину");
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => CartPage(),

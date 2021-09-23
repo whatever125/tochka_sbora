@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:metrica_plugin/metrica_plugin.dart';
 
 import 'package:tochka_sbora/ui/themes/colors.dart';
 import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/shopTab/productPage.dart';
@@ -19,6 +20,12 @@ class ShopTabState extends State<ShopTab> {
   ).reference();
 
   @override
+  void initState() {
+    super.initState();
+    MetricaPlugin.reportEvent('Пользователь открыл магазин');
+  }
+
+  @override
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: _database.child('products/').onValue,
@@ -31,7 +38,8 @@ class ShopTabState extends State<ShopTab> {
             itemCount: _products.length,
             itemBuilder: (BuildContext context, int index) {
               return GestureDetector(
-                onTap: () {
+                onTap: () async {
+                  await MetricaPlugin.reportEvent("Пользователь открыл товар", attributes: {"Название": _products[index]['title']});
                   Navigator.push(
                     context,
                     MaterialPageRoute(

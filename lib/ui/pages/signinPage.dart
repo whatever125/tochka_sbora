@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:metrica_plugin/metrica_plugin.dart';
 
 import 'package:tochka_sbora/helper/services/local_storage_service.dart';
 import 'package:tochka_sbora/ui/pages/SMSPage.dart';
@@ -71,13 +72,12 @@ class _SignInPageState extends State<SignInPage> {
                 ],
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: LightColor.text, width: 1.0)
-                  ),
-                  labelText: 'Номер телефона',
-                  labelStyle: TextStyle(color: LightColor.text)
-                ),
+                    border: OutlineInputBorder(),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: LightColor.text, width: 1.0)),
+                    labelText: 'Номер телефона',
+                    labelStyle: TextStyle(color: LightColor.text)),
                 cursorColor: LightColor.accent,
               ),
               padding: EdgeInsets.symmetric(
@@ -99,6 +99,8 @@ class _SignInPageState extends State<SignInPage> {
                   ),
                   onPressed: () async {
                     if (await _verifyPhoneNumber()) {
+                      await MetricaPlugin.reportEvent(
+                          "Пользователь ввел номер телефона");
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -120,6 +122,7 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   Future<bool> _verifyPhoneNumber() async {
+    if (_phoneNumberController.text == '') return false;
     PhoneVerificationCompleted verificationCompleted =
         (PhoneAuthCredential phoneAuthCredential) async {
       await _auth.signInWithCredential(phoneAuthCredential);
@@ -127,8 +130,12 @@ class _SignInPageState extends State<SignInPage> {
     };
     PhoneVerificationFailed verificationFailed =
         (FirebaseAuthException authException) {
-      _showSnackbar(
-          'Код ошибки: ${authException.code}. Сообщение: ${authException.message}');
+      var _error = authException.code;
+      if (_error == 'invalid-phone-number')
+        _showSnackbar("Неправильно набран номер");
+      else
+        _showSnackbar(
+            'Код ошибки: ${authException.code}. Сообщение: ${authException.message}');
     };
     PhoneCodeSent codeSent =
         (String verificationId, [int? forceResendingToken]) async {
@@ -140,21 +147,16 @@ class _SignInPageState extends State<SignInPage> {
       StorageManager.saveData('verificationId', verificationId);
     };
 
-    try {
-      _auth.setLanguageCode("ru");
-      await _auth.verifyPhoneNumber(
-        phoneNumber: _phoneNumberController.text,
-        timeout: const Duration(seconds: 0),
-        verificationCompleted: verificationCompleted,
-        verificationFailed: verificationFailed,
-        codeSent: codeSent,
-        codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
-      );
-      StorageManager.saveData('phoneNumber', _phoneNumberController.text);
-    } catch (e) {
-      _showSnackbar("SignIn Ошибка: $e");
-      return false;
-    }
+    _auth.setLanguageCode("ru");
+    await _auth.verifyPhoneNumber(
+      phoneNumber: _phoneNumberController.text,
+      timeout: const Duration(seconds: 0),
+      verificationCompleted: verificationCompleted,
+      verificationFailed: verificationFailed,
+      codeSent: codeSent,
+      codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
+    );
+    StorageManager.saveData('phoneNumber', _phoneNumberController.text);
     return true;
   }
 

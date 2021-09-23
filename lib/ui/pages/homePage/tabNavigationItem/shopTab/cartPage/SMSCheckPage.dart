@@ -5,7 +5,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:mailer/smtp_server.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 import 'package:mailer/mailer.dart';
-import 'package:mailer/smtp_server.dart';
+import 'package:metrica_plugin/metrica_plugin.dart';
 
 import 'package:tochka_sbora/ui/themes/colors.dart';
 import 'package:tochka_sbora/ui/themes/theme.dart';
@@ -117,7 +117,24 @@ class _SMSCheckPageState extends State<SMSCheckPage> {
                       var _userRef =
                           _database.child('users/${_auth.currentUser!.uid}/');
                       if (await _sendEmail()) {
+                        await _userRef.once().then((userSnapshot) async {
+                          var _productsRef = _database.child('products/');
+                          await _productsRef.once().then((productsSnapshot) async {
+                            var _productsRefData = productsSnapshot.value;
+                            var _userRefData = userSnapshot.value;
+                            num _summ = 0;
+                            var _cart = Map<String, dynamic>.from(_userRefData['cart']);
+                            for (int i = 0; i < _cart.length; i++) {
+                              int _productIndex = int.parse(_cart.keys.elementAt(i)[8]);
+                              _summ = _summ +
+                                  _cart[_cart.keys.elementAt(i)] *
+                                      _productsRefData[_productIndex]['price'];
+                            }
+                            await _userRef.update({'coins': _userRefData['coins'] -  _summ});
+                          });
+                        });
                         await _userRef.update({'cart': null});
+                        await MetricaPlugin.reportEvent('Пользователь сделал заказ');
                         Navigator.of(context).pop();
                         Navigator.of(context).pop();
                         Navigator.of(context).pop();
@@ -145,7 +162,11 @@ class _SMSCheckPageState extends State<SMSCheckPage> {
       var _uid = (await _auth.signInWithCredential(credential)).user!.uid;
       return true;
     } catch (e) {
-      _showSnackbar("SMS Ошибка: " + e.toString());
+      var _error = e.toString();
+      if (_error.contains('invalid-verification-code') | _error.contains('invalid-verification-id'))
+        _showSnackbar("Неверный SMS код");
+      else
+        _showSnackbar("SMS Ошибка: " + _error);
       return false;
     }
   }

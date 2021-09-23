@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:sms_autofill/sms_autofill.dart';
+import 'package:metrica_plugin/metrica_plugin.dart';
 
 import 'package:tochka_sbora/ui/themes/colors.dart';
 import 'package:tochka_sbora/ui/themes/theme.dart';
@@ -128,35 +129,40 @@ class _SMSPageState extends State<SMSPage> {
   }
 
   _signInWithPhoneNumber(context) async {
-    // try {
-    final AuthCredential credential = PhoneAuthProvider.credential(
-      verificationId: await StorageManager.readData('verificationId'),
-      smsCode: _smsController.text,
-    );
-    var _uid = (await _auth.signInWithCredential(credential)).user!.uid;
-    final _userRef = _database.child('users/$_uid/');
-    await _userRef.once().then((snapshot) async {
-      var userData = snapshot.value;
-      if (userData == null) {
-        _autoFill.unregisterListener();
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => PDPage()),
-        );
-      } else {
-        _autoFill.unregisterListener();
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) => HomePage(),
-          ),
-          (Route<dynamic> route) => false,
-        );
-      }
-    });
-    // } catch (e) {
-    //   _showSnackbar("SMS Ошибка: " + e.toString());
-    //   return false;
-    // }
+    try {
+      final AuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: await StorageManager.readData('verificationId'),
+        smsCode: _smsController.text,
+      );
+      var _uid = (await _auth.signInWithCredential(credential)).user!.uid;
+      final _userRef = _database.child('users/$_uid/');
+      await _userRef.once().then((snapshot) async {
+        var userData = snapshot.value;
+        if (userData == null) {
+          _autoFill.unregisterListener();
+          await MetricaPlugin.reportEvent("Пользователь успешно ввел код");
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => PDPage()),
+          );
+        } else {
+          _autoFill.unregisterListener();
+          await MetricaPlugin.reportEvent("Пользователь успешно ввел код");
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomePage(),
+            ),
+            (Route<dynamic> route) => false,
+          );
+        }
+      });
+    } catch (e) {
+      var _error = e.toString();
+      if (_error.contains('invalid-verification-code') | _error.contains('invalid-verification-id'))
+        _showSnackbar("Неверный SMS код");
+      else
+        _showSnackbar("SMS Ошибка: " + _error);
+    }
   }
 
   void _showSnackbar(message) {

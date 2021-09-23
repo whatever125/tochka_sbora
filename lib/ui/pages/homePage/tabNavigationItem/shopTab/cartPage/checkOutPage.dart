@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/shopTab/cartPage/chooseShopPage.dart';
+import 'package:metrica_plugin/metrica_plugin.dart';
 
 import 'package:tochka_sbora/ui/themes/colors.dart';
 import 'package:tochka_sbora/helper/services/local_storage_service.dart';
@@ -298,6 +299,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                                               .copyWith(color: Colors.white),
                                         ),
                                         onPressed: () async {
+                                          await MetricaPlugin.reportEvent('Пользователь подтвердил информацию о заказе');
                                           if (await _verifyPhoneNumber()) {
                                           Navigator.of(context).push(
                                             MaterialPageRoute(

@@ -9,7 +9,7 @@ import 'package:metrica_plugin/metrica_plugin.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  MetricaPlugin.activate("60c0b40a-68f0-4963-bd4d-af0fcaf23bfd");
+  MetricaPlugin.activate("c763da9f-b76e-4bee-ba5f-56333cbc7c63");
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   WidgetsFlutterBinding.ensureInitialized();

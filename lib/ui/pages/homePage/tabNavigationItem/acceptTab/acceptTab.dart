@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:metrica_plugin/metrica_plugin.dart';
 
 import 'package:tochka_sbora/ui/themes/colors.dart';
 
@@ -33,6 +34,7 @@ class _AcceptTabState extends State<AcceptTab> {
   void initState() {
     super.initState();
     _user = _getUser();
+    MetricaPlugin.reportEvent('Отсканирован QR пользователя');
   }
 
   Future<Map<String, dynamic>> _getUser() async {
@@ -605,6 +607,7 @@ class _AcceptTabState extends State<AcceptTab> {
                               _plasticMK2Count +
                               _plasticMK5Count,
                         });
+                        MetricaPlugin.reportEvent('Пользователю начислены баллы');
                         Navigator.pop(context);
                       },
                     ),

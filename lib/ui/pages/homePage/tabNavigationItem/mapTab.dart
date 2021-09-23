@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:metrica_plugin/metrica_plugin.dart';
 
 class MapTab extends StatefulWidget {
   @override
@@ -11,6 +12,12 @@ class _MapTabState extends State<MapTab> {
   Completer<GoogleMapController> _controller = Completer();
 
   static const LatLng _center = const LatLng(55.354968, 86.087314);
+
+  @override
+  void initState() {
+    super.initState();
+    MetricaPlugin.reportEvent('Пользователь открыл карту');
+  }
 
   void _onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);

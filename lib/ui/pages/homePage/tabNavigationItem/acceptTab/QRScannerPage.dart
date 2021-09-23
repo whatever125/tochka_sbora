@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:metrica_plugin/metrica_plugin.dart';
 
 import 'package:tochka_sbora/ui/themes/colors.dart';
 import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/acceptTab/acceptTab.dart';
@@ -17,6 +18,7 @@ class _ScannerState extends State<Scanner> {
   @override
   void initState() {
     super.initState();
+    MetricaPlugin.reportEvent('Пользователь открыл QR сканер');
   }
 
   @override

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:metrica_plugin/metrica_plugin.dart';
 
 import 'package:tochka_sbora/ui/themes/colors.dart';
 
@@ -108,6 +109,7 @@ class _ProductPageState extends State<ProductPage> {
                     var num = await (await _productRef.once()).value;
                     num = num == null ? 0 : num;
                     await _cartRef.update({'product_${widget.index}': num + 1});
+                    await MetricaPlugin.reportEvent('Пользователь добавил товар в корзину', attributes: {"Название": _product['title']});
                   }
                   Navigator.of(context).pop();
                 },

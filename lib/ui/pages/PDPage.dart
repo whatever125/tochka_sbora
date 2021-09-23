@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:metrica_plugin/metrica_plugin.dart';
 
 import 'package:tochka_sbora/helper/services/local_storage_service.dart';
 import 'package:tochka_sbora/helper/models/userModel.dart';
@@ -145,6 +146,7 @@ class _PDPageState extends State<PDPage> {
                     ),
                     onPressed: () async {
                       if (await _fetchUser())
+                        await MetricaPlugin.reportEvent("Пользователь ввел персональные данные");
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(builder: (context) => HomePage()),

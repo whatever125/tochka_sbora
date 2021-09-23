@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:metrica_plugin/metrica_plugin.dart';
 
 import 'package:tochka_sbora/ui/themes/colors.dart';
 import 'package:tochka_sbora/ui/pages/welcomePage.dart';
@@ -15,6 +16,12 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    MetricaPlugin.reportEvent('Пользователь открыл настройки');
+  }
 
   Future<void> _signOut() async {
     await _auth.signOut();
@@ -50,6 +57,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   title: 'Выйти',
                   onPressed: () async {
                     await _signOut();
+                    await MetricaPlugin.reportEvent('Пользователь вышел из аккаунта');
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(

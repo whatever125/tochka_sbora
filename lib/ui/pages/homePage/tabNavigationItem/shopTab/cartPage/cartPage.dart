@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:metrica_plugin/metrica_plugin.dart';
 
 import 'package:tochka_sbora/ui/themes/colors.dart';
 import 'checkOutPage.dart';
@@ -35,12 +37,13 @@ class _CartPageState extends State<CartPage> {
             var _products = List<dynamic>.from(
                 (productsSnapshot.data as Event).snapshot.value);
             return StreamBuilder(
-              stream: _database
-                  .child('users/${_auth.currentUser!.uid}/cart/')
-                  .onValue,
+              stream:
+                  _database.child('users/${_auth.currentUser!.uid}/').onValue,
               builder: (context, cartSnapshot) {
                 if (cartSnapshot.hasData) {
-                  var _cartData = (cartSnapshot.data as Event).snapshot.value;
+                  var _cartSnapshotData =
+                      (cartSnapshot.data as Event).snapshot.value;
+                  var _cartData = _cartSnapshotData['cart'];
                   var _cart = _cartData == null
                       ? <String, dynamic>{}
                       : Map<String, dynamic>.from(_cartData);
@@ -182,7 +185,28 @@ class _CartPageState extends State<CartPage> {
                                         .button!
                                         .copyWith(color: Colors.white),
                                   ),
-                                  onPressed: () {
+                                  onPressed: () async {
+                                    var _userCoins = _cartSnapshotData['coins'];
+                                    var _random = new Random();
+                                    var _list = {
+                                      'aluminiumCans': 'алюминия',
+                                      'cardboard': 'картона',
+                                      'glass': 'стекла',
+                                      'plasticBottles': 'пластиковых бутылок',
+                                      'plasticLids': 'пластиковых крышек',
+                                      'plasticMK2': 'ПНД',
+                                      'plasticMK5': 'ПП',
+                                      'wastepaper': 'макулатуры',
+                                    };
+                                    var _element =
+                                        _list.keys.elementAt(_random.nextInt(_list.length));
+                                    var _delta = _summ - _userCoins;
+                                    if (_userCoins < _summ) {
+                                      _showSnackbar('Недостаточно баллов. Нужно сдать еще ${_delta * 50} г. ${_list[_element]}!');
+                                      return;
+                                    }
+                                    await MetricaPlugin.reportEvent(
+                                        'Пользователь перешел к оформлению заказа');
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                           builder: (context) => CheckOutPage()),
@@ -229,6 +253,13 @@ class _CartPageState extends State<CartPage> {
         },
       ),
     );
+  }
+
+  void _showSnackbar(message) {
+    final snackBar = SnackBar(
+      content: Text(message),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
 
@@ -291,7 +322,7 @@ class _MyCounterState extends State<MyCounter> {
           onTap: () async {
             var _cartRef =
                 _database.child('users/${_auth.currentUser!.uid}/cart/');
-            await _cartRef
+            if (widget.currentAmount < 1000) await _cartRef
                 .update({'product_${widget.index}': widget.currentAmount + 1});
             setState(() {});
           },

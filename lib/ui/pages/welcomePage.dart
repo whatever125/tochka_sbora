@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
+import 'package:metrica_plugin/metrica_plugin.dart';
 
 import 'package:tochka_sbora/ui/themes/colors.dart';
 import 'package:tochka_sbora/ui/pages/signinPage.dart';
 import 'package:tochka_sbora/ui/themes/theme.dart';
-import 'package:metrica_plugin/metrica_plugin.dart';
 
 class WelcomePage extends StatefulWidget {
   @override
@@ -14,8 +14,13 @@ class WelcomePage extends StatefulWidget {
 
 class _WelcomePageState extends State<WelcomePage> {
   @override
+  void initState() {
+    MetricaPlugin.reportEvent("WelcomePage", attributes: {"attribute_1": "value_1", "attribute_2": "value_2"});
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    MetricaPlugin.reportEvent("Пользователь вошёл в приложение", attributes: {"attribute_1": "value_1", "attribute_2": "value_2"});
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Theme.of(context).backgroundColor,
       statusBarIconBrightness: Brightness.dark
@@ -63,12 +68,12 @@ class _WelcomePageState extends State<WelcomePage> {
                     'Начать',
                     style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
-                  onPressed: () => {
+                  onPressed: () async {
+                    await MetricaPlugin.reportEvent('Пользователь нажал кнопку "Начать"');
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => SignInPage()),
-                    ),
-
+                    );
                   },
                 ),
               ),

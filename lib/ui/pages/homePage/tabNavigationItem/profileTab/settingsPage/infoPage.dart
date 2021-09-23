@@ -14,7 +14,7 @@ class InfoPage extends StatelessWidget {
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
         child: Text(
-          'Версия 1.0.0\n\nСделано с любовью в России, г. Кемерово.\nПриложение создано для помощи нашему городу и вознаграждения заинтересованных в этом людей.',
+          'Версия 1.1.11\n\nСделано с любовью в России, г. Кемерово.\nПриложение создано для помощи нашему городу и вознаграждения заинтересованных в этом людей.',
           style: TextStyle(
             color: LightColor.text,
             fontSize: 18,
