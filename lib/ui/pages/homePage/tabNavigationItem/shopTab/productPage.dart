@@ -45,21 +45,18 @@ class _ProductPageState extends State<ProductPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(height: 15),
-                        Hero(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(25),
-                            child: Container(
-                              child: AspectRatio(
-                                aspectRatio: 1,
-                                child: FadeInImage.assetNetwork(
-                                  placeholder: 'graphics/placeholder.png',
-                                  image: _product['image'],
-                                  fit: BoxFit.fitWidth,
-                                ),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(25),
+                          child: Container(
+                            child: AspectRatio(
+                              aspectRatio: 1,
+                              child: FadeInImage.assetNetwork(
+                                placeholder: 'graphics/placeholder.png',
+                                image: _product['image'],
+                                fit: BoxFit.fitWidth,
                               ),
                             ),
                           ),
-                          tag: 'productImage${widget.index}',
                         ),
                         SizedBox(
                           height: 20,
@@ -88,6 +85,9 @@ class _ProductPageState extends State<ProductPage> {
                                     color: LightColor.textSecondary,
                                   ),
                         ),
+                        SizedBox(
+                          height: 100,
+                        ),
                       ],
                     ),
                   ],
@@ -103,13 +103,16 @@ class _ProductPageState extends State<ProductPage> {
                 ),
                 onPressed: () async {
                   if (_product['available']) {
-                    var _cartRef =
-                    _database.child('users/${_auth.currentUser!.uid}/cart/');
-                    var _productRef = _cartRef.child('product_${widget.index}/');
+                    var _cartRef = _database
+                        .child('users/${_auth.currentUser!.uid}/cart/');
+                    var _productRef =
+                        _cartRef.child('product_${widget.index}/');
                     var num = await (await _productRef.once()).value;
                     num = num == null ? 0 : num;
                     await _cartRef.update({'product_${widget.index}': num + 1});
-                    await MetricaPlugin.reportEvent('Пользователь добавил товар в корзину', attributes: {"Название": _product['title']});
+                    await MetricaPlugin.reportEvent(
+                        'Пользователь добавил товар в корзину',
+                        attributes: {"Название": _product['title']});
                   }
                   Navigator.of(context).pop();
                 },

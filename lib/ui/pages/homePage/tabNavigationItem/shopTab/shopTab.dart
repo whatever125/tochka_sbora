@@ -16,7 +16,7 @@ class ShopTabState extends State<ShopTab> {
   final _database = FirebaseDatabase(
     app: Firebase.apps.first,
     databaseURL:
-    'https://devtime-cff06-default-rtdb.europe-west1.firebasedatabase.app',
+        'https://devtime-cff06-default-rtdb.europe-west1.firebasedatabase.app',
   ).reference();
 
   @override
@@ -31,7 +31,8 @@ class ShopTabState extends State<ShopTab> {
       stream: _database.child('products/').onValue,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          var _products = List<dynamic>.from((snapshot.data as Event).snapshot.value);
+          var _products =
+              List<dynamic>.from((snapshot.data as Event).snapshot.value);
           return StaggeredGridView.countBuilder(
             padding: EdgeInsets.all(15.0),
             crossAxisCount: 4,
@@ -39,7 +40,8 @@ class ShopTabState extends State<ShopTab> {
             itemBuilder: (BuildContext context, int index) {
               return GestureDetector(
                 onTap: () async {
-                  await MetricaPlugin.reportEvent("Пользователь открыл товар", attributes: {"Название": _products[index]['title']});
+                  await MetricaPlugin.reportEvent("Пользователь открыл товар",
+                      attributes: {"Название": _products[index]['title']});
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -56,18 +58,15 @@ class ShopTabState extends State<ShopTab> {
                   ),
                   child: Column(
                     children: [
-                      Hero(
-                        child: Container(
-                          child: AspectRatio(
-                            aspectRatio: 1,
-                            child: FadeInImage.assetNetwork(
-                              placeholder: 'graphics/placeholder.png',
-                              image: _products[index]['image'],
-                              fit: BoxFit.fitWidth,
-                            ),
+                      Container(
+                        child: AspectRatio(
+                          aspectRatio: 1,
+                          child: FadeInImage.assetNetwork(
+                            placeholder: 'graphics/placeholder.png',
+                            image: _products[index]['image'],
+                            fit: BoxFit.fitWidth,
                           ),
                         ),
-                        tag: 'productImage$index',
                       ),
                       ListTile(
                         title: Text(

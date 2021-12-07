@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
               actions: _currentIndex == 0
                   ? [
                       IconButton(
-                        icon: Icon(Icons.card_travel),
+                        icon: Icon(Icons.shopping_basket),
                         onPressed: () async {
                           await MetricaPlugin.reportEvent("Пользователь открыл корзину");
                           Navigator.of(context).push(

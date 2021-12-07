@@ -21,8 +21,8 @@ class TabNavigationItem {
     TabNavigationItem(
       page: ShopTab(),
       label: "Магазин",
-      activeIcon: Icon(Icons.shopping_cart),
-      icon: Icon(Icons.shopping_cart_outlined),
+      activeIcon: Icon(Icons.store),
+      icon: Icon(Icons.store_outlined),
     ),
     TabNavigationItem(
       page: MapTab(),
