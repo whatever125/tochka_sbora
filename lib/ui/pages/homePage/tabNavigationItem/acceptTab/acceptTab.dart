@@ -63,6 +63,7 @@ class _AcceptTabState extends State<AcceptTab> {
         future: _user,
         builder: (context, userSnapshot) {
           if (userSnapshot.hasData) {
+            print(_user);
             return SingleChildScrollView(
               padding: EdgeInsets.all(15),
               child: Column(

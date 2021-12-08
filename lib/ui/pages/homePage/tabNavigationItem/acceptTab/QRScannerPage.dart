@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:metrica_plugin/metrica_plugin.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 import 'package:tochka_sbora/ui/themes/colors.dart';
 import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/acceptTab/acceptTab.dart';
@@ -12,6 +14,12 @@ class Scanner extends StatefulWidget {
 }
 
 class _ScannerState extends State<Scanner> {
+  final _database = FirebaseDatabase(
+    app: Firebase.apps.first,
+    databaseURL:
+        'https://devtime-cff06-default-rtdb.europe-west1.firebasedatabase.app',
+  ).reference();
+
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   late QRViewController controller;
 
@@ -66,13 +74,24 @@ class _ScannerState extends State<Scanner> {
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.pauseCamera();
-    controller.scannedDataStream.listen((scanData) async {
-      controller.pauseCamera();
-      var data = scanData.code;
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => AcceptTab(data)),
-      ).then((value) => controller.resumeCamera());
-    });
+    controller.scannedDataStream.listen(
+      (scanData) async {
+        var data = scanData.code;
+        print(data);
+        _database.child('users/$data').once().then(
+          (DataSnapshot snapshot) {
+            if (snapshot.exists) {
+              controller.pauseCamera();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AcceptTab(data)),
+              ).then(
+                (value) => controller.resumeCamera(),
+              );
+            }
+          },
+        );
+      },
+    );
   }
 }
