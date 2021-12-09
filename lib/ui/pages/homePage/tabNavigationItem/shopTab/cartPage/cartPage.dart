@@ -229,7 +229,7 @@ class _CartPageState extends State<CartPage> {
                             )
                           ],
                         ),
-                        SizedBox(height: 10),
+                        SizedBox(height: 25),
                       ],
                     ),
                   );

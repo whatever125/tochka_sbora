@@ -139,6 +139,7 @@ class _SignInPageState extends State<SignInPage> {
     };
     PhoneCodeSent codeSent =
         (String verificationId, [int? forceResendingToken]) async {
+          StorageManager.saveData('verificationId', verificationId);
       _showSnackbar(
           'На ваш номер телефона отправлено СМС с шестизначным кодом');
     };
