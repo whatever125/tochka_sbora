@@ -65,22 +65,24 @@ class _PDPageState extends State<PDPage> {
           children: [
             Padding(
               child: Align(
-                  alignment: Alignment.bottomLeft,
-                  child: RichText(
-                    text: TextSpan(
-                      style: TextStyle(
-                        fontSize: 25,
-                        color: LightColor.text,
-                      ),
-                      children: <TextSpan>[
-                        TextSpan(
-                            text: 'Как вас зовут?',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            )),
-                      ],
+                alignment: Alignment.bottomLeft,
+                child: RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                      fontSize: 25,
+                      color: LightColor.text,
                     ),
-                  )),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: 'Как вас зовут?',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               padding: const EdgeInsets.symmetric(
                 vertical: 25,
               ),
@@ -94,14 +96,13 @@ class _PDPageState extends State<PDPage> {
               keyboardType: TextInputType.name,
               textCapitalization: TextCapitalization.words,
               decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: LightColor.text, width: 1.0)
-                ),
-                labelText: '*Фамилия',
-                labelStyle: TextStyle(color: LightColor.text),
-                isDense: true
-              ),
+                  border: OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: LightColor.text, width: 1.0)),
+                  labelText: '*Фамилия',
+                  labelStyle: TextStyle(color: LightColor.text),
+                  isDense: true),
               cursorColor: LightColor.accent,
             ),
             SizedBox(
@@ -118,12 +119,11 @@ class _PDPageState extends State<PDPage> {
               decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: LightColor.text, width: 1.0)
-                  ),
+                      borderSide:
+                          BorderSide(color: LightColor.text, width: 1.0)),
                   labelText: '*Имя',
                   labelStyle: TextStyle(color: LightColor.text),
-                  isDense: true
-              ),
+                  isDense: true),
               cursorColor: LightColor.accent,
             ),
             SizedBox(
@@ -140,12 +140,11 @@ class _PDPageState extends State<PDPage> {
               decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: LightColor.text, width: 1.0)
-                  ),
+                      borderSide:
+                          BorderSide(color: LightColor.text, width: 1.0)),
                   labelText: 'Отчество',
                   labelStyle: TextStyle(color: LightColor.text),
-                  isDense: true
-              ),
+                  isDense: true),
               cursorColor: LightColor.accent,
             ),
             SizedBox(
@@ -164,12 +163,13 @@ class _PDPageState extends State<PDPage> {
                     ),
                     onPressed: () async {
                       if (await _fetchUser())
-                        await MetricaPlugin.reportEvent("Пользователь ввел персональные данные");
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(builder: (context) => HomePage()),
-                          (Route<dynamic> route) => false,
-                        );
+                        await MetricaPlugin.reportEvent(
+                            "Пользователь ввел персональные данные");
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomePage()),
+                        (Route<dynamic> route) => false,
+                      );
                     },
                     style: ButtonStyle(
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -230,7 +230,8 @@ class _PDPageState extends State<PDPage> {
       ? await launch(_url)
       : throw 'Could not launch $_url';
 
-  @override deactivate() {
+  @override
+  deactivate() {
     _urlStream.cancel();
     super.deactivate();
   }
