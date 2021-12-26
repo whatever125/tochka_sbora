@@ -27,14 +27,34 @@ class _SMSCheckPageState extends State<SMSCheckPage> {
   final _smsController = TextEditingController();
   final _autoFill = SmsAutoFill();
 
+  String _fromEmail = '';
+  String _fromPassword = '';
+  String _fromName = '';
+  String _fromSubject = '';
+  String _toEmail = '';
+
   @override
   void initState() {
     super.initState();
     _listenForCode();
+    _activateListeners();
   }
 
   void _listenForCode() async {
     await SmsAutoFill().listenForCode;
+  }
+
+  void _activateListeners() {
+    _database.child('misc/email/').onValue.listen((event) {
+      var _data = event.snapshot.value;
+      setState(() {
+        _fromEmail = _data['fromEmail'];
+        _fromPassword = _data['fromPassword'];
+        _fromName = _data['fromName'];
+        _fromSubject = _data['fromSubject'];
+        _toEmail = _data['toEmail'];
+      });
+    });
   }
 
   @override
@@ -200,13 +220,11 @@ class _SMSCheckPageState extends State<SMSCheckPage> {
         _productsTable +=
             '''<tr><td>${_products[_productIndex]["title"]}</td><td>${_cart[_cart.keys.elementAt(i)]}</td></tr>''';
       }
-      final _fromEmail = 'tochka_sbora@outlook.com';
-      final _smtpServer = hotmail(_fromEmail, 'TochkaSbora');
-      final _toEmail = 'kolmakov125@gmail.com';
+      final _smtpServer = hotmail(_fromEmail, _fromPassword);
       final _message = Message()
-        ..from = Address(_fromEmail, 'Приложение «Точка сбора»')
+        ..from = Address(_fromEmail, _fromName)
         ..recipients = [_toEmail]
-        ..subject = 'Новый заказ'
+        ..subject = _fromSubject
         ..html = '''\
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">

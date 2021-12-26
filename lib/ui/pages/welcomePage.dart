@@ -15,7 +15,7 @@ class WelcomePage extends StatefulWidget {
 class _WelcomePageState extends State<WelcomePage> {
   @override
   void initState() {
-    MetricaPlugin.reportEvent("WelcomePage", attributes: {"attribute_1": "value_1", "attribute_2": "value_2"});
+    MetricaPlugin.reportEvent("WelcomePage");
     super.initState();
   }
 

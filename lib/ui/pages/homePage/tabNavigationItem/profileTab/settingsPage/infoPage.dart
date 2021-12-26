@@ -1,8 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
+
 import 'package:tochka_sbora/ui/themes/colors.dart';
 
-class InfoPage extends StatelessWidget {
+final _database = FirebaseDatabase(
+  app: Firebase.apps.first,
+  databaseURL:
+  'https://devtime-cff06-default-rtdb.europe-west1.firebasedatabase.app',
+).reference();
+
+class InfoPage extends StatefulWidget {
   const InfoPage({Key? key}) : super(key: key);
+
+  @override
+  _InfoPageState createState() => _InfoPageState();
+}
+
+class _InfoPageState extends State<InfoPage> {
+  String _infoText = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _activateListeners();
+  }
+
+  void _activateListeners() {
+    _database.child('misc/infoText/').onValue.listen((event) {
+      setState(() {
+        _infoText = event.snapshot.value;
+      });
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +93,7 @@ class InfoPage extends StatelessWidget {
               height: 30,
             ),
             Text(
-              'Сдавайте мусор на переработку и получайте бонусы на покупки в «Калина-Малина»!',
+              _infoText,
               style: TextStyle(
                 color: LightColor.text,
                 fontSize: 18,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -187,22 +186,7 @@ class _CartPageState extends State<CartPage> {
                                   ),
                                   onPressed: () async {
                                     var _userCoins = _cartSnapshotData['coins'];
-                                    var _random = new Random();
-                                    var _list = {
-                                      'aluminiumCans': 'алюминия',
-                                      'cardboard': 'картона',
-                                      'glass': 'стекла',
-                                      'plasticBottles': 'пластиковых бутылок',
-                                      'plasticLids': 'пластиковых крышек',
-                                      'plasticMK2': 'ПНД',
-                                      'plasticMK5': 'ПП',
-                                      'wastepaper': 'макулатуры',
-                                    };
-                                    var _element =
-                                        _list.keys.elementAt(_random.nextInt(_list.length));
-                                    var _delta = _summ - _userCoins;
-                                    if (_userCoins < _summ) {
-                                      _showSnackbar('Недостаточно баллов. Нужно сдать еще ${_delta * 50} г. ${_list[_element]}!');
+                                    if (_userCoins < _summ || _summ == 0) {
                                       return;
                                     }
                                     await MetricaPlugin.reportEvent(
@@ -229,7 +213,7 @@ class _CartPageState extends State<CartPage> {
                             )
                           ],
                         ),
-                        SizedBox(height: 25),
+                        SizedBox(height: 10),
                       ],
                     ),
                   );

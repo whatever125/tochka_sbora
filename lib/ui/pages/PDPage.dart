@@ -29,6 +29,22 @@ class _PDPageState extends State<PDPage> {
   TextEditingController lastNameController = TextEditingController();
   TextEditingController patronymicController = TextEditingController();
 
+  String _url = 'https://kalina-malina.store/';
+
+  @override
+  void initState() {
+    super.initState();
+    _activateListeners();
+  }
+
+  void _activateListeners() {
+    _database.child('misc/politics/').onValue.listen((event) {
+      setState(() {
+        _url = event.snapshot.value;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -192,9 +208,9 @@ class _PDPageState extends State<PDPage> {
   }
 
   Future<bool> _fetchUser() async {
-    var _firstName = firstNameController.text;
-    var _lastName = lastNameController.text;
-    var _patronymic = patronymicController.text;
+    var _firstName = firstNameController.text.trim();
+    var _lastName = lastNameController.text.trim();
+    var _patronymic = patronymicController.text.trim();
     var _phoneNumber = await StorageManager.readData('phoneNumber');
     var _user = UserModel(
       phoneNumber: _phoneNumber,
@@ -207,8 +223,6 @@ class _PDPageState extends State<PDPage> {
     await _userRef.update(_user.toJson());
     return true;
   }
-
-  String _url = 'https://kalina-malina.store/politika';
 
   void _launchURL() async => await canLaunch(_url)
       ? await launch(_url)
