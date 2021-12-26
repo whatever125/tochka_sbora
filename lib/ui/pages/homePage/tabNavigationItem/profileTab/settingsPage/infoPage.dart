@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -18,6 +19,7 @@ class InfoPage extends StatefulWidget {
 }
 
 class _InfoPageState extends State<InfoPage> {
+  late StreamSubscription _infoTextStream;
   String _infoText = '';
 
   @override
@@ -27,7 +29,7 @@ class _InfoPageState extends State<InfoPage> {
   }
 
   void _activateListeners() {
-    _database.child('misc/infoText/').onValue.listen((event) {
+    _infoTextStream = _database.child('misc/infoText/').onValue.listen((event) {
       setState(() {
         _infoText = event.snapshot.value;
       });
@@ -103,5 +105,10 @@ class _InfoPageState extends State<InfoPage> {
         ),
       ),
     );
+  }
+
+  @override deactivate() {
+    _infoTextStream.cancel();
+    super.deactivate();
   }
 }

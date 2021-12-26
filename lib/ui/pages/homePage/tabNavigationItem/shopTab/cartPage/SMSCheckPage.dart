@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -27,6 +28,7 @@ class _SMSCheckPageState extends State<SMSCheckPage> {
   final _smsController = TextEditingController();
   final _autoFill = SmsAutoFill();
 
+  late StreamSubscription _emailDataStream;
   String _fromEmail = '';
   String _fromPassword = '';
   String _fromName = '';
@@ -45,7 +47,7 @@ class _SMSCheckPageState extends State<SMSCheckPage> {
   }
 
   void _activateListeners() {
-    _database.child('misc/email/').onValue.listen((event) {
+    _emailDataStream = _database.child('misc/email/').onValue.listen((event) {
       var _data = event.snapshot.value;
       setState(() {
         _fromEmail = _data['fromEmail'];
@@ -264,5 +266,10 @@ class _SMSCheckPageState extends State<SMSCheckPage> {
       _showSnackbar("Ошибка: " + e.toString());
       return false;
     }
+  }
+
+  @override deactivate() {
+    _emailDataStream.cancel();
+    super.deactivate();
   }
 }

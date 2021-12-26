@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -29,6 +30,7 @@ class _PDPageState extends State<PDPage> {
   TextEditingController lastNameController = TextEditingController();
   TextEditingController patronymicController = TextEditingController();
 
+  late StreamSubscription _urlStream;
   String _url = 'https://kalina-malina.store/';
 
   @override
@@ -38,7 +40,7 @@ class _PDPageState extends State<PDPage> {
   }
 
   void _activateListeners() {
-    _database.child('misc/politics/').onValue.listen((event) {
+    _urlStream = _database.child('misc/politics/').onValue.listen((event) {
       setState(() {
         _url = event.snapshot.value;
       });
@@ -227,4 +229,9 @@ class _PDPageState extends State<PDPage> {
   void _launchURL() async => await canLaunch(_url)
       ? await launch(_url)
       : throw 'Could not launch $_url';
+
+  @override deactivate() {
+    _urlStream.cancel();
+    super.deactivate();
+  }
 }
