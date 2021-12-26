@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -611,17 +609,6 @@ class _AcceptTabState extends State<AcceptTab> {
                               _plasticMK5Count,
                         });
                         MetricaPlugin.reportEvent('Пользователю начислены баллы');
-                        final Map<String, String> attributes = {
-                          "Картон": (_cardboardCount * 50).toString(),
-                          "Макулатура": (_wastepaperCount * 50).toString(),
-                          "Стекло": (_glassCount * 50).toString(),
-                          "Пластиковые крышки": (_plasticLidsCount * 50).toString(),
-                          "Алюминиевые банки": (_aluminiumCansCount * 50).toString(),
-                          "Бутылки ПЭТ": (_plasticBottlesCount * 50).toString(),
-                          "ПНД": (_plasticMK2Count * 50).toString(),
-                          "ПП": (_plasticMK5Count * 50).toString()
-                        };
-                        MetricaPlugin.reportEvent('Принято вторсырьё', attributes: attributes);
                         Navigator.pop(context);
                       },
                     ),
