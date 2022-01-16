@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:metrica_plugin/metrica_plugin.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:tochka_sbora/ui/themes/colors.dart';
 
@@ -33,6 +35,7 @@ class _AcceptTabState extends State<AcceptTab> {
     _user = _getUser();
     _activateListeners();
     MetricaPlugin.reportEvent('Отсканирован QR пользователя');
+    _loadStatistics();
   }
 
   Future<Map<String, dynamic>> _getUser() async {
@@ -669,6 +672,20 @@ class _AcceptTabState extends State<AcceptTab> {
                           'plasticBags': _oldPlasticBagsCount + _newPlasticBagsCount,
                           'coins': _oldCoins + _newCoins,
                         });
+                        DateTime now = DateTime.now();
+                        String date = now.year.toString() + '-' + now.month.toString() + '-' + now.day.toString();
+                        Map<String, int> difference = {
+                          'cardboard':_newCardboardCount,
+                          'wastepaper': _newWastepaperCount,
+                          'glass': _newGlassCount,
+                          'plasticLids': _newPlasticLidsCount,
+                          'aluminiumCans': _newAluminiumCansCount,
+                          'plasticBottles': _newPlasticBottlesCount,
+                          'plasticMK2': _newPlasticMK2Count,
+                          'plasticMK5': _newPlasticMK5Count,
+                          'plasticBags': _newPlasticBagsCount,
+                        };
+                        _addStatistics(date, difference);
                         MetricaPlugin.reportEvent(
                             'Пользователю начислены баллы');
                         Navigator.pop(context);
@@ -695,5 +712,43 @@ class _AcceptTabState extends State<AcceptTab> {
   deactivate() {
     _coinsStream.cancel();
     super.deactivate();
+  }
+
+  void _loadStatistics() async {
+    final prefs = await SharedPreferences.getInstance();
+    if(!prefs.containsKey('statistics')) {
+      prefs.setString('statistics', json.encode(Map()));
+    }
+  }
+
+  void _addStatistics(String date, Map<String, int> difference) async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      Map<String, dynamic> statistics = json.decode(prefs.getString('statistics') ?? 'Map()');
+      if(!statistics.containsKey(date)) {
+        statistics[date] = {
+          'cardboard': 0,
+          'wastepaper': 0,
+          'glass': 0,
+          'plasticLids': 0,
+          'aluminiumCans': 0,
+          'plasticBottles': 0,
+          'plasticMK2': 0,
+          'plasticMK5': 0,
+          'plasticBags': 0,
+        };
+      }
+      statistics[date]['cardboard'] += difference['cardboard'] as int;
+      statistics[date]['wastepaper'] += difference['wastepaper'] as int;
+      statistics[date]['glass'] += difference['glass'] as int;
+      statistics[date]['plasticLids'] += difference['plasticLids'] as int;
+      statistics[date]['aluminiumCans'] += difference['aluminiumCans'] as int;
+      statistics[date]['plasticBottles'] += difference['plasticBottles'] as int;
+      statistics[date]['plasticMK2'] += difference['plasticMK2'] as int;
+      statistics[date]['plasticMK5'] += difference['plasticMK5'] as int;
+      statistics[date]['plasticBags'] += difference['plasticBags'] as int;
+      prefs.setString('statistics', json.encode(statistics));
+    });
+
   }
 }

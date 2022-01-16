@@ -74,7 +74,7 @@ class _HomePageState extends State<HomePage> {
               index: _currentIndex,
               children: [
                 for (final tabItem in TabNavigationItem.items
-                    .take(snapshot.data == true ? 4 : 3))
+                    .take(snapshot.data == true ? 5 : 3))
                   tabItem.page,
               ],
             ),
@@ -83,7 +83,7 @@ class _HomePageState extends State<HomePage> {
               onTap: (int index) => setState(() => _currentIndex = index),
               items: [
                 for (final tabItem in TabNavigationItem.items
-                    .take(snapshot.data == true ? 4 : 3))
+                    .take(snapshot.data == true ? 5 : 3))
                   BottomNavigationBarItem(
                     icon: tabItem.icon,
                     activeIcon: tabItem.activeIcon,
