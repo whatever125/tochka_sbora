@@ -48,7 +48,7 @@ class _CartPageState extends State<CartPage> {
                       : Map<String, dynamic>.from(_cartData);
                   num _summ = 0;
                   for (int i = 0; i < _cart.length; i++) {
-                    int _productIndex = int.parse(_cart.keys.elementAt(i)[8]);
+                    int _productIndex = int.parse(_cart.keys.elementAt(i).substring(8));
                     _summ = _summ +
                         _cart[_cart.keys.elementAt(i)] *
                             _products[_productIndex]['price'];
@@ -84,7 +84,7 @@ class _CartPageState extends State<CartPage> {
                                   itemBuilder: (ctx, i) {
                                     if (i == 0) return SizedBox(height: 15);
                                     int _productIndex = int.parse(
-                                        _cart.keys.elementAt(i - 1)[8]);
+                                        _cart.keys.elementAt(i - 1).substring(8));
                                     return Container(
                                       margin: const EdgeInsets.only(bottom: 25),
                                       child: Row(

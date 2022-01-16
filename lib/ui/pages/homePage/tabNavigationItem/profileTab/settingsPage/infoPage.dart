@@ -81,7 +81,7 @@ class _InfoPageState extends State<InfoPage> {
                       height: 15,
                     ),
                     Text(
-                      'Версия 1.1.12',
+                      'Версия 1.1.14',
                       style: TextStyle(
                         color: LightColor.text,
                         fontSize: 18,

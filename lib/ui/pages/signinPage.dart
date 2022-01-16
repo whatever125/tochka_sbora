@@ -60,6 +60,7 @@ class _SignInPageState extends State<SignInPage> {
             ),
             Padding(
               child: TextFormField(
+                enableInteractiveSelection: false,
                 controller: _phoneNumberController,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: (val) {
