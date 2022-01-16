@@ -68,8 +68,21 @@ class _ProductPageState extends State<ProductPage> {
                               .headline5!
                               .copyWith(color: LightColor.text),
                         ),
+                        SizedBox(
+                          height: 5,
+                        ),
                         Text(
                           _product['available'] ? 'В наличии' : 'Отсутствует',
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle2!
+                              .copyWith(color: LightColor.textSecondary),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "Арт.: ${_product['setNumber']}",
                           style: Theme.of(context)
                               .textTheme
                               .subtitle2!
@@ -106,15 +119,17 @@ class _ProductPageState extends State<ProductPage> {
                     var _cartRef = _database
                         .child('users/${_auth.currentUser!.uid}/cart/');
                     var _productRef =
-                        _cartRef.child('product_${widget.index}/');
+                    _cartRef.child('product_${widget.index}/');
                     var num = await (await _productRef.once()).value;
                     num = num == null ? 0 : num;
                     await _cartRef.update({'product_${widget.index}': num + 1});
                     await MetricaPlugin.reportEvent(
                         'Пользователь добавил товар в корзину',
                         attributes: {"Название": _product['title']});
+                    Navigator.of(context).pop();
+                  } else {
+                    _showSnackbar('Товара нет в наличии');
                   }
-                  Navigator.of(context).pop();
                 },
               ),
               floatingActionButtonLocation:
@@ -130,5 +145,12 @@ class _ProductPageState extends State<ProductPage> {
         },
       ),
     );
+  }
+
+  void _showSnackbar(message) {
+    final snackBar = SnackBar(
+      content: Text(message),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

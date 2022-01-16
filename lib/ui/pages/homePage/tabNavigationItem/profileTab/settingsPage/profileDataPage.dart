@@ -48,6 +48,7 @@ class _ProfileDataPageState extends State<ProfileDataPage> {
                 height: 5,
               ),
               TextFormField(
+                enableInteractiveSelection: false,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: (val) {
                   return val!.isEmpty ? 'Пожалуйста, укажите фамилию' : null;
@@ -71,6 +72,7 @@ class _ProfileDataPageState extends State<ProfileDataPage> {
                 height: 5,
               ),
               TextFormField(
+                enableInteractiveSelection: false,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: (val) {
                   return val!.isEmpty ? 'Пожалуйста, укажите имя' : null;
@@ -94,6 +96,7 @@ class _ProfileDataPageState extends State<ProfileDataPage> {
                 height: 5,
               ),
               TextFormField(
+                enableInteractiveSelection: false,
                 autovalidateMode: AutovalidateMode.disabled,
                 validator: (val) {
                   return val!.isEmpty ? 'Пожалуйста, укажите отчество' : null;
@@ -118,6 +121,7 @@ class _ProfileDataPageState extends State<ProfileDataPage> {
                 height: 5,
               ),
               TextFormField(
+                enableInteractiveSelection: false,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: (val) {
                   return true

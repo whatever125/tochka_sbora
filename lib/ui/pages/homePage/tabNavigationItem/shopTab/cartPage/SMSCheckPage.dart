@@ -147,7 +147,7 @@ class _SMSCheckPageState extends State<SMSCheckPage> {
                             num _summ = 0;
                             var _cart = Map<String, dynamic>.from(_userRefData['cart']);
                             for (int i = 0; i < _cart.length; i++) {
-                              int _productIndex = int.parse(_cart.keys.elementAt(i)[8]);
+                              int _productIndex = int.parse(_cart.keys.elementAt(i).substring(8));
                               _summ = _summ +
                                   _cart[_cart.keys.elementAt(i)] *
                                       _productsRefData[_productIndex]['price'];
@@ -218,7 +218,7 @@ class _SMSCheckPageState extends State<SMSCheckPage> {
           : Map<String, dynamic>.from(_userData['cart']);
       var _productsTable = '';
       for (int i = 0; i < _cart.length; i++) {
-        int _productIndex = int.parse(_cart.keys.elementAt(i)[8]);
+        int _productIndex = int.parse(_cart.keys.elementAt(i).substring(8));
         _productsTable +=
             '''<tr><td>${_products[_productIndex]["title"]}</td><td>${_cart[_cart.keys.elementAt(i)]}</td></tr>''';
       }

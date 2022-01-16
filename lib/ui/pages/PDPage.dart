@@ -88,6 +88,7 @@ class _PDPageState extends State<PDPage> {
               ),
             ),
             TextFormField(
+              enableInteractiveSelection: false,
               controller: lastNameController,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               validator: (val) {
@@ -109,6 +110,7 @@ class _PDPageState extends State<PDPage> {
               height: 15,
             ),
             TextFormField(
+              enableInteractiveSelection: false,
               controller: firstNameController,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               validator: (val) {
@@ -130,6 +132,7 @@ class _PDPageState extends State<PDPage> {
               height: 15,
             ),
             TextFormField(
+              enableInteractiveSelection: false,
               controller: patronymicController,
               autovalidateMode: AutovalidateMode.disabled,
               validator: (val) {

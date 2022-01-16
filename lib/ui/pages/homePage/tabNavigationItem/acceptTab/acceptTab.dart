@@ -189,6 +189,7 @@ class _AcceptTabState extends State<AcceptTab> {
                             height: 50,
                             width: 80,
                             child: TextFormField(
+                              enableInteractiveSelection: false,
                               controller: _cardboardController,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
@@ -237,6 +238,7 @@ class _AcceptTabState extends State<AcceptTab> {
                             height: 50,
                             width: 80,
                             child: TextFormField(
+                              enableInteractiveSelection: false,
                               controller: _wastepaperController,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
@@ -285,6 +287,7 @@ class _AcceptTabState extends State<AcceptTab> {
                             height: 50,
                             width: 80,
                             child: TextFormField(
+                              enableInteractiveSelection: false,
                               controller: _glassController,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
@@ -333,6 +336,7 @@ class _AcceptTabState extends State<AcceptTab> {
                             height: 50,
                             width: 80,
                             child: TextFormField(
+                              enableInteractiveSelection: false,
                               controller: _plasticLidsController,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
@@ -389,6 +393,7 @@ class _AcceptTabState extends State<AcceptTab> {
                             height: 50,
                             width: 80,
                             child: TextFormField(
+                              enableInteractiveSelection: false,
                               controller: _aluminiumCansController,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
@@ -437,6 +442,7 @@ class _AcceptTabState extends State<AcceptTab> {
                             height: 50,
                             width: 80,
                             child: TextFormField(
+                              enableInteractiveSelection: false,
                               controller: _plasticBottlesController,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
@@ -485,6 +491,7 @@ class _AcceptTabState extends State<AcceptTab> {
                             height: 50,
                             width: 80,
                             child: TextFormField(
+                              enableInteractiveSelection: false,
                               controller: _plasticMK2Controller,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
@@ -533,6 +540,7 @@ class _AcceptTabState extends State<AcceptTab> {
                             height: 50,
                             width: 80,
                             child: TextFormField(
+                              enableInteractiveSelection: false,
                               controller: _plasticMK5Controller,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
@@ -591,6 +599,7 @@ class _AcceptTabState extends State<AcceptTab> {
                             height: 50,
                             width: 80,
                             child: TextFormField(
+                              enableInteractiveSelection: false,
                               controller: _plasticBagsController,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
