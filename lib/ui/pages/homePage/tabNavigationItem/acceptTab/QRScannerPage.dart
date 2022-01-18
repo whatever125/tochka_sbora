@@ -82,7 +82,7 @@ class _ScannerState extends State<Scanner> {
           (DataSnapshot snapshot) {
             if (snapshot.exists) {
               controller.pauseCamera();
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => AcceptTab(data)),
               ).then(

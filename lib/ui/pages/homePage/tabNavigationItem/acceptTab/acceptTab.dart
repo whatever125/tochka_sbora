@@ -7,7 +7,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:metrica_plugin/metrica_plugin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:tochka_sbora/ui/pages/homePage/homePage.dart';
+import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/acceptTab/QRScannerPage.dart';
+import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/profileTab/QRPage.dart';
 import 'package:tochka_sbora/ui/themes/colors.dart';
 
 class AcceptTab extends StatefulWidget {
@@ -697,7 +699,10 @@ class _AcceptTabState extends State<AcceptTab> {
                         _addStatistics(date, difference);
                         MetricaPlugin.reportEvent(
                             'Пользователю начислены баллы');
-                        Navigator.pop(context);
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomePage()),
+                        );
                       },
                     ),
                   ),
