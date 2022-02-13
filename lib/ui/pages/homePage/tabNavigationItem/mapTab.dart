@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:metrica_plugin/metrica_plugin.dart';
 
 import 'package:tochka_sbora/ui/themes/colors.dart';
@@ -19,7 +18,6 @@ class _MapTabState extends State<MapTab> {
     databaseURL:
         'https://devtime-cff06-default-rtdb.europe-west1.firebasedatabase.app',
   ).reference();
-  final _auth = FirebaseAuth.instance;
 
   Completer<GoogleMapController> _controller = Completer();
 

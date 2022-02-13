@@ -5,7 +5,6 @@ import 'package:metrica_plugin/metrica_plugin.dart';
 import 'package:tochka_sbora/ui/themes/colors.dart';
 import 'package:tochka_sbora/ui/pages/welcomePage.dart';
 import 'infoPage.dart';
-import 'profileDataPage.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);

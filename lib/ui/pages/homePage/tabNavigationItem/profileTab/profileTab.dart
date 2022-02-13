@@ -194,11 +194,19 @@ class _ProfileTabState extends State<ProfileTab> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 _generateTile(
+                                  name: 'plasticMK6',
+                                  title: 'ПС',
+                                  amount: _user['plasticMK6'],
+                                ),
+                                _generateTile(
                                   name: 'plasticBags',
                                   title: 'Пакеты',
-                                  amount: _user['plasticBags'] == null
-                                      ? 0
-                                      : _user['plasticBags'],
+                                  amount: _user['plasticBags'],
+                                ),
+                                _generateTile(
+                                  name: 'steel',
+                                  title: 'Жесть',
+                                  amount: _user['steel'],
                                 ),
                               ],
                             ),
@@ -283,7 +291,7 @@ class _ProfileTabState extends State<ProfileTab> {
         ),
         SizedBox(height: 10),
         Text(
-          '$amount г',
+          '${amount == null ? 0 : amount} г',
           style: TextStyle(
             color: LightColor.accent,
             fontSize: 20,

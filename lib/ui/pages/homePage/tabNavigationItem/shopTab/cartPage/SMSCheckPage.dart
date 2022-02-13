@@ -26,7 +26,6 @@ class _SMSCheckPageState extends State<SMSCheckPage> {
   final _auth = FirebaseAuth.instance;
 
   final _smsController = TextEditingController();
-  final _autoFill = SmsAutoFill();
 
   late StreamSubscription _emailDataStream;
   String _fromEmail = '';

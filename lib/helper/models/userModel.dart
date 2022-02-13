@@ -13,6 +13,9 @@ class UserModel {
   int plasticBottles;
   int plasticMK2;
   int plasticMK5;
+  int plasticMK6;
+  int plasticBags;
+  int steel;
   List<Map<String, dynamic>> cart;
 
   UserModel({
@@ -30,6 +33,9 @@ class UserModel {
     this.plasticBottles = 0,
     this.plasticMK2 = 0,
     this.plasticMK5 = 0,
+    this.plasticMK6 = 0,
+    this.plasticBags = 0,
+    this.steel = 0,
     this.cart = const [],
   });
 
@@ -48,6 +54,9 @@ class UserModel {
     this.plasticBottles = json['plasticBottles'];
     this.plasticMK2 = json['plasticMK2'];
     this.plasticMK5 = json['plasticMK5'];
+    this.plasticMK6 = json['plasticMK6'];
+    this.plasticBags = json['plasticBags'];
+    this.steel = json['steel'];
     this.cart = json['cart'];
   }
 
@@ -67,6 +76,9 @@ class UserModel {
       'plasticBottles': this.plasticBottles,
       'plasticMK2': this.plasticMK2,
       'plasticMK5': this.plasticMK5,
+      'plasticMK6': this.plasticMK6,
+      'plasticBags': this.plasticBags,
+      'steel': this.steel,
       'cart': this.cart,
     };
   }

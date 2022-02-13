@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter/services.dart';
-import 'package:metrica_plugin/metrica_plugin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:table_calendar/table_calendar.dart';
 import 'dart:convert';
 import 'package:tochka_sbora/helper/services/local_storage_service.dart';
 
 import 'package:tochka_sbora/ui/themes/colors.dart';
-import 'package:tochka_sbora/ui/pages/signinPage.dart';
-import 'package:tochka_sbora/ui/themes/theme.dart';
 
 class DayStatisticsPage extends StatefulWidget {
   final String date;
@@ -38,11 +33,12 @@ class _DayStatisticsPageState extends State<DayStatisticsPage> {
       future: statistics,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          Map<String, dynamic> _statistics = snapshot.data as Map<String, dynamic>;
+          Map<String, dynamic> _statistics =
+              snapshot.data as Map<String, dynamic>;
           return Scaffold(
             appBar: AppBar(
               title: Text(
-                'Статистика за ${_selectedDay}',
+                'Статистика за $_selectedDay',
                 style: TextStyle(color: LightColor.text),
               ),
             ),
@@ -57,7 +53,10 @@ class _DayStatisticsPageState extends State<DayStatisticsPage> {
                         style: TextStyle(fontSize: 25.0),
                       ),
                       Spacer(),
-                      Text(_statistics['cardboard'] == null ? '0' : _statistics['cardboard'].toString(),
+                      Text(
+                          _statistics['cardboard'] == null
+                              ? '0'
+                              : _statistics['cardboard'].toString(),
                           style: TextStyle(
                               color: Theme.of(context).highlightColor,
                               fontSize: 30.0))
@@ -65,7 +64,10 @@ class _DayStatisticsPageState extends State<DayStatisticsPage> {
                     Row(children: [
                       Text('Макулатура', style: TextStyle(fontSize: 25.0)),
                       Spacer(),
-                      Text(_statistics['wastepaper'] == null ? '0' : _statistics['wastepaper'].toString(),
+                      Text(
+                          _statistics['wastepaper'] == null
+                              ? '0'
+                              : _statistics['wastepaper'].toString(),
                           style: TextStyle(
                               color: Theme.of(context).highlightColor,
                               fontSize: 30.0))
@@ -73,7 +75,10 @@ class _DayStatisticsPageState extends State<DayStatisticsPage> {
                     Row(children: [
                       Text('Стекло', style: TextStyle(fontSize: 25.0)),
                       Spacer(),
-                      Text(_statistics['glass'] == null ? '0' : _statistics['glass'].toString(),
+                      Text(
+                          _statistics['glass'] == null
+                              ? '0'
+                              : _statistics['glass'].toString(),
                           style: TextStyle(
                               color: Theme.of(context).highlightColor,
                               fontSize: 30.0))
@@ -81,7 +86,10 @@ class _DayStatisticsPageState extends State<DayStatisticsPage> {
                     Row(children: [
                       Text('Крышки', style: TextStyle(fontSize: 25.0)),
                       Spacer(),
-                      Text(_statistics['plasticLids'] == null ? '0' : _statistics['plasticLids'].toString(),
+                      Text(
+                          _statistics['plasticLids'] == null
+                              ? '0'
+                              : _statistics['plasticLids'].toString(),
                           style: TextStyle(
                               color: Theme.of(context).highlightColor,
                               fontSize: 30.0))
@@ -89,7 +97,10 @@ class _DayStatisticsPageState extends State<DayStatisticsPage> {
                     Row(children: [
                       Text('Алюминий', style: TextStyle(fontSize: 25.0)),
                       Spacer(),
-                      Text(_statistics['aluminiumCans'] == null ? '0' : _statistics['aluminiumCans'].toString(),
+                      Text(
+                          _statistics['aluminiumCans'] == null
+                              ? '0'
+                              : _statistics['aluminiumCans'].toString(),
                           style: TextStyle(
                               color: Theme.of(context).highlightColor,
                               fontSize: 30.0))
@@ -97,7 +108,10 @@ class _DayStatisticsPageState extends State<DayStatisticsPage> {
                     Row(children: [
                       Text('Бутылки ПЭТ', style: TextStyle(fontSize: 25.0)),
                       Spacer(),
-                      Text(_statistics['plasticBottles'] == null ? '0' : _statistics['plasticBottles'].toString(),
+                      Text(
+                          _statistics['plasticBottles'] == null
+                              ? '0'
+                              : _statistics['plasticBottles'].toString(),
                           style: TextStyle(
                               color: Theme.of(context).highlightColor,
                               fontSize: 30.0))
@@ -105,7 +119,10 @@ class _DayStatisticsPageState extends State<DayStatisticsPage> {
                     Row(children: [
                       Text('ПНД', style: TextStyle(fontSize: 25.0)),
                       Spacer(),
-                      Text(_statistics['plasticMK2'] == null ? '0' : _statistics['plasticMK2'].toString(),
+                      Text(
+                          _statistics['plasticMK2'] == null
+                              ? '0'
+                              : _statistics['plasticMK2'].toString(),
                           style: TextStyle(
                               color: Theme.of(context).highlightColor,
                               fontSize: 30.0))
@@ -113,7 +130,21 @@ class _DayStatisticsPageState extends State<DayStatisticsPage> {
                     Row(children: [
                       Text('ПП', style: TextStyle(fontSize: 25.0)),
                       Spacer(),
-                      Text(_statistics['plasticMK5'] == null ? '0' : _statistics['plasticMK5'].toString(),
+                      Text(
+                          _statistics['plasticMK5'] == null
+                              ? '0'
+                              : _statistics['plasticMK5'].toString(),
+                          style: TextStyle(
+                              color: Theme.of(context).highlightColor,
+                              fontSize: 30.0))
+                    ]),
+                    Row(children: [
+                      Text('ПС', style: TextStyle(fontSize: 25.0)),
+                      Spacer(),
+                      Text(
+                          _statistics['plasticMK6'] == null
+                              ? '0'
+                              : _statistics['plasticMK6'].toString(),
                           style: TextStyle(
                               color: Theme.of(context).highlightColor,
                               fontSize: 30.0))
@@ -121,11 +152,25 @@ class _DayStatisticsPageState extends State<DayStatisticsPage> {
                     Row(children: [
                       Text('Пакеты', style: TextStyle(fontSize: 25.0)),
                       Spacer(),
-                      Text(_statistics['plasticBags'] == null ? '0' : _statistics['plasticBags'].toString(),
+                      Text(
+                          _statistics['plasticBags'] == null
+                              ? '0'
+                              : _statistics['plasticBags'].toString(),
                           style: TextStyle(
                               color: Theme.of(context).highlightColor,
                               fontSize: 30.0))
-                    ])
+                    ]),
+                    Row(children: [
+                      Text('Жесть', style: TextStyle(fontSize: 25.0)),
+                      Spacer(),
+                      Text(
+                          _statistics['steel'] == null
+                              ? '0'
+                              : _statistics['steel'].toString(),
+                          style: TextStyle(
+                              color: Theme.of(context).highlightColor,
+                              fontSize: 30.0))
+                    ]),
                   ],
                 ),
               ),
@@ -154,7 +199,7 @@ class _DayStatisticsPageState extends State<DayStatisticsPage> {
   _getStatistics() async {
     var data = await StorageManager.readData('statistics');
     Map<String, dynamic> statistics = json.decode(data);
-    if(!statistics.containsKey(_selectedDay)) {
+    if (!statistics.containsKey(_selectedDay)) {
       statistics[_selectedDay] = {
         'cardboard': 0,
         'wastepaper': 0,
@@ -164,7 +209,9 @@ class _DayStatisticsPageState extends State<DayStatisticsPage> {
         'plasticBottles': 0,
         'plasticMK2': 0,
         'plasticMK5': 0,
+        'plasticMK6': 0,
         'plasticBags': 0,
+        'steel': 0,
       };
     }
     return statistics[_selectedDay];

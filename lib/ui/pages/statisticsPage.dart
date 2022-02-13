@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter/services.dart';
 import 'package:metrica_plugin/metrica_plugin.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:tochka_sbora/ui/pages/dayStatisticsPage.dart';
-import 'dart:convert';
-
-import 'package:tochka_sbora/ui/themes/colors.dart';
-import 'package:tochka_sbora/ui/pages/signinPage.dart';
-import 'package:tochka_sbora/ui/themes/theme.dart';
 
 class StatisticsPage extends StatefulWidget {
   @override

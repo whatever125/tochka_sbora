@@ -2,14 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'dart:math';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:metrica_plugin/metrica_plugin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tochka_sbora/ui/pages/homePage/homePage.dart';
-import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/acceptTab/QRScannerPage.dart';
-import 'package:tochka_sbora/ui/pages/homePage/tabNavigationItem/profileTab/QRPage.dart';
 import 'package:tochka_sbora/ui/themes/colors.dart';
 
 class AcceptTab extends StatefulWidget {
@@ -93,7 +90,13 @@ class _AcceptTabState extends State<AcceptTab> {
     TextEditingController _plasticMK5Controller = TextEditingController(
       text: '0',
     );
+    TextEditingController _plasticMK6Controller = TextEditingController(
+      text: '0',
+    );
     TextEditingController _plasticBagsController = TextEditingController(
+      text: '0',
+    );
+    TextEditingController _steelController = TextEditingController(
       text: '0',
     );
 
@@ -576,6 +579,57 @@ class _AcceptTabState extends State<AcceptTab> {
                       Column(
                         children: [
                           Image.asset(
+                            'graphics/plasticMK6.png',
+                            fit: BoxFit.cover,
+                            height: 75,
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            'ПС',
+                            style: TextStyle(
+                              color: LightColor.textSecondary,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            userSnapshot.data!['plasticMK6'] == null
+                                ? '0 г'
+                                : '${userSnapshot.data!['plasticMK6']} г',
+                            style: TextStyle(
+                              color: LightColor.accent,
+                              fontSize: 20,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Container(
+                            height: 50,
+                            width: 80,
+                            child: TextFormField(
+                              enableInteractiveSelection: false,
+                              controller: _plasticMK6Controller,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: LightColor.text,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                labelText: 'Принято',
+                                labelStyle: TextStyle(color: LightColor.text),
+                                isDense: true,
+                              ),
+                              cursorColor: LightColor.accent,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Image.asset(
                             'graphics/plasticBags.png',
                             fit: BoxFit.cover,
                             height: 75,
@@ -606,6 +660,57 @@ class _AcceptTabState extends State<AcceptTab> {
                             child: TextFormField(
                               enableInteractiveSelection: false,
                               controller: _plasticBagsController,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: LightColor.text,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                labelText: 'Принято',
+                                labelStyle: TextStyle(color: LightColor.text),
+                                isDense: true,
+                              ),
+                              cursorColor: LightColor.accent,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Image.asset(
+                            'graphics/steel.png',
+                            fit: BoxFit.cover,
+                            height: 75,
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            'Жесть',
+                            style: TextStyle(
+                              color: LightColor.textSecondary,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            userSnapshot.data!['steel'] == null
+                                ? '0 г'
+                                : '${userSnapshot.data!['steel']} г',
+                            style: TextStyle(
+                              color: LightColor.accent,
+                              fontSize: 20,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Container(
+                            height: 50,
+                            width: 80,
+                            child: TextFormField(
+                              enableInteractiveSelection: false,
+                              controller: _steelController,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
@@ -668,9 +773,15 @@ class _AcceptTabState extends State<AcceptTab> {
                         var _oldPlasticMK5Count = userSnapshot.data!['plasticMK5'];
                         var _newPlasticMK5Count = _plasticMK5Controller.text == '' ? 0 : int.parse(_plasticMK5Controller.text);
                         _newCoins += ((((_newPlasticMK5Count + _oldPlasticMK5Count) / 1000).floor() - (_oldPlasticMK5Count / 1000).floor()) * _coins['plasticMK5']) as int;
-                        var _oldPlasticBagsCount = userSnapshot.data!['plasticBags'];
+                        var _oldPlasticMK6Count = userSnapshot.data!['plasticMK6'] == null ? 0 : userSnapshot.data!['plasticMK6'];
+                        var _newPlasticMK6Count = _plasticMK6Controller.text == '' ? 0 : int.parse(_plasticMK6Controller.text);
+                        _newCoins += ((((_newPlasticMK6Count + _oldPlasticMK6Count) / 1000).floor() - (_oldPlasticMK6Count / 1000).floor()) * _coins['plasticMK6']) as int;
+                        var _oldPlasticBagsCount = userSnapshot.data!['plasticBags'] == null ? 0 : userSnapshot.data!['plasticBags'];
                         var _newPlasticBagsCount = _plasticBagsController.text == '' ? 0 : int.parse(_plasticBagsController.text);
                         _newCoins += ((((_newPlasticBagsCount + _oldPlasticBagsCount) / 1000).floor() - (_oldPlasticBagsCount / 1000).floor()) * _coins['plasticBags']) as int;
+                        var _oldSteelCount = userSnapshot.data!['steel'] == null ? 0 : userSnapshot.data!['steel'];
+                        var _newSteelCount = _steelController.text == '' ? 0 : int.parse(_steelController.text);
+                        _newCoins += ((((_newSteelCount + _oldSteelCount) / 1000).floor() - (_oldSteelCount / 1000).floor()) * _coins['steel']) as int;
                         await _userRef.update({
                           'cardboard': _oldCardboardCount + _newCardboardCount,
                           'wastepaper': _oldWastepaperCount + _newWastepaperCount,
@@ -680,7 +791,9 @@ class _AcceptTabState extends State<AcceptTab> {
                           'plasticBottles': _oldPlasticBottlesCount + _newPlasticBottlesCount,
                           'plasticMK2': _oldPlasticMK2Count + _newPlasticMK2Count,
                           'plasticMK5': _oldPlasticMK5Count + _newPlasticMK5Count,
+                          'plasticMK6': _oldPlasticMK6Count + _newPlasticMK6Count,
                           'plasticBags': _oldPlasticBagsCount + _newPlasticBagsCount,
+                          'steel': _oldSteelCount + _newSteelCount,
                           'coins': _oldCoins + _newCoins,
                         });
                         DateTime now = DateTime.now();
@@ -694,7 +807,9 @@ class _AcceptTabState extends State<AcceptTab> {
                           'plasticBottles': _newPlasticBottlesCount,
                           'plasticMK2': _newPlasticMK2Count,
                           'plasticMK5': _newPlasticMK5Count,
+                          'plasticMK6': _newPlasticMK6Count,
                           'plasticBags': _newPlasticBagsCount,
+                          'steel': _newSteelCount,
                         };
                         _addStatistics(date, difference);
                         MetricaPlugin.reportEvent(
@@ -749,7 +864,9 @@ class _AcceptTabState extends State<AcceptTab> {
           'plasticBottles': 0,
           'plasticMK2': 0,
           'plasticMK5': 0,
+          'plasticMK6': 0,
           'plasticBags': 0,
+          'steel': 0,
         };
       }
       statistics[date]['cardboard'] += difference['cardboard'] as int;
@@ -760,7 +877,9 @@ class _AcceptTabState extends State<AcceptTab> {
       statistics[date]['plasticBottles'] += difference['plasticBottles'] as int;
       statistics[date]['plasticMK2'] += difference['plasticMK2'] as int;
       statistics[date]['plasticMK5'] += difference['plasticMK5'] as int;
+      statistics[date]['plasticMK6'] += difference['plasticMK6'] as int;
       statistics[date]['plasticBags'] += difference['plasticBags'] as int;
+      statistics[date]['steel'] += difference['steel'] as int;
       prefs.setString('statistics', json.encode(statistics));
     });
 
