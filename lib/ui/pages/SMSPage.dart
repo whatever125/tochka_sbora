@@ -130,8 +130,13 @@ class _SMSPageState extends State<SMSPage> {
 
   _signInWithPhoneNumber(context) async {
     try {
+      var _verificationId = await StorageManager.readData('verificationId');
+      if (_verificationId == null) {
+        _showSnackbar("Дождитесь СМС");
+        return;
+      }
       final AuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: await StorageManager.readData('verificationId'),
+        verificationId: _verificationId,
         smsCode: _smsController.text,
       );
       var _uid = (await _auth.signInWithCredential(credential)).user!.uid;
@@ -140,12 +145,14 @@ class _SMSPageState extends State<SMSPage> {
         var userData = snapshot.value;
         if (userData == null) {
           _autoFill.unregisterListener();
+          await StorageManager.removeData('verificationId');
           await MetricaPlugin.reportEvent("Пользователь успешно ввел код");
           Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => PDPage()),
           );
         } else {
           _autoFill.unregisterListener();
+          await StorageManager.removeData('verificationId');
           await MetricaPlugin.reportEvent("Пользователь успешно ввел код");
           Navigator.pushAndRemoveUntil(
             context,

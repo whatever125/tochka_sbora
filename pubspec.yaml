@@ -59,6 +59,7 @@ dependencies:
   connectivity: ^3.0.6
   mailer: ^5.0.2
   flutter_native_splash: ^1.2.3
+  percent_indicator: ^4.0.0
 
 flutter_icons:
   android: true

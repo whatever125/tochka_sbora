@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -156,6 +157,7 @@ class _SMSCheckPageState extends State<SMSCheckPage> {
                         });
                         await _userRef.update({'cart': null});
                         await MetricaPlugin.reportEvent('Пользователь сделал заказ');
+                        _showSnackbar('Заказ оформлен');
                         Navigator.of(context).pop();
                         Navigator.of(context).pop();
                         Navigator.of(context).pop();
@@ -181,6 +183,7 @@ class _SMSCheckPageState extends State<SMSCheckPage> {
         smsCode: _smsController.text,
       );
       var _uid = (await _auth.signInWithCredential(credential)).user!.uid;
+      await StorageManager.removeData('verificationId');
       return true;
     } catch (e) {
       var _error = e.toString();
@@ -200,6 +203,7 @@ class _SMSCheckPageState extends State<SMSCheckPage> {
   }
 
   Future<bool> _sendEmail() async {
+    LoadingIndicatorDialog().show(context);
     try {
       late var _userData;
       late var _products;
@@ -259,9 +263,10 @@ class _SMSCheckPageState extends State<SMSCheckPage> {
         <tbody>
           ''' + _productsTable + '''</tbody></table></div></body></html>''';
       await send(_message, _smtpServer);
-
+      LoadingIndicatorDialog().dismiss();
       return true;
     } catch (e) {
+      LoadingIndicatorDialog().dismiss();
       _showSnackbar("Ошибка: " + e.toString());
       return false;
     }
@@ -270,5 +275,57 @@ class _SMSCheckPageState extends State<SMSCheckPage> {
   @override deactivate() {
     _emailDataStream.cancel();
     super.deactivate();
+  }
+}
+
+
+class LoadingIndicatorDialog {
+  static final LoadingIndicatorDialog _singleton =
+  LoadingIndicatorDialog._internal();
+  late BuildContext _context;
+
+  factory LoadingIndicatorDialog() {
+    return _singleton;
+  }
+
+  LoadingIndicatorDialog._internal();
+
+  show(BuildContext context, {String text = 'Подождите, оформляем заказ...'}) {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        _context = context;
+        return WillPopScope(
+          onWillPop: () async => false,
+          child: SimpleDialog(
+            backgroundColor: Colors.white,
+            children: [
+              Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16, top: 16, right: 16),
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(LightColor.accent),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Text(text),
+                    )
+                  ],
+                ),
+              )
+            ] ,
+          ),
+        );
+      }
+    );
+  }
+
+  dismiss() {
+    Navigator.of(_context).pop();
   }
 }
