@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -21,7 +22,7 @@ class _SMSCheckPageState extends State<SMSCheckPage> {
   final _database = FirebaseDatabase(
     app: Firebase.apps.first,
     databaseURL:
-        'https://devtime-cff06-default-rtdb.europe-west1.firebasedatabase.app',
+    'https://devtime-cff06-default-rtdb.europe-west1.firebasedatabase.app',
   ).reference();
   final _auth = FirebaseAuth.instance;
 
@@ -136,7 +137,7 @@ class _SMSCheckPageState extends State<SMSCheckPage> {
                   onPressed: () async {
                     if (await _signInWithPhoneNumber(context)) {
                       var _userRef =
-                          _database.child('users/${_auth.currentUser!.uid}/');
+                      _database.child('users/${_auth.currentUser!.uid}/');
                       if (await _sendEmail()) {
                         await _userRef.once().then((userSnapshot) async {
                           var _productsRef = _database.child('products/');
@@ -156,6 +157,7 @@ class _SMSCheckPageState extends State<SMSCheckPage> {
                         });
                         await _userRef.update({'cart': null});
                         await MetricaPlugin.reportEvent('Пользователь сделал заказ');
+                        _showSnackbar('Заказ оформлен');
                         Navigator.of(context).pop();
                         Navigator.of(context).pop();
                         Navigator.of(context).pop();
@@ -181,6 +183,7 @@ class _SMSCheckPageState extends State<SMSCheckPage> {
         smsCode: _smsController.text,
       );
       var _uid = (await _auth.signInWithCredential(credential)).user!.uid;
+      await StorageManager.removeData('verificationId');
       return true;
     } catch (e) {
       var _error = e.toString();
@@ -200,6 +203,7 @@ class _SMSCheckPageState extends State<SMSCheckPage> {
   }
 
   Future<bool> _sendEmail() async {
+    LoadingIndicatorDialog().show(context);
     try {
       late var _userData;
       late var _products;
@@ -219,7 +223,7 @@ class _SMSCheckPageState extends State<SMSCheckPage> {
       for (int i = 0; i < _cart.length; i++) {
         int _productIndex = int.parse(_cart.keys.elementAt(i).substring(8));
         _productsTable +=
-            '''<tr><td>${_products[_productIndex]["title"]}</td><td>${_cart[_cart.keys.elementAt(i)]}</td></tr>''';
+        '''<tr><td>${_products[_productIndex]["title"]}</td><td>${_cart[_cart.keys.elementAt(i)]}</td></tr>''';
       }
       final _smtpServer = hotmail(_fromEmail, _fromPassword);
       final _message = Message()
@@ -259,9 +263,10 @@ class _SMSCheckPageState extends State<SMSCheckPage> {
         <tbody>
           ''' + _productsTable + '''</tbody></table></div></body></html>''';
       await send(_message, _smtpServer);
-
+      LoadingIndicatorDialog().dismiss();
       return true;
     } catch (e) {
+      LoadingIndicatorDialog().dismiss();
       _showSnackbar("Ошибка: " + e.toString());
       return false;
     }
@@ -270,5 +275,57 @@ class _SMSCheckPageState extends State<SMSCheckPage> {
   @override deactivate() {
     _emailDataStream.cancel();
     super.deactivate();
+  }
+}
+
+
+class LoadingIndicatorDialog {
+  static final LoadingIndicatorDialog _singleton =
+  LoadingIndicatorDialog._internal();
+  late BuildContext _context;
+
+  factory LoadingIndicatorDialog() {
+    return _singleton;
+  }
+
+  LoadingIndicatorDialog._internal();
+
+  show(BuildContext context, {String text = 'Подождите, оформляем заказ...'}) {
+    showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          _context = context;
+          return WillPopScope(
+            onWillPop: () async => false,
+            child: SimpleDialog(
+              backgroundColor: Colors.white,
+              children: [
+                Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16, top: 16, right: 16),
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(LightColor.accent),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Text(text),
+                      )
+                    ],
+                  ),
+                )
+              ] ,
+            ),
+          );
+        }
+    );
+  }
+
+  dismiss() {
+    Navigator.of(_context).pop();
   }
 }

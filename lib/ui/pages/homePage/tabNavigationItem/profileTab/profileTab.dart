@@ -99,9 +99,9 @@ class _ProfileTabState extends State<ProfileTab> {
                                 );
                               },
                               child: Icon(
-                                Icons.qr_code,
+                                Icons.qr_code_2,
                                 color: LightColor.accent,
-                                size: 40,
+                                size: 50,
                               ),
                             )
                           ],

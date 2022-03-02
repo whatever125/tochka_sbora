@@ -20,7 +20,7 @@ class _SMSPageState extends State<SMSPage> {
   final _database = FirebaseDatabase(
     app: Firebase.apps.first,
     databaseURL:
-        'https://devtime-cff06-default-rtdb.europe-west1.firebasedatabase.app',
+    'https://devtime-cff06-default-rtdb.europe-west1.firebasedatabase.app',
   ).reference();
   final _auth = FirebaseAuth.instance;
 
@@ -130,8 +130,13 @@ class _SMSPageState extends State<SMSPage> {
 
   _signInWithPhoneNumber(context) async {
     try {
+      var _verificationId = await StorageManager.readData('verificationId');
+      if (_verificationId == null) {
+        _showSnackbar("Дождитесь СМС");
+        return;
+      }
       final AuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: await StorageManager.readData('verificationId'),
+        verificationId: _verificationId,
         smsCode: _smsController.text,
       );
       var _uid = (await _auth.signInWithCredential(credential)).user!.uid;
@@ -140,19 +145,21 @@ class _SMSPageState extends State<SMSPage> {
         var userData = snapshot.value;
         if (userData == null) {
           _autoFill.unregisterListener();
+          await StorageManager.removeData('verificationId');
           await MetricaPlugin.reportEvent("Пользователь успешно ввел код");
           Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => PDPage()),
           );
         } else {
           _autoFill.unregisterListener();
+          await StorageManager.removeData('verificationId');
           await MetricaPlugin.reportEvent("Пользователь успешно ввел код");
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
               builder: (context) => HomePage(),
             ),
-            (Route<dynamic> route) => false,
+                (Route<dynamic> route) => false,
           );
         }
       });
